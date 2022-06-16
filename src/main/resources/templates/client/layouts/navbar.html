@@ -1,0 +1,112 @@
+<div th:fragment="navbar" xmlns:th="http://www.thymeleaf.org">
+    <!-- mobil__searchbar style -->
+    <div class="mobil__searchbar" id="mobilSearch">
+        <div class="input__wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="pb-3 d-flex align-items-center justify-content-between"><h5 th:text="#{search.label}"></h5>
+                            <span class="close__search" id="closeSearch" th:text="#{close.search}"></span></div>
+                        <form action="#">
+                            <div class="d-flex">
+                                <input type="text" th:placeholder="#{input.search}">
+                                <button class="submit-v1 ml-2" th:text="#{search}"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===============  navbar start =============== -->
+    <header>
+        <div class="header-area header-defult header_style__two bg-body">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-xl-4 col-2 col-lg-3 col-md-2 col-2 align-items-center d-flex order-0">
+                        <div class="nav-logo logo-switch d-flex justify-content-between align-items-center">
+                            <a class="logo-dark" href="../index.html"><img src="/images/logo-dark.png" width="40px"
+                                                                           alt="logo"></a>
+                            <a class="logo-light" href="../index.html"><img src="/images/logo-light.png" width="40px"
+                                                                            alt="logo"></a>
+                        </div>
+                        <div class="nav-search-style-two w-100 d-xl-block d-none">
+                            <span class="search__icon">
+                                <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.26847 16.0378C12.2827 16.0378 15.5369 12.7834 15.5369 8.7689C15.5369 4.7544 12.2827 1.5 8.26847 1.5C4.2542 1.5 1 4.7544 1 8.7689C1 12.7834 4.2542 16.0378 8.26847 16.0378Z"
+                                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                    <path d="M17.0002 17.5L13.4023 13.9025" stroke="currentColor" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                 </svg>
+                            </span>
+                            <input type="text" th:placeholder="#{input.search}">
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-10 col-lg-9 d-flex justify-content-end">
+                        <nav class="main-nav mr-2">
+                            <div class="inner-logo d-xl-none text-center pt-4">
+                                <a href="#" class="for-dark"><img src="/images/logo-dark.png" width="40px" alt=""></a>
+                                <a href="#" class="for-light"><img src="/images/logo-light.png" width="40px" alt=""></a>
+                            </div>
+                            <ul>
+                                <li><a href="/" th:text="#{home}"></a></li>
+                                <li><a href="/" th:text="#{categories}"></a></li>
+                                <li><a href="/" th:text="#{collections}"></a></li>
+                                <li><a href="/" th:text="#{items}"></a></li>
+                                <li class="has-child-menu">
+                                    <a href="javascript:void(0)" th:text="#{language}"></a>
+                                    <i class="fl flaticon-plus">+</i>
+                                    <ul class="sub-menu">
+                                        <li><a href="/?lang=en" th:text="#{lang.en}"></a></li>
+                                        <li><a href="/?lang=ru" th:text="#{lang.ru}"></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <div class="d-xl-none d-inline-flex flex-column gap-3 px-3 mt-4">
+                                <a href="/sign-up" class="btn-pill-v1"><span th:text="#{button.sign-up}"></span></a>
+                            </div>
+                        </nav>
+
+                        <div class="nav-actions d-flex align-items-center">
+
+                            <div class="d-none d-md-block mr-2">
+                                <a href="/sign-up" class="btn-pill-v1"><span th:text="#{button.sign-up}"></span></a>
+                            </div>
+                            <button type="button" class="nav_search__icon mr-2 d-block d-xl-none mr-2 style__two"
+                                    id="navSearch">
+                                <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                            d="M8.26847 16.0378C12.2827 16.0378 15.5369 12.7834 15.5369 8.7689C15.5369 4.7544 12.2827 1.5 8.26847 1.5C4.2542 1.5 1 4.7544 1 8.7689C1 12.7834 4.2542 16.0378 8.26847 16.0378Z"
+                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round"></path>
+                                    <path d="M17.0002 17.5L13.4023 13.9025" stroke="currentColor" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
+                            <label class="theme-switch-one style__two">
+                                <input type="checkbox" id="slider" class="slider-light check-status">
+                                <span class="slider round"></span>
+                            </label>
+
+                            <div class="d-flex align-items-center gap-4 ml-2">
+                                <div class="mobile-menu d-flex ">
+                                    <a href="javascript:void(0)" class="hamburger d-block d-xl-none">
+                                        <span class="h-top"></span>
+                                        <span class="h-middle"></span>
+                                        <span class="h-bottom"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ===============  navbar end =============== -->
+</div>

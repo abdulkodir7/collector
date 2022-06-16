@@ -1,0 +1,73 @@
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme"
+       th:fragment="admin-sidebar">
+
+    <div class="app-brand demo ">
+        <a href="index.html" class="app-brand-link">
+      <span class="app-brand-logo demo">
+          <img src="/images/favicon.jpg" width="40px" alt="logo" style="border-radius: 50%">
+      </span>
+            <span class="app-brand-text demo menu-text fw-bold ms-2">Collector.</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+            <i class="bx menu-toggle-icon d-none d-xl-block fs-4 align-middle"></i>
+            <i class="bx bx-x d-block d-xl-none bx-sm align-middle"></i>
+        </a>
+    </div>
+
+
+    <div class="menu-divider mt-0  ">
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+
+    <ul class="menu-inner py-1">
+
+        <li class="menu-item">
+            <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Dashboards">Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Users">Users</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/admin/users" class="menu-link">
+                        <div data-i18n="List">List</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="admin/user-statistics" class="menu-link">
+                        <div data-i18n="View">Statistics</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons bx bx-check-shield'></i>
+                <div data-i18n="Roles & Permissions">Roles & Permissions</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Roles">Roles</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Permission">Permission</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+
+</aside>

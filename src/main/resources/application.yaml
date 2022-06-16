@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    password: root123
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/course_work
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+#      ddl-auto: create
+  sql:
+    init:
+#      mode: always
+      mode: never
+  main:
+    allow-circular-references: true
+    lazy-initialization: true
+  thymeleaf:
+    enabled: true
+    encoding: UTF-8

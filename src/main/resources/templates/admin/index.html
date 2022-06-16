@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed"
+      dir="ltr" data-theme="theme-default" data-assets-path="admin-assets/"
+      data-template="vertical-menu-template">
+
+<head th:replace="admin/layouts/header::admin-header"></head>
+
+<body>
+
+<div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-container">
+
+        <!-- SIDEBAR -->
+        <aside th:replace="admin/layouts/sidebar::admin-sidebar"></aside>
+        <!-- /SIDEBAR -->
+
+
+        <!-- CONTAINER -->
+        <div class="layout-page">
+
+            <!-- NAVBAR -->
+            <nav th:replace="admin/layouts/navbar::admin-navbar"></nav>
+            <!-- /NAVBAR -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+
+            </div>
+            <!-- Content wrapper -->
+
+        </div>
+        <!-- /CONTAINER -->
+    </div>
+
+</div>
+
+<div th:replace="admin/layouts/footer::admin-footer"></div>
+
+</body>
+
+</html>
