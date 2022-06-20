@@ -25,13 +25,4 @@ public class PageController {
         return "client/sign-up";
     }
 
-    @GetMapping("/admin")
-    public String getAdminPage() {
-        return "admin/index";
-    }
-
-    @GetMapping("/admin/users")
-    public String getUsersTable() {
-        return "admin/users";
-    }
 }
