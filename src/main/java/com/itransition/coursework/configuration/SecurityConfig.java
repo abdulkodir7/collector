@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/",
                         "/login",
-                        "/sign-up",
+                        "/register",
                         "/images/**",
                         "/js/**",
                         "/css/**",
@@ -68,20 +68,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().logout()
                 .permitAll();
     }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                .antMatchers("/resources/**",
-                        "/static/**",
-                        "/css/**",
-                        "/js/**",
-                        "/images/**",
-                        "/vendor/**",
-                        "/fonts/**",
-                        "/admin-assets/**");
-    }
-
 }
 

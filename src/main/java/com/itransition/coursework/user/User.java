@@ -1,5 +1,6 @@
 package com.itransition.coursework.user;
 
+import com.itransition.coursework.user.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

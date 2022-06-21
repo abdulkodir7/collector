@@ -24,18 +24,29 @@
             <!-- /NAVBAR -->
 
             <div th:if="${response!=null}">
-                <div th:if="${response.status==true}"
-                     class="alert alert-success alert-dismissible d-flex align-items-center" role="alert">
-                    [[${response.message}]]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    </button>
+
+
+                <div class="bs-toast toast fade show position-absolute top-0 end-0" role="alert"
+                     aria-live="assertive" aria-atomic="true" th:if="${response.status==true}">
+                    <div class="toast-header bg-success">
+                        <div class="me-auto fw-semibold">Success message</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        [[${response.message}]]
+                    </div>
                 </div>
 
-                <div th:if="${response.status==false}"
-                     class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
-                    [[${response.message}]]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    </button>
+
+                <div class="bs-toast toast fade show position-absolute top-0 end-0" role="alert"
+                     aria-live="assertive" aria-atomic="true" th:if="${response.status==false}">
+                    <div class="toast-header bg-danger">
+                        <div class="me-auto fw-semibold">Error message</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        [[${response.message}]]
+                    </div>
                 </div>
             </div>
 
@@ -96,6 +107,11 @@
                                                             <small class="text-muted text-uppercase">About</small>
                                                             <ul class="list-unstyled mb-4 mt-3">
                                                                 <li class="d-flex align-items-center mb-3">
+                                                                    <i class="bx bx-id-card"></i>
+                                                                    <span class="fw-semibold mx-2">Id:</span>
+                                                                    <span th:text="${user.id}"></span>
+                                                                </li>
+                                                                <li class="d-flex align-items-center mb-3">
                                                                     <i class="bx bx-user"></i>
                                                                     <span class="fw-semibold mx-2">Full Name:</span>
                                                                     <span th:text="${user.name}"></span>
@@ -119,12 +135,12 @@
                                                                 <li class="d-flex align-items-center mb-3">
                                                                     <i class="bx bx-calendar-plus"></i>
                                                                     <span class="fw-semibold mx-2">Joined At:</span>
-                                                                    <span th:text="${user.joinedAt}"></span>
+                                                                    <span th:text="${#temporals.format(user.joinedAt, 'yyyy-MM-dd HH:mm')}"></span>
                                                                 </li>
                                                                 <li class="d-flex align-items-center mb-3">
                                                                     <i class="bx bxs-calendar-edit"></i>
                                                                     <span class="fw-semibold mx-2">Edited At:</span>
-                                                                    <span th:text="${user.editedAt}"></span>
+                                                                    <span th:text="${#temporals.format(user.editedAt, 'yyyy-MM-dd HH:mm')}"></span>
                                                                 </li>
                                                             </ul>
                                                             <small class="text-muted text-uppercase">Contacts</small>
@@ -226,25 +242,29 @@
                                               th:if="${!user.isActive}">Blocked</span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-primary"
+                                        <button type="button" class="btn btn-icon me-2 btn-label-primary"
                                                 data-bs-toggle="modal"
                                                 th:attr="data-bs-target='#saveUser'+${user.id}">
-                                            <i class="bx bx-edit-alt me-1"></i>
+                                            <span class="tf-icons bx bx-edit"></span>
                                         </button>
+
                                         <a th:href="@{/admin/users/delete-user/__${user.id}__}">
-                                            <button type="button" class="btn btn-warning">
-                                                <i class="bx bx-trash me-1"></i>
+                                            <button type="button" class="btn btn-icon me-2 btn-label-warning">
+                                                <span class="tf-icons bx bx-trash"></span>
                                             </button>
                                         </a>
+
                                         <a th:href="@{/admin/users/block-user/__${user.id}__}">
-                                            <button type="button" class="btn btn-danger" th:if="${user.isActive}">
-                                                <i class="fa-solid fa-lock"></i>
+                                            <button type="button" class="btn btn-icon me-2 btn-label-danger"
+                                                    th:if="${user.isActive}">
+                                                <span class="tf-icons bx bx-lock"></span>
                                             </button>
                                         </a>
 
                                         <a th:href="@{/admin/users/unblock-user/__${user.id}__}">
-                                            <button type="button" class="btn btn-success" th:if="${!user.isActive}">
-                                                <i class="fa-solid fa-lock-open"></i>
+                                            <button type="button" class="btn btn-icon me-2 btn-label-success"
+                                                    th:if="${!user.isActive}">
+                                                <span class="tf-icons bx bx-lock-open"></span>
                                             </button>
                                         </a>
                                     </td>

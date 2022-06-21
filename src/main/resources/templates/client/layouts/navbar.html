@@ -1,11 +1,12 @@
-<div th:fragment="navbar" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="navbar" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
     <!-- mobil__searchbar style -->
     <div class="mobil__searchbar" id="mobilSearch">
         <div class="input__wrapper">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="pb-3 d-flex align-items-center justify-content-between"><h5 th:text="#{search.label}"></h5>
+                        <div class="pb-3 d-flex align-items-center justify-content-between"><h5
+                                th:text="#{search.label}"></h5>
                             <span class="close__search" id="closeSearch" th:text="#{close.search}"></span></div>
                         <form action="#">
                             <div class="d-flex">
@@ -66,15 +67,30 @@
                                 </li>
                             </ul>
 
-                            <div class="d-xl-none d-inline-flex flex-column gap-3 px-3 mt-4">
-                                <a href="/sign-up" class="btn-pill-v1"><span th:text="#{button.sign-up}"></span></a>
+                            <div sec:authorize="!isAuthenticated()">
+                                <div class=" d-xl-none d-inline-flex flex-column gap-3 px-3 mt-4">
+                                    <a href="/login" class="btn-pill-v1"><span th:text="#{button.login}"></span></a>
+                                </div>
                             </div>
+
                         </nav>
 
                         <div class="nav-actions d-flex align-items-center">
 
-                            <div class="d-none d-md-block mr-2">
-                                <a href="/sign-up" class="btn-pill-v1"><span th:text="#{button.sign-up}"></span></a>
+                            <div sec:authorize="!isAuthenticated()">
+                                <div class="d-none d-md-block mr-2">
+                                    <a href="/login" class="btn-pill-v1"><span th:text="#{button.login}"></span></a>
+                                </div>
+                            </div>
+                            <div sec:authorize="isAuthenticated()">
+                                <div class="profile-switch-one mr-2">
+                                    <div class="profile-switch-avater">
+                                        <a href="/profile">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                                                 alt="" style="border-radius: 100%">
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <button type="button" class="nav_search__icon mr-2 d-block d-xl-none mr-2 style__two"
                                     id="navSearch">

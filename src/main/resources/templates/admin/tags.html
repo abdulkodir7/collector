@@ -54,14 +54,14 @@
                 <div class="container-xxl flex-grow-1 container-p-y">
 
                     <h4 class="py-3 breadcrumb-wrapper mb-4">
-                        <span class="text-muted fw-light">Tags /</span> List
+                        <span class="text-muted fw-light">Categories /</span> List
                     </h4>
 
 
                     <div class="card">
                         <div class="row">
                             <div class="col-md-6">
-                                <h5 class="card-header" style="float: left">Tags</h5>
+                                <h5 class="card-header" style="float: left">Categories</h5>
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-primary justify-content-around"
@@ -84,7 +84,7 @@
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                                <tr th:each="category, loop : ${Tags}">
+                                <tr th:each="category, loop : ${categories}">
 
                                     <td><strong th:text="${loop.index+1}"></strong></td>
                                     <td th:text="${category.name}"></td>
@@ -101,20 +101,20 @@
                                             <span class="tf-icons bx bx-edit"></span>
                                         </button>
 
-                                        <a th:href="@{/admin/Tags/delete-category/__${category.id}__}">
+                                        <a th:href="@{/admin/categories/delete-category/__${category.id}__}">
                                             <button type="button" class="btn btn-icon me-2 btn-label-warning">
                                                 <span class="tf-icons bx bx-trash"></span>
                                             </button>
                                         </a>
 
-                                        <a th:href="@{/admin/Tags/disable-category/__${category.id}__}">
+                                        <a th:href="@{/admin/categories/disable-category/__${category.id}__}">
                                             <button type="button" class="btn btn-icon me-2 btn-label-danger"
                                                     th:if="${category.isEnabled}">
                                                 <span class="tf-icons bx bx-lock"></span>
                                             </button>
                                         </a>
 
-                                        <a th:href="@{/admin/Tags/enable-category/__${category.id}__}">
+                                        <a th:href="@{/admin/categories/enable-category/__${category.id}__}">
                                             <button type="button" class="btn btn-icon me-2 btn-label-success"
                                                     th:if="${!category.isEnabled}">
                                                 <span class="tf-icons bx bx-lock-open"></span>
@@ -135,7 +135,7 @@
                                                         <h3>Edit Category</h3>
                                                     </div>
                                                     <form id="userForm" class="row g-3" method="post"
-                                                          th:action="@{/admin/Tags/save-category}">
+                                                          th:action="@{/admin/categories/save-category}">
 
                                                         <input hidden th:value="${category.id}" name="id">
                                                         <div class="row">
@@ -182,7 +182,7 @@
                                     <div class="text-center mb-4">
                                         <h3>Add New Category</h3>
                                     </div>
-                                    <form class="row g-3" method="post" th:action="@{/admin/Tags/save-category}">
+                                    <form class="row g-3" method="post" th:action="@{/admin/categories/save-category}">
                                         <div class="row">
                                             <div class="col-12 ">
                                                 <label class="form-label">Name</label>

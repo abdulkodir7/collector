@@ -1,4 +1,4 @@
-package com.itransition.coursework.user;
+package com.itransition.coursework.user.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

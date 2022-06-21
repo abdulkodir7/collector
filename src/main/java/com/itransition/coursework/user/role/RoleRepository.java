@@ -1,7 +1,7 @@
-package com.itransition.coursework.user;
+package com.itransition.coursework.user.role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    boolean existsByName(RoleEnum name);
+    Role getByName(RoleEnum name);
 }

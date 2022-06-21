@@ -19,29 +19,24 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AttachmentService {
 
-//    private final Cloudinary cloudinary;
+    private final Cloudinary cloudinary;
 
-//    public String uploadFile(MultipartFile gif) {
-//        try {
-//            File uploadedFile = convertMultiPartToFile(gif);
-//            Map uploadResult = cloudinary.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
-//            boolean isDeleted = uploadedFile.delete();
-//
-//            if (isDeleted){
-//                System.out.println("File successfully deleted");
-//            }else
-//                System.out.println("File doesn't exist");
-//            return  uploadResult.get("url").toString();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    public String uploadFile(MultipartFile file) {
+        try {
+            File uploadedFile = convertMultiPartToFile(file);
+            Map uploadResult = cloudinary.uploader().upload(uploadedFile, ObjectUtils.emptyMap());
 
-//    private File convertMultiPartToFile(MultipartFile file) throws IOException {
-//        File convFile = new File(file.getOriginalFilename());
-//        FileOutputStream fos = new FileOutputStream(convFile);
-//        fos.write(file.getBytes());
-//        fos.close();
-//        return convFile;
-//    }
+            return  uploadResult.get("url").toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convFile;
+    }
 }

@@ -1,5 +1,8 @@
 package com.itransition.coursework.user;
 
+import com.itransition.coursework.user.role.Role;
+import com.itransition.coursework.user.role.RoleEnum;
+import com.itransition.coursework.user.role.RoleRepository;
 import com.itransition.coursework.util.ThymeleafResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,12 +37,13 @@ public class UserService implements UserDetailsService {
         try {
             User user = userRepository.findByEmail(username)
                     .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
+            log.info("trying to log {}", user);
+            return user;
 
         } catch (Exception e) {
-            log.info("");
+            log.info("logging failed {}", e.getMessage());
+            return null;
         }
-
-        return null;
     }
 
 
@@ -142,5 +146,28 @@ public class UserService implements UserDetailsService {
         } catch (Exception e) {
             return new ThymeleafResponse(false, e.getMessage());
         }
+    }
+
+    public ThymeleafResponse registerUser(UserRegistrationDto dto) {
+        if (!dto.getPassword().equals(dto.getConfirmPassword()))
+            return new ThymeleafResponse(false, PASSWORD_NOT_MATCH);
+
+        if (userRepository.existsByEmail(dto.getEmail()))
+            return new ThymeleafResponse(false, EMAIL_EXISTS);
+
+        Role roleCreator = roleRepository.getByName(RoleEnum.ROLE_CREATOR);
+        User newUser = User.builder()
+                .name(dto.getFullName())
+                .email(dto.getEmail())
+                .password(dto.getPassword())
+                .role(roleCreator)
+                .isActive(true)
+                .joinedAt(LocalDateTime.now())
+                .editedAt(LocalDateTime.now())
+                .build();
+
+        User savedUser = userRepository.save(newUser);
+        log.info("new user {} registered ", savedUser);
+        return new ThymeleafResponse(true, SUCCESS_REGISTER);
     }
 }

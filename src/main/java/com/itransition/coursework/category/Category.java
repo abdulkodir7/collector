@@ -11,7 +11,6 @@ import javax.persistence.*;
  * Abdulqodir Ganiev 6/13/2022 3:52 PM
  */
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -22,6 +21,15 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false)
+    private Boolean isEnabled;
+
+    public Category(String name, Boolean isEnabled) {
+        this.name = name;
+        this.isEnabled = isEnabled;
+    }
+
 }
