@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class ThymeleafResponse {
     private Boolean status;
-    private String message;
+    private Object message;
 }

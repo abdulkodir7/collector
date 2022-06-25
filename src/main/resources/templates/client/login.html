@@ -19,6 +19,20 @@
 
                     <div class="reg__inputs mt-40 flex-column flex-lg-row">
                         <div class="reg__left order-2 order-lg-0">
+                            <div th:if="${response!=null}">
+                                <div th:if="${response.status}" class="alert alert-success alert-dismissible"
+                                     role="alert">
+                                    [[${response.message}]]
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    </button>
+                                </div>
+                                <div th:if="${!response.status}" class="alert alert-danger alert-dismissible"
+                                     role="alert">
+                                    [[${response.message}]]
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    </button>
+                                </div>
+                            </div>
                             <form action="/login" id="login__form" method="post">
                                 <div class="custom_input_style__two">
                                     <input type="email" th:placeholder="#{enter.email}" id="email" name="username">

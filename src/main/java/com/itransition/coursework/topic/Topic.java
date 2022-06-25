@@ -1,4 +1,4 @@
-package com.itransition.coursework.item;
+package com.itransition.coursework.topic;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,27 +8,28 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Abdulqodir Ganiev 6/13/2022 4:04 PM
+ * Abdulqodir Ganiev 6/13/2022 3:52 PM
  */
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class CustomField {
+public class Topic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private CustomFieldType type;
+    private Boolean isEnabled;
 
-    @Column(nullable = false)
-    private String value;
+    public Topic(String name, Boolean isEnabled) {
+        this.name = name;
+        this.isEnabled = isEnabled;
+    }
+
 }

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed"
+      dir="ltr" data-theme="theme-default" data-assets-path="admin-assets/"
+      data-template="vertical-menu-template" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="admin/layouts/header::admin-header">
+</head>
+
+<body>
+
+<div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-container">
+
+        <!-- SIDEBAR -->
+        <aside th:replace="admin/layouts/sidebar::admin-sidebar"></aside>
+        <!-- /SIDEBAR -->
+
+
+        <!-- CONTAINER -->
+        <div class="layout-page">
+
+            <!-- NAVBAR -->
+            <nav th:replace="admin/layouts/navbar::admin-navbar"></nav>
+            <!-- /NAVBAR -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="row mb-5">
+                        <div class="col-md">
+                            <div class="card mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4 d-flex align-items-start justify-content-center p-4">
+                                        <img class="card-img card-img-left rounded"
+                                             style="max-width:70%; height: auto"
+                                             th:src="${collection.imgUrl}" alt="Card image"/>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <ul class="list-unstyled mb-4 mt-3">
+                                                <li class="d-flex align-items-center mb-3">
+                                                    <i class="bx bx-collection"></i>
+                                                    <span class="fw-semibold mx-2">Name:</span>
+                                                    <span th:text="${collection.name}"></span>
+                                                </li>
+                                                <li class="d-flex align-items-center mb-3">
+                                                    <i class="bx bx-user"></i>
+                                                    <span class="fw-semibold mx-2">Author:</span>
+                                                    <span th:text="${collection.author.name}"></span>
+                                                </li>
+                                                <li class=" align-items-center mb-3">
+                                                    <i class="bx bx-info-circle"></i>
+                                                    <span class="fw-semibold mx-2">Description:</span>
+                                                    <br>
+                                                    <span class="mt-1" th:text="${collection.description}"></span>
+                                                </li>
+
+                                                <li class="d-flex align-items-center mb-3">
+                                                    <i class="bx bx-calendar-plus"></i>
+                                                    <span class="fw-semibold mx-2">Crated At:</span>
+                                                    <span th:text="${#temporals.format(collection.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                                                </li>
+                                                <li class="d-flex align-items-center mb-3">
+                                                    <i class="bx bxs-calendar-edit"></i>
+                                                    <span class="fw-semibold mx-2">Edited At:</span>
+                                                    <span th:text="${#temporals.format(collection.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="row justify-content-around align-items-center p-4">
+                            <div class="col-md-6">
+                                <h5>Items</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary justify-content-around"
+                                        style="float: right"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addItem">
+                                    Add New Item
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-5 pt-2">
+                        <div class="col-md-6 col-lg-4" th:each="item : ${items}">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${item.name}"></h5>
+
+                                    <button type="button" class="btn btn-icon me-2 btn-label-danger">
+                                        <span class="bx bx-heart"></span>
+                                        <span> [[${item.likeCount}]]</span>
+                                    </button>
+
+                                    <button type="button" class="btn btn-icon me-2 btn-label-info">
+                                        <span class="bx bx-comment"></span>
+                                        <span> [[${item.commentCount}]]</span>
+                                    </button>
+
+                                    <div class="row mb-5">
+                                        <div class="col-md-6 col-lg-4" th:each="tag : ${item.tag}">
+                                            <a th:href="@{/admin/tag/get-single-tag/__${tag.id}__}">
+                                                <button type="button" class="btn mt-2 btn-outline-warning btn-sm">
+                                                    <span th:text="${tag.name}"></span>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <a href="javascript:void(0)" class="btn btn-primary">Detail</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Content wrapper -->
+
+        </div>
+        <!-- /CONTAINER -->
+    </div>
+
+</div>
+
+<div th:replace="admin/layouts/footer::admin-footer"></div>
+
+</body>
+
+</html>

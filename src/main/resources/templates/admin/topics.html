@@ -54,21 +54,21 @@
                 <div class="container-xxl flex-grow-1 container-p-y">
 
                     <h4 class="py-3 breadcrumb-wrapper mb-4">
-                        <span class="text-muted fw-light">Tags /</span> List
+                        <span class="text-muted fw-light">Topic /</span> List
                     </h4>
 
 
                     <div class="card">
-                        <div class="row">
+                        <div class="row justify-content-around align-items-center p-4">
                             <div class="col-md-6">
-                                <h5 class="card-header" style="float: left">Tags</h5>
+                                <h5 style="float: left">Topics</h5>
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-primary justify-content-around"
                                         style="float: right"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#addNewCategory">
-                                    Add New Category
+                                        data-bs-target="#addNewTopic">
+                                    Add New Topic
                                 </button>
                             </div>
                         </div>
@@ -84,46 +84,46 @@
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                                <tr th:each="category, loop : ${Tags}">
+                                <tr th:each="topic, loop : ${topics}">
 
                                     <td><strong th:text="${loop.index+1}"></strong></td>
-                                    <td th:text="${category.name}"></td>
+                                    <td th:text="${topic.name}"></td>
                                     <td>
                                         <span class="badge bg-label-success me-1"
-                                              th:if="${category.isEnabled}">Active</span>
+                                              th:if="${topic.isEnabled}">Active</span>
                                         <span class="badge bg-label-danger me-1"
-                                              th:if="${!category.isEnabled}">Disabled</span>
+                                              th:if="${!topic.isEnabled}">Disabled</span>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-icon me-2 btn-label-primary"
                                                 data-bs-toggle="modal"
-                                                th:attr="data-bs-target='#editCategory'+${category.id}">
+                                                th:attr="data-bs-target='#editTopic'+${topic.id}">
                                             <span class="tf-icons bx bx-edit"></span>
                                         </button>
 
-                                        <a th:href="@{/admin/Tags/delete-category/__${category.id}__}">
+                                        <a th:href="@{/admin/topics/delete-topic/__${topic.id}__}">
                                             <button type="button" class="btn btn-icon me-2 btn-label-warning">
                                                 <span class="tf-icons bx bx-trash"></span>
                                             </button>
                                         </a>
 
-                                        <a th:href="@{/admin/Tags/disable-category/__${category.id}__}">
+                                        <a th:href="@{/admin/topics/disable-topic/__${topic.id}__}">
                                             <button type="button" class="btn btn-icon me-2 btn-label-danger"
-                                                    th:if="${category.isEnabled}">
+                                                    th:if="${topic.isEnabled}">
                                                 <span class="tf-icons bx bx-lock"></span>
                                             </button>
                                         </a>
 
-                                        <a th:href="@{/admin/Tags/enable-category/__${category.id}__}">
+                                        <a th:href="@{/admin/topics/enable-topic/__${topic.id}__}">
                                             <button type="button" class="btn btn-icon me-2 btn-label-success"
-                                                    th:if="${!category.isEnabled}">
+                                                    th:if="${!topic.isEnabled}">
                                                 <span class="tf-icons bx bx-lock-open"></span>
                                             </button>
                                         </a>
                                     </td>
 
                                     <!-- EDIT MODAL -->
-                                    <div class="modal fade" th:id="'editCategory'+${category.id}" tabindex="-1"
+                                    <div class="modal fade" th:id="'editTopic'+${topic.id}" tabindex="-1"
                                          aria-hidden="true">
                                         <div class="modal-dialog modal-lg modal-simple modal-edit-user">
                                             <div class="modal-content p-3 p-md-5">
@@ -132,18 +132,18 @@
                                                             aria-label="Close">
                                                     </button>
                                                     <div class="text-center mb-4">
-                                                        <h3>Edit Category</h3>
+                                                        <h3>Edit Topic</h3>
                                                     </div>
                                                     <form id="userForm" class="row g-3" method="post"
-                                                          th:action="@{/admin/Tags/save-category}">
+                                                          th:action="@{/admin/topics/save-topic}">
 
-                                                        <input hidden th:value="${category.id}" name="id">
+                                                        <input hidden th:value="${topic.id}" name="id">
                                                         <div class="row">
                                                             <div class="col-12 ">
                                                                 <label class="form-label">Name</label>
                                                                 <input type="text" name="name"
                                                                        class="form-control" placeholder="ex. Entertainment"
-                                                                       th:value="${category.name}" required/>
+                                                                       th:value="${topic.name}" required/>
                                                             </div>
                                                         </div>
                                                         <div class="col-12 text-center mt-4">
@@ -171,7 +171,7 @@
 
                     <!-- NEW USER MODAL-->
 
-                    <div class="modal fade" th:id="addNewCategory" tabindex="-1"
+                    <div class="modal fade" th:id="addNewTopic" tabindex="-1"
                          aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-simple modal-edit-user">
                             <div class="modal-content p-3 p-md-5">
@@ -180,9 +180,9 @@
                                             aria-label="Close">
                                     </button>
                                     <div class="text-center mb-4">
-                                        <h3>Add New Category</h3>
+                                        <h3>Add New Topic</h3>
                                     </div>
-                                    <form class="row g-3" method="post" th:action="@{/admin/Tags/save-category}">
+                                    <form class="row g-3" method="post" th:action="@{/admin/topics/save-topic}">
                                         <div class="row">
                                             <div class="col-12 ">
                                                 <label class="form-label">Name</label>

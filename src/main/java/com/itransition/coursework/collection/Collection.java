@@ -1,6 +1,6 @@
 package com.itransition.coursework.collection;
 
-import com.itransition.coursework.category.Category;
+import com.itransition.coursework.topic.Topic;
 import com.itransition.coursework.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,16 +32,17 @@ public class Collection {
     private String description;
 
     @ManyToOne(optional = false)
-    private Category category;
+    private Topic topic;
 
     @ManyToOne(optional = false)
-    private User owner;
+    private User author;
 
     @Column(columnDefinition = "text")
     private String imgUrl;
 
-    @Column(updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(updatable = false, nullable = false)
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 }

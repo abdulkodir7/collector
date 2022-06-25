@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed"
+      dir="ltr" data-theme="theme-default" data-assets-path="admin-assets/"
+      data-template="vertical-menu-template" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin/layouts/header::admin-header"></head>
+
+<body>
+
+<div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-container">
+
+        <!-- SIDEBAR -->
+        <aside th:replace="admin/layouts/sidebar::admin-sidebar"></aside>
+        <!-- /SIDEBAR -->
+
+
+        <!-- CONTAINER -->
+        <div class="layout-page">
+
+            <!-- NAVBAR -->
+            <nav th:replace="admin/layouts/navbar::admin-navbar"></nav>
+            <!-- /NAVBAR -->
+
+            <div th:if="${response!=null}">
+
+                <div class="bs-toast toast fade show position-absolute top-0 end-0" role="alert"
+                     aria-live="assertive" aria-atomic="true" th:if="${response.status==true}">
+                    <div class="toast-header bg-success">
+                        <div class="me-auto fw-semibold">Success message</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        [[${response.message}]]
+                    </div>
+                </div>
+
+                <div class="bs-toast toast fade show position-absolute top-0 end-0" role="alert"
+                     aria-live="assertive" aria-atomic="true" th:if="${response.status==false}">
+                    <div class="toast-header bg-danger">
+                        <div class="me-auto fw-semibold">Error message</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        [[${response.message}]]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+
+                <div class="container-xxl flex-grow-1 container-p-y">
+
+                    <h4 class="py-3 breadcrumb-wrapper mb-4">
+                        <span class="text-muted fw-light">Collection /</span> List
+                    </h4>
+
+
+                    <div class="card">
+                        <div class="row justify-content-around align-items-center p-4">
+                            <div class="col-md-6">
+                                <h5 style="float: left">Collections</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary"
+                                        style="float: right"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addNewCollection">
+                                    Add New Collection
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Topic</th>
+                                    <th>Author</th>
+                                    <th>Items</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                <tr th:each="collection, loop : ${collections}">
+
+                                    <td><strong th:text="${loop.index+1}"></strong></td>
+                                    <td th:text="${collection.name}"></td>
+                                    <td th:text="${collection.topicName}"></td>
+                                    <td th:text="${collection.authorName}"></td>
+                                    <td>
+                                        <a th:href="@{/admin/collections/get-collection-items/__${collection.id}__}">
+                                            <button type="button" class="btn btn-icon me-2 btn-label-success">
+                                                <span th:text="${collection.itemsCount}"></span>
+                                            </button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-icon me-2 btn-label-primary"
+                                                data-bs-toggle="modal"
+                                                th:attr="data-bs-target='#editCollection'+${collection.id}">
+                                            <span class="tf-icons bx bx-edit"></span>
+                                        </button>
+
+                                        <a th:href="@{/admin/collections/delete-collection/__${collection.id}__}">
+                                            <button type="button" class="btn btn-icon me-2 btn-label-warning">
+                                                <span class="tf-icons bx bx-trash"></span>
+                                            </button>
+                                        </a>
+                                    </td>
+
+                                    <!-- EDIT MODAL -->
+<!--                                    <div class="modal fade" th:id="'editCollection'+${collection.id}" tabindex="-1"-->
+<!--                                         aria-hidden="true">-->
+<!--                                        <div class="modal-dialog modal-lg modal-simple modal-edit-user">-->
+<!--                                            <div class="modal-content p-3 p-md-5">-->
+<!--                                                <div class="modal-body">-->
+<!--                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"-->
+<!--                                                            aria-label="Close">-->
+<!--                                                    </button>-->
+<!--                                                    <div class="text-center mb-4">-->
+<!--                                                        <h3>Edit Category</h3>-->
+<!--                                                    </div>-->
+<!--                                                    <form id="userForm" class="row g-3" method="post"-->
+<!--                                                          th:action="@{/admin/collections/save-collection}">-->
+
+<!--                                                        <input hidden th:value="${collection.id}" name="id">-->
+<!--                                                        <div class="row">-->
+<!--                                                            <div class="col-12 ">-->
+<!--                                                                <label class="form-label">Name</label>-->
+<!--                                                                <input type="text" name="name"-->
+<!--                                                                       class="form-control"-->
+<!--                                                                       placeholder="ex. Entertainment"-->
+<!--                                                                       th:value="${collection.name}" required/>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="col-12 text-center mt-4">-->
+<!--                                                            <button type="submit"-->
+<!--                                                                    class="btn btn-primary me-sm-3 me-1">-->
+<!--                                                                Submit-->
+<!--                                                            </button>-->
+<!--                                                            <button type="reset" class="btn btn-label-secondary"-->
+<!--                                                                    data-bs-dismiss="modal"-->
+<!--                                                                    aria-label="Close">Cancel-->
+<!--                                                            </button>-->
+<!--                                                        </div>-->
+<!--                                                    </form>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                    <!-- END EDIT MODAL -->
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- NEW COLLECTION MODAL-->
+
+                    <div class="modal fade" th:id="addNewCollection" tabindex="-1"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                            <div class="modal-content p-3 p-md-5">
+                                <div class="modal-body">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                    </button>
+                                    <div class="text-center mb-4">
+                                        <h3>Add New Collection</h3>
+                                    </div>
+                                    <form id="customForm" class="row g-3" method="post" enctype="multipart/form-data"
+                                          th:action="@{/admin/collections/save-collection}">
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" name="name" class="form-control"
+                                                   placeholder="Collection name" required/>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label" for="addTopic">Topic</label>
+                                            <select id="addTopic" name="topicId" class="select2 form-select"
+                                                    data-allow-clear="true">
+                                                <option selected>Select topic</option>
+                                                <div th:each="topic : ${topics}">
+                                                    <option th:value="${topic.id}" th:text="${topic.name}"></option>
+                                                </div>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Image</label>
+                                            <input type="file" name="image" class="form-control"/>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="card mb-4">
+                                                <h5 class="card-header">Description</h5>
+                                                <div class="card-body">
+                                                    <div id="bubble-toolbar">
+                                                      <span class="ql-formats">
+                                                        <select class="ql-font"></select>
+                                                        <select class="ql-size"></select>
+                                                      </span>
+                                                        <span class="ql-formats">
+                                                        <button class="ql-bold"></button>
+                                                        <button class="ql-italic"></button>
+                                                        <button class="ql-underline"></button>
+                                                        <button class="ql-strike"></button>
+                                                      </span>
+                                                        <span class="ql-formats">
+                                                        <select class="ql-color"></select>
+                                                        <select class="ql-background"></select>
+                                                      </span>
+                                                        <span class="ql-formats">
+                                                        <button class="ql-header" value="1"></button>
+                                                        <button class="ql-header" value="2"></button>
+                                                        <button class="ql-blockquote"></button>
+                                                        <button class="ql-code-block"></button>
+                                                      </span>
+                                                    </div>
+                                                    <div id="bubble-editor">
+                                                        <p> Write description here </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center mt-5">
+                                            <h5>You can add custom fields to items of this collection</h5>
+                                        </div>
+                                        <div class="col-12 form-repeater">
+                                            <div data-repeater-list="customFields">
+                                                <div data-repeater-item>
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-5">
+                                                            <label class="form-label"
+                                                                   for="form-repeater-1-1">Name</label>
+                                                            <input name="name" type="text" id="form-repeater-1-1"
+                                                                   class="form-control" placeholder="ex. Age"/>
+                                                        </div>
+                                                        <div class="col-12 col-md-5">
+                                                            <label class="form-label"
+                                                                   for="form-repeater-1-4">Type</label>
+                                                            <select name="type" id="form-repeater-1-4"
+                                                                    class="form-select">
+                                                                <option selected>Select field type</option>
+                                                                <div th:each="type : ${customFieldTypes}">
+                                                                    <option th:value="${type.name()}"
+                                                                            th:text="${type.name()}">
+                                                                    </option>
+                                                                </div>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
+                                                            <button type="button" class="btn btn-label-danger mt-4"
+                                                                    data-repeater-delete>
+                                                                <i class="bx bx-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-0">
+                                                <button type="button" id="customBtn" class="btn btn-primary"
+                                                        data-repeater-create>
+                                                    <i class="bx bx-plus"></i>
+                                                    <span class="align-middle">Add</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-center mt-4">
+                                            <button type="submit" class="btn btn-primary me-sm-3 me-1">
+                                                Submit
+                                            </button>
+                                            <button type="reset" class="btn btn-label-secondary"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close">Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- END NEW USER MODAL-->
+
+                </div>
+            </div>
+            <!-- Content wrapper -->
+
+        </div>
+        <!-- /CONTAINER -->
+    </div>
+
+</div>
+
+<div th:replace="admin/layouts/footer::admin-footer"></div>
+
+</body>
+
+</html>

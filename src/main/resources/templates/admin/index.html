@@ -2,7 +2,7 @@
 
 <html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed"
       dir="ltr" data-theme="theme-default" data-assets-path="admin-assets/"
-      data-template="vertical-menu-template">
+      data-template="vertical-menu-template" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head th:replace="admin/layouts/header::admin-header"></head>
 
@@ -25,7 +25,7 @@
 
             <!-- Content wrapper -->
             <div class="content-wrapper">
-                <h1>Dashboard</h1>
+                <h1 sec:authentication="name"></h1>
             </div>
             <!-- Content wrapper -->
 

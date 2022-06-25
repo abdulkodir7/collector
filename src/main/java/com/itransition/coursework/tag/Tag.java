@@ -11,7 +11,7 @@ import javax.persistence.*;
  * Abdulqodir Ganiev 6/13/2022 4:02 PM
  */
 
-@Builder
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -24,4 +24,8 @@ public class Tag {
 
     @Column(nullable = false)
     private String name;
+
+    public Tag(String name) {
+        this.name = name;
+    }
 }

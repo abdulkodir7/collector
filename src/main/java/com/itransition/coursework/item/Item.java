@@ -36,13 +36,12 @@ public class Item {
     @ManyToMany
     private List<Tag> tags;
 
-    @OneToMany
-    @JoinColumn(name = "item_id")
+    @ManyToMany
+    @JoinTable(
+            name = "item_like",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> likedBy;
-
-    @OneToMany
-    @JoinColumn(name = "item_id")
-    private List<CustomField> customFields;
 
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
