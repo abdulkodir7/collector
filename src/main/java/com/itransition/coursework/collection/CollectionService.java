@@ -48,8 +48,11 @@ public class CollectionService {
         try {
             Map<String, String[]> parameterMap = request.getParameterMap();
             String name = request.getParameter("name");
+            parameterMap.remove("name");
             String topicId = request.getParameter("topicId");
+            parameterMap.remove("topicId");
             String description = request.getParameter("description");
+            parameterMap.remove("description");
 
             if (topicId == null || name == null || description == null)
                 return new ThymeleafResponse(false, REQUIRED_FIELDS_NULL);
@@ -57,20 +60,8 @@ public class CollectionService {
             Topic topic = topicRepository.findById(Long.parseLong(topicId))
                     .orElseThrow(() -> new ResourceAccessException(TOPIC_NOT_FOUND));
 
-            String imgUrl = "https://efectocolibri.com/wp-content/uploads/2021/01/placeholder.png";
-            imgUrl = uploadImage(file, imgUrl);
-
-            Collection newCollection = Collection
-                    .builder()
-                    .name(name)
-                    .description(description)
-                    .topic(topic)
-                    .author(currentUser)
-                    .imgUrl(imgUrl)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .build();
-            Collection savedCollection = collectionRepository.save(newCollection);
+            String imgUrl = uploadImage(file);
+            Collection savedCollection = createNewCollection(currentUser, name, description, topic, imgUrl);
 
             createCustomField(request, parameterMap, savedCollection);
             return new ThymeleafResponse(true, SUCCESS_MESSAGE);
@@ -79,18 +70,36 @@ public class CollectionService {
         }
     }
 
-    private String uploadImage(MultipartFile file, String imgUrl) throws IOException {
-        if (file != null) {
-            File image = convert(file);
-            Map uploadResult = cloudinary.uploader().upload(image, ObjectUtils.emptyMap());
-            imgUrl = (String) uploadResult.get("url");
-            System.out.println(imgUrl);
-        }
-        return imgUrl;
+    private Collection createNewCollection(User currentUser, String name,
+                                           String description, Topic topic,
+                                           String imgUrl) {
+        Collection newCollection = Collection
+                .builder()
+                .name(name)
+                .description(description)
+                .topic(topic)
+                .author(currentUser)
+                .imgUrl(imgUrl)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        Collection savedCollection = collectionRepository.save(newCollection);
+        return savedCollection;
     }
 
-    private void createCustomField(HttpServletRequest request, Map<String, String[]> parameterMap, Collection savedCollection) {
-        for (int i = 0; i < parameterMap.size(); i++) {
+    private String uploadImage(MultipartFile file) throws IOException {
+        if (file.isEmpty())
+            return "https://efectocolibri.com/wp-content/uploads/2021/01/placeholder.png";
+        File image = convert(file);
+        Map uploadResult = cloudinary.uploader().upload(image, ObjectUtils.emptyMap());
+        return (String) uploadResult.get("url");
+
+    }
+
+    private void createCustomField(HttpServletRequest request,
+                                   Map<String, String[]> parameterMap,
+                                   Collection savedCollection) {
+        for (int i = 0; i < parameterMap.size() / 2; i++) {
             String customFieldName = request.getParameter("customFields[" + i + "][name]");
             String customFieldType = request.getParameter("customFields[" + i + "][type]");
 
@@ -122,12 +131,23 @@ public class CollectionService {
     }
 
 
-    public Collection getSingleCollection(Long id) {
+    public SingleCollectionView getSingleCollection(Long id) {
         try {
-            return collectionRepository.findById(id)
+            return collectionRepository.getCollectionWithCustomFields(id)
                     .orElseThrow(() -> new ResourceAccessException(COLLECTION_NOT_FOUND));
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public ThymeleafResponse deleteCollection(Long id) {
+        try {
+            Collection collection = collectionRepository.findById(id)
+                    .orElseThrow(() -> new ResourceAccessException(COLLECTION_NOT_FOUND));
+            collectionRepository.delete(collection);
+            return new ThymeleafResponse(true, SUCCESS_DELETE);
+        } catch (Exception e) {
+            return new ThymeleafResponse(false, e.getMessage());
         }
     }
 }

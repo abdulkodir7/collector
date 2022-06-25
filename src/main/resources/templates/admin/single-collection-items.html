@@ -47,8 +47,9 @@
                                                 <li class="d-flex align-items-center mb-3">
                                                     <i class="bx bx-user"></i>
                                                     <span class="fw-semibold mx-2">Author:</span>
-                                                    <span th:text="${collection.author.name}"></span>
+                                                    <span th:text="${collection.authorName}"></span>
                                                 </li>
+
                                                 <li class=" align-items-center mb-3">
                                                     <i class="bx bx-info-circle"></i>
                                                     <span class="fw-semibold mx-2">Description:</span>
@@ -65,6 +66,12 @@
                                                     <i class="bx bxs-calendar-edit"></i>
                                                     <span class="fw-semibold mx-2">Edited At:</span>
                                                     <span th:text="${#temporals.format(collection.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                                                </li>
+
+                                                <li class="d-flex align-items-center mb-3">
+                                                    <i class="bx bx-calculator"></i>
+                                                    <span class="fw-semibold mx-2">Number of items:</span>
+                                                    <span th:text="${collection.itemsCount}"></span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -121,6 +128,78 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- NEW ITEM MODAL-->
+                <div class="modal fade" th:id="addItem" tabindex="-1"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                        <div class="modal-content p-3 p-md-5">
+                            <div class="modal-body">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                </button>
+                                <div class="text-center mb-4">
+                                    <h3>Add new Collection</h3>
+                                </div>
+                                <form class="row g-3" method="post" th:action="@{/admin/items/save-item}"
+                                      enctype="multipart/form-data">
+                                    <input hidden th:value="${collection.id}" name="collectionId">
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" name="collectionName" class="form-control"
+                                               placeholder="Enter collection name"
+                                               required/>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label for="selectTag" class="form-label">Tags</label>
+                                        <div class="select2-warning">
+                                            <select name="tagIds" id="selectTag" class="select2 form-select" multiple>
+                                                <div th:each="tag : ${tags}">
+                                                    <option th:value="${tag.id}">[[${tag.name}]]</option>
+                                                </div>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${collection.customFields!=null}">
+                                        <div th:each="field : ${collection.customFields}">
+                                            <div class="col-12"
+                                                 th:if="${filed=='number'} or ${filed=='text'} or ${field=='date'} or ${field=='file'}">
+                                                <label class="form-label" th:text="${field.name}"></label>
+                                                <input th:type="${field.type}" th:name="${field.name}"
+                                                       class="form-control"
+                                                       required/>
+                                            </div>
+                                            <div class="col-12" th:if="${filed=='checkbox'}">
+                                                <div class="form-check mt-3">
+                                                    <input class="form-check-input" type="checkbox" th:value="${field.name}"
+                                                           th:name="${field.name}" id="checkbox"/>
+                                                    <label class="form-check-label" for="checkbox">
+                                                        [[${field.name}]]
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12" th:if="${filed=='checkbox'}">
+                                                <label for="textarea"  class="form-label">[[${field.name}]]</label>
+                                                <textarea th:name="${field.name}" class="form-control" id="textarea" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12 text-center mt-4">
+                                        <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit
+                                        </button>
+                                        <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal"
+                                                aria-label="Close">Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <!-- Content wrapper -->
 

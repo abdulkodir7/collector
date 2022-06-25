@@ -3,8 +3,12 @@ package com.itransition.coursework.user;
 import com.itransition.coursework.collection.Collection;
 import com.itransition.coursework.collection.CollectionDto;
 import com.itransition.coursework.collection.CollectionService;
+import com.itransition.coursework.collection.SingleCollectionView;
+import com.itransition.coursework.custom_field.CustomFieldType;
 import com.itransition.coursework.item.ItemService;
 import com.itransition.coursework.item.ItemView;
+import com.itransition.coursework.tag.Tag;
+import com.itransition.coursework.tag.TagService;
 import com.itransition.coursework.topic.Topic;
 import com.itransition.coursework.topic.TopicService;
 import com.itransition.coursework.user.role.RoleEnum;
@@ -40,6 +44,7 @@ public class AdminController {
     private final TopicService topicService;
     private final CollectionService collectionService;
     private final ItemService itemService;
+    private final TagService tagService;
 
     @GetMapping
     public String getAdminPage(@AuthenticationPrincipal User loggedInUser) {
@@ -135,11 +140,11 @@ public class AdminController {
 
     @GetMapping("collections")
     public String getCollections(Model model) {
-        model.addAttribute("collectionDto", new CollectionDto());
         model.addAttribute("topics",
                 topicService.getAllEnabledTopics());
         model.addAttribute("collections",
                 collectionService.getAllCollectionsForAdmin());
+        model.addAttribute("customFieldTypes", CustomFieldType.values());
         return "admin/collections";
     }
 
@@ -153,17 +158,33 @@ public class AdminController {
         return "redirect:/admin/collections";
     }
 
+    @GetMapping("collections/delete-collection/{id}")
+    public String deleteCollection(@PathVariable Long id,
+                                   RedirectAttributes attributes) {
+        ThymeleafResponse response = collectionService.deleteCollection(id);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/collections";
+    }
+
     @GetMapping("collections/get-collection-items/{id}")
     private String getItemsOfSingleCollection(@PathVariable Long id,
                                               RedirectAttributes attributes,
                                               Model model) {
         List<ItemView> items = itemService.getItemsOfSingleCollection(id);
-        Collection collection = collectionService.getSingleCollection(id);
-        System.out.println(items.get(0).getTag());
+        SingleCollectionView collection = collectionService.getSingleCollection(id);
+        List<Tag> tags = tagService.getAllTags();
         model.addAttribute("collection", collection);
         model.addAttribute("items", items);
+        model.addAttribute("tags", tags);
         attributes.addFlashAttribute("response", COLLECTION_NOT_FOUND);
         return collection != null ? "admin/single-collection-items" : "redirect:/admin/collections";
+    }
+
+    @PostMapping("items/save-item")
+    private String saveItem(MultipartFile file,
+                            HttpServletRequest request) {
+        itemService.saveItem(file, request);
+        return null;
     }
 
 

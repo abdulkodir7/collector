@@ -16,6 +16,7 @@ public interface Constants {
     String ROLE_NOT_FOUND = "Role not found!";
     String TOPIC_NOT_FOUND = "Topic not found!";
     String COLLECTION_NOT_FOUND = "Collection not found!";
+    String ITEM_NOT_FOUND = "Item not found!";
     String DEFAULT_PAGE_SIZE = "20";
 
 }

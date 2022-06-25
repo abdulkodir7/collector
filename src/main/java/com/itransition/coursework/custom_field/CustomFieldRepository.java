@@ -14,5 +14,5 @@ public interface CustomFieldRepository extends JpaRepository<CustomField, Long> 
                     "from custom_field cf\n" +
                     "         join collection c on c.id = cf.collection_id\n" +
                     "where c.id = :collectionId")
-    List<CustomFieldValue> getItemCustomFields(Long collectionId);
+    List<CustomFieldView> getItemCustomFields(Long collectionId);
 }

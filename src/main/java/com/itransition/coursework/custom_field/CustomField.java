@@ -25,7 +25,7 @@ public class CustomField {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
+    @ManyToOne()
     private Collection collection;
 
     @Column(nullable = false)
