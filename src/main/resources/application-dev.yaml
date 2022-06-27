@@ -11,8 +11,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+#      ddl-auto: create
     database-platform: org.hibernate.dialect.PostgreSQL94Dialect
-  #      ddl-auto: create
   sql:
     init:
       mode: never

@@ -1,12 +1,10 @@
 package com.itransition.coursework.custom_field;
 
 import com.itransition.coursework.collection.Collection;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Abdulqodir Ganiev 6/13/2022 4:04 PM
@@ -14,7 +12,8 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 public class CustomField {
 
@@ -25,16 +24,11 @@ public class CustomField {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne()
-    private Collection collection;
-
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CustomFieldType type;
 
-    public CustomField(String name, Collection collection, CustomFieldType type) {
-        this.name = name;
-        this.collection = collection;
-        this.type = type;
-    }
+    @OneToMany(mappedBy = "customField", cascade = CascadeType.ALL)
+    private List<CustomFieldValue> customFieldValues;
+
 }

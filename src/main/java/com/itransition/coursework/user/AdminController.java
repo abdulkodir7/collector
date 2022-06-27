@@ -4,9 +4,11 @@ import com.itransition.coursework.collection.Collection;
 import com.itransition.coursework.collection.CollectionDto;
 import com.itransition.coursework.collection.CollectionService;
 import com.itransition.coursework.collection.SingleCollectionView;
+import com.itransition.coursework.comment.CommentService;
 import com.itransition.coursework.custom_field.CustomFieldType;
 import com.itransition.coursework.item.ItemService;
 import com.itransition.coursework.item.ItemView;
+import com.itransition.coursework.item.SingleItemView;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.tag.TagService;
 import com.itransition.coursework.topic.Topic;
@@ -45,6 +47,7 @@ public class AdminController {
     private final CollectionService collectionService;
     private final ItemService itemService;
     private final TagService tagService;
+    private final CommentService commentService;
 
     @GetMapping
     public String getAdminPage(@AuthenticationPrincipal User loggedInUser) {
@@ -167,9 +170,9 @@ public class AdminController {
     }
 
     @GetMapping("collections/get-collection-items/{id}")
-    private String getItemsOfSingleCollection(@PathVariable Long id,
-                                              RedirectAttributes attributes,
-                                              Model model) {
+    public String getItemsOfSingleCollection(@PathVariable Long id,
+                                             RedirectAttributes attributes,
+                                             Model model) {
         List<ItemView> items = itemService.getItemsOfSingleCollection(id);
         SingleCollectionView collection = collectionService.getSingleCollection(id);
         List<Tag> tags = tagService.getAllTags();
@@ -181,10 +184,49 @@ public class AdminController {
     }
 
     @PostMapping("items/save-item")
-    private String saveItem(MultipartFile file,
-                            HttpServletRequest request) {
-        itemService.saveItem(file, request);
-        return null;
+    public String saveItem(MultipartFile file,
+                           HttpServletRequest request,
+                           RedirectAttributes attributes) {
+        String collectionId = request.getParameter("collectionId");
+        ThymeleafResponse response = itemService.saveItem(file, request);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/collections/get-collection-items/" + collectionId;
+    }
+
+    @GetMapping("items/get-single-item/{id}")
+    public String getSingleItem(@PathVariable Long id, Model model) {
+        SingleItemView singleItem = itemService.getSingleItem(id);
+        model.addAttribute("item", singleItem);
+        return singleItem != null ? "admin/single-item" : "redirect:/";
+    }
+
+    @PostMapping("comment/add-comment")
+    public String addComment(@RequestParam(name = "comment") String comment,
+                             @RequestParam(name = "itemId") Long id,
+                             @AuthenticationPrincipal User currentUser,
+                             RedirectAttributes attributes) {
+        ThymeleafResponse response = commentService.addNewComment(comment, id, currentUser);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/items/get-single-item/" + id;
+    }
+
+    @PostMapping("comment/edit/{id}")
+    public String editComment(@PathVariable Long id,
+                              @RequestParam(name = "comment") String comment,
+                              @RequestParam(name = "itemId") Long itemId,
+                              RedirectAttributes attributes) {
+        ThymeleafResponse response = commentService.editComment(id, comment);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/items/get-single-item/" + itemId;
+    }
+
+    @GetMapping("comment/delete/{commentId}/{itemId}")
+    public String deleteComment(RedirectAttributes attributes,
+                                @PathVariable Long commentId,
+                                @PathVariable Long itemId) {
+        ThymeleafResponse response = commentService.deleteComment(commentId);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/items/get-single-item/" + itemId;
     }
 
 

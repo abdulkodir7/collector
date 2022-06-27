@@ -87,7 +87,6 @@
                                 </thead>
                                 <tbody class="table-border-bottom-0">
                                 <tr th:each="collection, loop : ${collections}">
-
                                     <td><strong th:text="${loop.index+1}"></strong></td>
                                     <td th:text="${collection.name}"></td>
                                     <td th:text="${collection.topicName}"></td>
@@ -107,7 +106,8 @@
                                         </button>
 
                                         <a th:href="@{/admin/collections/delete-collection/__${collection.id}__}">
-                                            <button type="button" class="btn btn-icon me-2 btn-label-warning">
+                                            <button onclick="return confirm('This collection can contain items, are you sure to delete?')"
+                                                    type="button" class="btn btn-icon me-2 btn-label-warning">
                                                 <span class="tf-icons bx bx-trash"></span>
                                             </button>
                                         </a>
@@ -185,8 +185,7 @@
                                         <div class="col-12 col-md-6">
                                             <label class="form-label" for="addTopic">Topic</label>
                                             <select id="addTopic" name="topicId" class="select2 form-select"
-                                                    data-allow-clear="true">
-                                                <option selected>Select topic</option>
+                                                    data-allow-clear="true" required>
                                                 <div th:each="topic : ${topics}">
                                                     <option th:value="${topic.id}" th:text="${topic.name}"></option>
                                                 </div>
@@ -201,7 +200,7 @@
                                         <div class="col-12 col-md-6">
                                             <label for="exampleFormControlTextarea1" class="form-label">Description</label>
                                             <textarea name="description" class="form-control" id="exampleFormControlTextarea1"
-                                                      rows="3"></textarea>
+                                                      rows="3" required></textarea>
                                         </div>
 
                                         <div class="text-center mt-5">

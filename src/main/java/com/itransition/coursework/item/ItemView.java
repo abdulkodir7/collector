@@ -12,7 +12,7 @@ public interface ItemView {
     String getName();
 
     @Value("#{@tagRepository.getItemTags({target.id})}")
-    List<TagView> getTag();
+    List<TagView> getTags();
 
     Long getLikeCount();
 

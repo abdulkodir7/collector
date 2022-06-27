@@ -1,12 +1,10 @@
 package com.itransition.coursework.item;
 
 import com.itransition.coursework.collection.Collection;
+import com.itransition.coursework.custom_field.CustomFieldValue;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,7 +17,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 public class Item {
 
@@ -35,6 +34,9 @@ public class Item {
 
     @ManyToMany
     private List<Tag> tags;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<CustomFieldValue> customFieldValues;
 
     @ManyToMany
     @JoinTable(

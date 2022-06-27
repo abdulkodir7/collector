@@ -4,6 +4,4 @@ public interface TagView {
     Integer getId();
 
     String getName();
-
-    String getType();
 }

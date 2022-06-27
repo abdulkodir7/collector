@@ -1,10 +1,8 @@
 package com.itransition.coursework.user;
 
 import com.itransition.coursework.user.role.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +11,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Abdulqodir Ganiev 6/13/2022 3:37 PM
@@ -21,7 +21,8 @@ import java.util.Collections;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity(name = "users")
 public class User implements UserDetails {
 
@@ -42,6 +43,9 @@ public class User implements UserDetails {
     private Role role;
 
     private Boolean isActive;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<com.itransition.coursework.collection.Collection> collections;
 
     @Column(updatable = false, nullable = false)
     private LocalDateTime joinedAt;
@@ -89,5 +93,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

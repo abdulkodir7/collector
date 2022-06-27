@@ -3,16 +3,13 @@ package com.itransition.coursework.collection;
 import com.itransition.coursework.custom_field.CustomField;
 import com.itransition.coursework.topic.Topic;
 import com.itransition.coursework.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Abdulqodir Ganiev 6/13/2022 3:51 PM
@@ -21,7 +18,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 public class Collection {
 
@@ -41,7 +39,7 @@ public class Collection {
     @ManyToOne(optional = false)
     private User author;
 
-    @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<CustomField> customFields;
 
     @Column(columnDefinition = "text")
@@ -52,4 +50,17 @@ public class Collection {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Collection that = (Collection) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -1,11 +1,10 @@
 package com.itransition.coursework.topic;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.itransition.coursework.collection.Collection;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Abdulqodir Ganiev 6/13/2022 3:52 PM
@@ -13,7 +12,8 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 public class Topic {
 
@@ -26,6 +26,9 @@ public class Topic {
 
     @Column(nullable = false)
     private Boolean isEnabled;
+
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+    private List<Collection> collections;
 
     public Topic(String name, Boolean isEnabled) {
         this.name = name;

@@ -102,7 +102,8 @@
                                         </button>
 
                                         <a th:href="@{/admin/topics/delete-topic/__${topic.id}__}">
-                                            <button type="button" class="btn btn-icon me-2 btn-label-warning">
+                                            <button onclick="return confirm('Are you sure to delete this topic?')"
+                                                    type="button" class="btn btn-icon me-2 btn-label-warning">
                                                 <span class="tf-icons bx bx-trash"></span>
                                             </button>
                                         </a>
