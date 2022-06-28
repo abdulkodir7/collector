@@ -136,5 +136,9 @@ public class CollectionService {
         }
     }
 
+    public List<TopCollectionView> getTop5BiggestCollections(){
+        return collectionRepository.getTop5();
+    }
+
 
 }

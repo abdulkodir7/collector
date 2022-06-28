@@ -13,103 +13,25 @@
         <div class="row gy-4">
             <div class="col-lg-8">
                 <div class="swiper hero_slider__two">
-                    <div class="swiper-wrapper ">
-                        <div class="swiper-slide">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" th:each="collection : ${top5}">
                             <div class="hero_featured__slide">
                                 <div class="featured_slide__bg">
-                                    <img src="images/hero/hero-two-featured.png" alt="">
+                                    <img th:src="${collection.imgUrl}" alt="">
                                 </div>
                                 <div class="featured_slide__content">
-                                    <a href="author-profile.html" class="author"><img src="images/icons/tick-yellow.svg"
-                                                                                      alt=""> By Cris Cyborg</a>
-                                    <h1><a href="nft-details.html">Crypto Monkey
-                                        Starpleade</a></h1>
+                                    <a href="#" class="author"><img src="images/icons/tick-yellow.svg"
+                                                                    alt=""> [[${collection.author}]]</a>
+                                    <h1><a href="nft-details.html">[[${collection.name}]]</a></h1>
                                     <div class="featured_slide__bottom">
-                                        <a href="nft-details.html" class="btn-pill-v1"><img
-                                                src="images/icons/bid-regular.svg" alt=""> <span>Place a bid</span></a>
+                                        <a href="nft-details.html" class="btn-pill-v1"><span>Detail view</span></a>
                                         <div class="feat_nft__price">
-                                            <span>HEIGHT</span>
-                                            <ins><img src="images/icons/custom-flash-yellow.svg" alt=""> 0.074 ETH</ins>
+                                            <span>ITEMS</span>
+                                            <ins>[[${collection.itemsCount}]]</ins>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="hero_featured__slide">
-                                <div class="featured_slide__bg">
-                                    <img src="images/hero/hero-two-featured2.jpg" alt="">
-                                </div>
-                                <div class="featured_slide__content">
-                                    <a href="author-profile.html" class="author"><img src="images/icons/tick-yellow.svg"
-                                                                                      alt=""> By Cris Cyborg</a>
-                                    <h1><a href="nft-details.html">Robot Generation</a></h1>
-                                    <div class="featured_slide__bottom">
-                                        <a href="nft-details.html" class="btn-pill-v1"><img
-                                                src="images/icons/bid-regular.svg" alt=""> <span>Place a bid</span></a>
                                         <div class="feat_nft__price">
-                                            <span>HEIGHT</span>
-                                            <ins><img src="images/icons/custom-flash-yellow.svg" alt=""> 0.074 ETH</ins>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="hero_featured__slide">
-                                <div class="featured_slide__bg">
-                                    <img src="images/hero/hero-two-featured4.jpg" alt="">
-                                </div>
-                                <div class="featured_slide__content">
-                                    <a href="author-profile.html" class="author"><img src="images/icons/tick-yellow.svg"
-                                                                                      alt=""> By Cris Cyborg</a>
-                                    <h1><a href="nft-details.html">Abstract Painting</a></h1>
-                                    <div class="featured_slide__bottom">
-                                        <a href="nft-details.html" class="btn-pill-v1"><img
-                                                src="images/icons/bid-regular.svg" alt=""> <span>Place a bid</span></a>
-                                        <div class="feat_nft__price">
-                                            <span>HEIGHT</span>
-                                            <ins><img src="images/icons/custom-flash-yellow.svg" alt=""> 0.074 ETH</ins>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="hero_featured__slide">
-                                <div class="featured_slide__bg">
-                                    <img src="images/hero/hero-two-featured3.jpg" alt="">
-                                </div>
-                                <div class="featured_slide__content">
-                                    <a href="author-profile.html" class="author"><img src="images/icons/tick-yellow.svg"
-                                                                                      alt=""> By Cris Cyborg</a>
-                                    <h1><a href="nft-details.html">Running Puppets</a></h1>
-                                    <div class="featured_slide__bottom">
-                                        <a href="nft-details.html" class="btn-pill-v1"><img
-                                                src="images/icons/bid-regular.svg" alt=""> <span>Place a bid</span></a>
-                                        <div class="feat_nft__price">
-                                            <span>HEIGHT</span>
-                                            <ins><img src="images/icons/custom-flash-yellow.svg" alt=""> 0.074 ETH</ins>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="hero_featured__slide">
-                                <div class="featured_slide__bg">
-                                    <img src="images/hero/hero-two-featured5.jpg" alt="">
-                                </div>
-                                <div class="featured_slide__content">
-                                    <a href="author-profile.html" class="author"><img src="images/icons/tick-yellow.svg"
-                                                                                      alt=""> By Cris Cyborg</a>
-                                    <h1><a href="nft-details.html">Sound of Silence</a></h1>
-                                    <div class="featured_slide__bottom">
-                                        <a href="nft-details.html" class="btn-pill-v1"><img
-                                                src="images/icons/bid-regular.svg" alt=""> <span>Place a bid</span></a>
-                                        <div class="feat_nft__price">
-                                            <span>HEIGHT</span>
-                                            <ins><img src="images/icons/custom-flash-yellow.svg" alt=""> 0.074 ETH</ins>
+                                            <span>TOPIC</span>
+                                            <ins>[[${collection.topicName}]]</ins>
                                         </div>
                                     </div>
                                 </div>
@@ -121,72 +43,20 @@
             <div class="col-lg-4">
                 <div class="swiper hero_thumbs__two">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" th:each="collection : ${top5}">
                             <div class="hero_thumb__slide">
                                 <div class="hero__thumb">
-                                    <img src="images/hero/thumb-sm-two.png" alt="">
+                                    <img th:src="${collection.imgUrl}" alt="">
                                 </div>
                                 <div class="hero_thumb__disc">
-                                    <span>by <a href="#"> barry tone </a> <img src="images/icons/tick-blue.svg" alt=""></span>
-                                    <h6><a href="#">Running Puppets</a></h6>
-                                    <ins>0.074 ETH</ins>
+                                    <span>by <a href="#"> [[${collection.author}]] </a> <img src="images/icons/tick-blue.svg" alt=""></span>
+                                    <h6><a href="#">[[${collection.name}]]</a></h6>
+                                    <ins>[[${collection.itemsCount}]]</ins>
+                                    <span> items</span>
                                 </div>
                                 <span class="thumb_progress__bar"></span>
                             </div>
                         </div>
-                        <div class="swiper-slide">
-                            <div class="hero_thumb__slide">
-                                <div class="hero__thumb">
-                                    <img src="images/hero/thumb-sm-three.png" alt="">
-                                </div>
-                                <div class="hero_thumb__disc">
-                                    <span>by <a href="#"> barry tone </a> <img src="images/icons/tick-blue.svg" alt=""></span>
-                                    <h6><a href="#">Moon Palace</a></h6>
-                                    <ins>0.074 ETH</ins>
-                                </div>
-                                <span class="thumb_progress__bar"></span>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="hero_thumb__slide">
-                                <div class="hero__thumb">
-                                    <img src="images/hero/thumb-sm-one.png" alt="">
-                                </div>
-                                <div class="hero_thumb__disc">
-                                    <span>by <a href="#"> barry tone </a> <img src="images/icons/tick-blue.svg" alt=""></span>
-                                    <h6><a href="#">Earth Watcher</a></h6>
-                                    <ins>0.074 ETH</ins>
-                                </div>
-                                <span class="thumb_progress__bar"></span>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="hero_thumb__slide">
-                                <div class="hero__thumb">
-                                    <img src="images/hero/thumb-sm-four.png" alt="">
-                                </div>
-                                <div class="hero_thumb__disc">
-                                    <span>by <a href="#"> barry tone </a> <img src="images/icons/tick-blue.svg" alt=""></span>
-                                    <h6><a href="#">Abstract Painting</a></h6>
-                                    <ins>0.074 ETH</ins>
-                                </div>
-                                <span class="thumb_progress__bar"></span>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="hero_thumb__slide">
-                                <div class="hero__thumb">
-                                    <img src="images/hero/thumb-sm-five.png" alt="">
-                                </div>
-                                <div class="hero_thumb__disc">
-                                    <span>by <a href="#"> barry tone </a> <img src="images/icons/tick-blue.svg" alt=""></span>
-                                    <h6><a href="#">Robot Generation</a></h6>
-                                    <ins>0.074 ETH</ins>
-                                </div>
-                                <span class="thumb_progress__bar"></span>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>

@@ -42,4 +42,20 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
                     "where c.id = :id " +
                     "group by c.id, t.id, u.id;")
     Optional<SingleCollectionView> getCollectionWithCustomFields(Long id);
+
+    @Query(nativeQuery = true,
+            value = "select c.id, " +
+                    "       c.name, " +
+                    "       c.img_url imgUrl, " +
+                    "       t.name topicName, " +
+                    "       u.name author, " +
+                    "       count(i) itemsCount " +
+                    "from collection c " +
+                    "         left join topic t on t.id = c.topic_id " +
+                    "         left join users u on u.id = c.author_id " +
+                    "         left join item i on c.id = i.collection_id " +
+                    "group by c.id, t.name, u.name " +
+                    "order by itemsCount desc " +
+                    "limit 5")
+    List<TopCollectionView> getTop5();
 }
