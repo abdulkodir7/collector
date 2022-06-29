@@ -13,6 +13,8 @@ public interface SingleItemView {
 
     String getName();
 
+    Long getCollectionId();
+
     String getCollectionName();
 
     String getTopicName();

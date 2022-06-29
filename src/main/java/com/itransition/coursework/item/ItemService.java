@@ -3,10 +3,7 @@ package com.itransition.coursework.item;
 import com.itransition.coursework.attachment.AttachmentService;
 import com.itransition.coursework.collection.Collection;
 import com.itransition.coursework.collection.CollectionRepository;
-import com.itransition.coursework.custom_field.CustomField;
-import com.itransition.coursework.custom_field.CustomFieldType;
-import com.itransition.coursework.custom_field.CustomFieldValue;
-import com.itransition.coursework.custom_field.CustomFieldValueRepository;
+import com.itransition.coursework.custom_field.*;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.tag.TagRepository;
 import com.itransition.coursework.util.ThymeleafResponse;
@@ -17,6 +14,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -40,6 +38,7 @@ public class ItemService {
     private final TagRepository tagRepository;
     private final CustomFieldValueRepository customFieldValueRepository;
     private final AttachmentService attachmentService;
+    private final CustomFieldRepository customFieldRepository;
 
     public List<ItemView> getItemsOfSingleCollection(Long id) {
         return itemRepository.getItemsOfSingleCollection(id);
@@ -118,8 +117,49 @@ public class ItemService {
             return itemRepository.getSingleItem(id)
                     .orElseThrow(() -> new ResourceAccessException(ITEM_NOT_FOUND));
         } catch (Exception e) {
-            log.info("exception {}", e.getCause());
+            log.info("exception {}", e.getMessage());
             return null;
         }
+    }
+
+    public ThymeleafResponse deleteItem(Long id) {
+        try {
+            Item item = itemRepository.findById(id)
+                    .orElseThrow(() -> new ResourceAccessException(ITEM_NOT_FOUND));
+            itemRepository.delete(item);
+            return new ThymeleafResponse(true, SUCCESS_DELETE);
+        } catch (Exception e) {
+            return new ThymeleafResponse(false, e.getMessage());
+        }
+    }
+
+
+    public ThymeleafResponse editItem(Long id, HttpServletRequest request, MultipartFile file) {
+        try {
+            Item item = itemRepository.findById(id)
+                    .orElseThrow(() -> new ResourceAccessException(ITEM_NOT_FOUND));
+
+            Map<String, String[]> parameterMap = request.getParameterMap();
+            String name = request.getParameter("name");
+            String[] strTagIds = parameterMap.get("tagId");
+            List<Long> tagIds = Arrays.stream(strTagIds)
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
+            List<Tag> tags = tagRepository.findAllById(tagIds);
+            item.setName(name);
+            item.setTags(tags);
+            item.getCustomFieldValues().removeAll(item.getCustomFieldValues());
+            customFieldValueRepository.deleteAll(item.getCustomFieldValues());
+            saveCustomFieldValues(request, item.getCollection(), item, file);
+            item.setUpdatedAt(LocalDateTime.now());
+            itemRepository.save(item);
+            return new ThymeleafResponse(true, SUCCESS_MESSAGE);
+        } catch (Exception e) {
+            return new ThymeleafResponse(false, e.getMessage());
+        }
+    }
+
+    public List<ItemView> getAllItems() {
+        return itemRepository.getAllItems();
     }
 }

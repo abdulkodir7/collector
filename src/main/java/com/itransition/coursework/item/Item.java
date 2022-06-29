@@ -1,14 +1,17 @@
 package com.itransition.coursework.item;
 
 import com.itransition.coursework.collection.Collection;
+import com.itransition.coursework.comment.Comment;
 import com.itransition.coursework.custom_field.CustomFieldValue;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.user.User;
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Abdulqodir Ganiev 6/13/2022 4:00 PM
@@ -36,6 +39,9 @@ public class Item {
     private List<Tag> tags;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CustomFieldValue> customFieldValues;
 
     @ManyToMany
@@ -50,4 +56,16 @@ public class Item {
 
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Item item = (Item) o;
+        return id != null && Objects.equals(id, item.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

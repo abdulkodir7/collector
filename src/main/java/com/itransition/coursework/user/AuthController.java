@@ -1,7 +1,7 @@
 package com.itransition.coursework.user;
 
 import com.itransition.coursework.collection.CollectionService;
-import com.itransition.coursework.collection.TopCollectionView;
+import com.itransition.coursework.collection.projection.TopCollectionView;
 import com.itransition.coursework.util.ThymeleafResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

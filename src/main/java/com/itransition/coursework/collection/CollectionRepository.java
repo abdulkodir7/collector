@@ -1,5 +1,8 @@
 package com.itransition.coursework.collection;
 
+import com.itransition.coursework.collection.projection.CollectionView;
+import com.itransition.coursework.collection.projection.SingleCollectionView;
+import com.itransition.coursework.collection.projection.TopCollectionView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -9,8 +12,8 @@ import java.util.Optional;
 public interface CollectionRepository extends JpaRepository<Collection, Long> {
 
     @Query(nativeQuery = true,
-            value = "select c.id id, " +
-                    "       c.name name, " +
+            value = "select c.id, " +
+                    "       c.name, " +
                     "       t.id topicId, " +
                     "       t.name topicName, " +
                     "       u.id authorId, " +

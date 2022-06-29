@@ -249,7 +249,7 @@
                                         </button>
 
                                         <a th:href="@{/admin/users/delete-user/__${user.id}__}">
-                                            <button type="button" class="btn btn-icon me-2 btn-label-warning">
+                                            <button onclick="return confirm('Are you sure to delete this user?')" type="button" class="btn btn-icon me-2 btn-label-warning">
                                                 <span class="tf-icons bx bx-trash"></span>
                                             </button>
                                         </a>

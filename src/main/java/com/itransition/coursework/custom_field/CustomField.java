@@ -28,7 +28,7 @@ public class CustomField {
     @Enumerated(EnumType.STRING)
     private CustomFieldType type;
 
-    @OneToMany(mappedBy = "customField", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customField", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CustomFieldValue> customFieldValues;
 
 }

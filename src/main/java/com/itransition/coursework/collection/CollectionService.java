@@ -1,12 +1,13 @@
 package com.itransition.coursework.collection;
 
 import com.itransition.coursework.attachment.AttachmentService;
-import com.itransition.coursework.comment.Comment;
+import com.itransition.coursework.collection.projection.CollectionView;
+import com.itransition.coursework.collection.projection.SingleCollectionView;
+import com.itransition.coursework.collection.projection.TopCollectionView;
 import com.itransition.coursework.comment.CommentRepository;
 import com.itransition.coursework.custom_field.CustomField;
 import com.itransition.coursework.custom_field.CustomFieldRepository;
 import com.itransition.coursework.custom_field.CustomFieldType;
-import com.itransition.coursework.item.Item;
 import com.itransition.coursework.item.ItemRepository;
 import com.itransition.coursework.topic.Topic;
 import com.itransition.coursework.topic.TopicRepository;
@@ -136,9 +137,31 @@ public class CollectionService {
         }
     }
 
-    public List<TopCollectionView> getTop5BiggestCollections(){
+    public List<TopCollectionView> getTop5BiggestCollections() {
         return collectionRepository.getTop5();
     }
 
 
+    public ThymeleafResponse editCollection(Long id, EditCollectionDto dto) {
+        try {
+            Collection collection = collectionRepository.findById(id)
+                    .orElseThrow(() -> new ResourceAccessException(COLLECTION_NOT_FOUND));
+            if (dto.getTopicId() == null)
+                return new ThymeleafResponse(false, TOPIC_NOT_FOUND);
+            Topic topic = topicRepository.findById(dto.getTopicId())
+                    .orElseThrow(() -> new ResourceAccessException(TOPIC_NOT_FOUND));
+            collection.setName(dto.getName());
+            collection.setDescription(dto.getDescription());
+            collection.setTopic(topic);
+            if (!dto.getImage().isEmpty()) {
+                String imageUrl = attachmentService.uploadImage(dto.getImage());
+                collection.setImgUrl(imageUrl);
+            }
+            collection.setUpdatedAt(LocalDateTime.now());
+            collectionRepository.save(collection);
+            return new ThymeleafResponse(true, SUCCESS_MESSAGE);
+        } catch (Exception e) {
+            return new ThymeleafResponse(false, e.getMessage());
+        }
+    }
 }

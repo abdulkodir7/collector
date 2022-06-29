@@ -2,7 +2,8 @@
 
 <html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed"
       dir="ltr" data-theme="theme-default" data-assets-path="admin-assets/"
-      data-template="vertical-menu-template" xmlns:sec="http://www.w3.org/1999/xhtml">
+      data-template="vertical-menu-template" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="admin/layouts/header::admin-header">
 </head>
@@ -55,27 +56,80 @@
                     <div class="row mb-5">
                         <div class="col-md">
                             <div class="card mb-3">
-                                <div class="row g-0 col-12">
-                                    <div class="card-header row justify-content-around align-items-center p-4">
-                                        <div class="col-md-6">
-                                            <h5 class="ro"
-                                                th:text="${item.topicName}+' / '+${item.collectionName}"></h5>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <button style="float: right" type="button"
-                                                    class="btn btn-icon btn-label-warning">
-                                                <i class='bx bx-edit'></i>
+                                <div class="row justify-content-around align-items-center p-4">
+                                    <div class="col-md-6">
+                                        <a th:href="@{admin/collections/get-collection-items/__${item.collectionId}__}">
+                                            <button class="btn btn-primary">
+                                                <span class="bx bx-arrow-back"></span>
+                                                Back
                                             </button>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="float-end">
+                                            <button type="button" class="btn btn-icon me-2 btn-label-primary"
+                                                    data-bs-toggle="modal"
+                                                    th:attr="data-bs-target='#likedUsers'">
+                                                <span class="tf-icons bx bx-like"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-icon me-2 btn-label-warning"
+                                                    data-bs-toggle="modal"
+                                                    th:attr="data-bs-target='#editItem'">
+                                                <span class="tf-icons bx bx-edit"></span>
+                                            </button>
+                                            <a th:href="@{admin/items/delete/__${item.id}__/__${item.collectionId}__}">
+                                                <button onclick="return confirm('Are you sure to delete this item?')"
+                                                        type="button" class="btn btn-icon me-2 btn-label-danger">
+                                                    <span class="tf-icons bx bx-trash"></span>
+                                                </button>
+                                            </a>
+
+                                            <!-- LiKED USER LIST -->
+                                            <div class="modal fade" th:id="'likedUsers'"
+                                                 tabindex="-1"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                                                    <div class="modal-content p-3 p-md-5">
+                                                        <div class="modal-body">
+                                                            <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Close">
+                                                            </button>
+                                                            <div class="card-header align-items-center">
+                                                                <h5 class="card-action-title mb-0">Liked Users</h5>
+                                                            </div>
+                                                            <div class="card-body col-md-6">
+                                                                <ul class="list-unstyled mb-0"
+                                                                    th:each="user : ${item.likedUsers}">
+                                                                    <li class="mb-3">
+                                                                        <div class="d-flex align-items-start">
+                                                                            <div class="d-flex align-items-start">
+                                                                                <div class="avatar me-3">
+                                                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                                                                                         alt="Avatar"
+                                                                                         class="rounded-circle"/>
+                                                                                </div>
+                                                                                <div class="me-2">
+                                                                                    <h6 class="mb-0">
+                                                                                        [[${user.name}]]</h6>
+                                                                                    <small class="text-muted"></small>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 d-flex align-items-start justify-content-center p-4"
-                                         th:each="field : ${item.customFields}" th:if="${field.type} eq file">
-                                        <img class="card-img card-img-left rounded"
-                                             style="max-width:70%; height: auto"
-                                             th:src="${field.value}" alt="Card image"/>
-
-                                    </div>
-                                    <div class="col-md-8">
+                                </div>
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <h5 class="card-header"
+                                            th:text="${item.topicName}+' / '+${item.collectionName}"></h5>
                                         <div class="card-body">
                                             <ul class="list-unstyled mb-4 mt-3">
                                                 <li class="d-flex align-items-center mb-3">
@@ -93,17 +147,42 @@
                                                     <i class="bx bx-hash"></i>
                                                     <span class="fw-semibold mx-2">Tags:</span>
                                                     <span th:each="tag : ${item.tags}"
-                                                          th:text="${tag.name}+' '"></span>
+                                                          th:text="${tag.name}">
+                                                    </span>
                                                 </li>
 
-                                                <div th:each="field : ${item.customFields}"
-                                                     th:if="${field.type} != 'file'">
+                                                <div th:each="field : ${item.customFields}">
                                                     <li class="d-flex align-items-center mb-3">
                                                         <i class="bx bxs-label"></i>
                                                         <span class="fw-semibold mx-2"
                                                               th:text="${field.name}+':'"></span>
-                                                        <span th:text="${field.value}"></span>
+                                                        <a th:if="${field.type} eq 'file'" data-bs-toggle="modal"
+                                                           th:attr="data-bs-target='#seeImage'+${field.name}"> See
+                                                            Image</a>
+                                                        <span th:if="${field.type} != 'file'"
+                                                              th:text="${field.value}"></span>
                                                     </li>
+                                                    <!-- EDIT ITEM IMAGE -->
+                                                    <div class="modal fade" th:id="'seeImage'+${field.name}"
+                                                         tabindex="-1"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                                                            <div class="modal-content p-3 p-md-5">
+                                                                <div class="modal-body">
+                                                                    <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close">
+                                                                    </button>
+                                                                    <div class="col-12">
+                                                                        <h5>[[${field.name}]]</h5>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <img th:src="${field.value}" width="200px">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <li class="d-flex align-items-center mb-3">
@@ -119,119 +198,208 @@
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row col-12">
-                        <div class="col-md-6 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Comments</h5>
-                                <div class="card-body">
-                                    <div class="d-flex mb-3" th:each="comment : ${item.comments}">
-                                        <div class="flex-shrink-0">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                                                 alt="img" class="me-3 rounded" height="30">
-                                        </div>
-                                        <div class="flex-grow-1 row">
-                                            <div class="col-8 col-sm-7 mb-sm-0 mb-2">
-                                                <h6 class="mb-0" th:text="${comment.commentedBy}"></h6>
-                                                <p>[[${comment.body}]]</p>
+                                    <div class="col-md-6">
+                                        <h5 class="card-header">Comments ([[${item.comments.size()}]])</h5>
+                                        <div class="card-body" style="overflow: auto; height: 300px">
+                                            <div th:if="${item.comments.isEmpty()}">
+                                                <h5 class="text-center">No comments yet...</h5>
                                             </div>
-                                            <div class="col-4 col-sm-5 text-end"
-                                                 th:if="${comment.commentedById}==${#authentication.getPrincipal().getId()}">
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                            data-bs-toggle="dropdown">
-                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" data-bs-toggle="modal"
-                                                           data-bs-target="#commentEdit"
-                                                           href="javascript:void(0)">
-                                                            <i class="bx bx-edit-alt me-1"></i>
-                                                            <span>Edit</span>
-                                                        </a>
-                                                        <a class="dropdown-item" onclick="return confirm('Are you sure delete this comment?');"
-                                                           th:href="@{/admin/comment/delete/__${comment.id}__/__${item.id}__}">
-                                                            <i class="bx bx-trash me-1"></i>
-                                                            <span>Delete</span>
-                                                        </a>
+                                            <div class="d-flex mb-3" th:if="${!item.comments.isEmpty()}"
+                                                 th:each="comment : ${item.comments}">
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar me-3">
+                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                                                             alt="Avatar"
+                                                             class="rounded-circle"/>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <div class="col-4 col-sm-5 text-end"
-                                                 th:if="${comment.commentedById}!=${#authentication.getPrincipal().getId()}">
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                            data-bs-toggle="dropdown"><i
-                                                            class="bx bx-dots-vertical-rounded"></i></button>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" onclick="return confirm('Are you sure you want to delete?');"
-                                                           th:href="@{/admin/comment/delete/__${comment.id}__/__${item.id}__}">
-                                                            <i class="bx bx-trash me-1"></i> Delete</a>
+                                                <div class="flex-grow-1 row">
+                                                    <div class="col-8 col-sm-7 mb-sm-0 mb-2">
+                                                        <h6 class="mb-0" th:text="${comment.commentedBy}"></h6>
+                                                        <p>[[${comment.body}]]</p>
                                                     </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- COMMENT EDIT-->
-                                            <div class="modal fade" id="commentEdit" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog modal-simple modal-enable-otp modal-dialog-centered">
-                                                    <div class="modal-content p-3 p-md-5">
-                                                        <div class="modal-body">
-                                                            <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal"
-                                                                    aria-label="Close"></button>
-                                                            <div class="text-center mb-4">
-                                                                <h3 class="mb-4">Edit Comment</h3>
+                                                    <div class="col-4 col-sm-5 text-end"
+                                                         th:if="${comment.commentedById}==${#authentication.getPrincipal().getId()}">
+                                                        <div class="dropdown">
+                                                            <button type="button"
+                                                                    class="btn p-0 dropdown-toggle hide-arrow"
+                                                                    data-bs-toggle="dropdown">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" data-bs-toggle="modal"
+                                                                   th:attr="data-bs-target='#commentEdit'+${comment.id}"
+                                                                   href="javascript:void(0)">
+                                                                    <i class="bx bx-edit-alt me-1"></i>
+                                                                    <span>Edit</span>
+                                                                </a>
+                                                                <a class="dropdown-item"
+                                                                   onclick="return confirm('Are you sure delete this comment?');"
+                                                                   th:href="@{/admin/comment/delete/__${comment.id}__/__${item.id}__}">
+                                                                    <i class="bx bx-trash me-1"></i>
+                                                                    <span>Delete</span>
+                                                                </a>
                                                             </div>
-                                                            <form id="enableOTPForm" class="row g-3 mt-3"
-                                                                  th:action="@{'/admin/comment/edit/'+${comment.id}}"
-                                                                  method="post">
-                                                                <input hidden name="itemId" th:value="${item.id}">
-                                                                <div class="col-12">
-                                                                    <textarea name="comment" class="form-control"
-                                                                              rows="3" required>[[${comment.body}]]
-                                                                    </textarea>
+                                                        </div>
+                                                        <!-- COMMENT EDIT-->
+                                                        <div class="modal fade" th:id="'commentEdit'+${comment.id}"
+                                                             tabindex="-1" aria-hidden="true">
+                                                            <div class="modal-dialog modal-simple modal-enable-otp modal-dialog-centered">
+                                                                <div class="modal-content p-3 p-md-5">
+                                                                    <div class="modal-body">
+                                                                        <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        <div class="text-center mb-4">
+                                                                            <h3 class="mb-4">Edit Comment</h3>
+                                                                        </div>
+                                                                        <form id="form" class="row g-3 mt-3"
+                                                                              th:action="@{'/admin/comment/edit/'+${comment.id}}"
+                                                                              method="post">
+                                                                            <input hidden name="itemId"
+                                                                                   th:value="${item.id}">
+                                                                            <div class="col-12">
+                                                                                <textarea name="comment"
+                                                                                          class="form-control"
+                                                                                          rows="3" required>[[${comment.body}]]
+                                                                                </textarea>
+                                                                            </div>
+                                                                            <div class="col-12">
+                                                                                <button type="submit"
+                                                                                        class="btn btn-primary me-sm-3 me-1">
+                                                                                    Edit Comment
+                                                                                </button>
+                                                                                <button type="reset"
+                                                                                        class="btn btn-label-secondary"
+                                                                                        data-bs-dismiss="modal"
+                                                                                        aria-label="Close">Cancel
+                                                                                </button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-12">
-                                                                    <button type="submit"
-                                                                            class="btn btn-primary me-sm-3 me-1">
-                                                                        Edit Comment
-                                                                    </button>
-                                                                    <button type="reset" class="btn btn-label-secondary"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close">Cancel
-                                                                    </button>
-                                                                </div>
-                                                            </form>
+                                                            </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-4 col-sm-5 text-end"
+                                                         th:if="${comment.commentedById}!=${#authentication.getPrincipal().getId()}">
+                                                        <div class="dropdown">
+                                                            <button type="button"
+                                                                    class="btn p-0 dropdown-toggle hide-arrow"
+                                                                    data-bs-toggle="dropdown"><i
+                                                                    class="bx bx-dots-vertical-rounded"></i></button>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item"
+                                                                   onclick="return confirm('Are you sure you want to delete?');"
+                                                                   th:href="@{/admin/comment/delete/__${comment.id}__/__${item.id}__}">
+                                                                    <i class="bx bx-trash me-1"></i> Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
-
+                                        </div>
+                                        <hr>
+                                        <p class="card-header">Write new comment </p>
+                                        <div class="card-body">
+                                            <form action="/admin/comment/add-comment" method="post">
+                                                <input hidden th:value="${item.id}" name="itemId">
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                    <textarea name="comment" class="form-control" id="textarea1"
+                                                              rows="1" required></textarea>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <button type="submit"
+                                                                class="btn btn-icon me-2 btn-primary">
+                                                            <span class="tf-icons bx bx-send"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-12">
-                            <div class="card">
-                                <h5 class="card-header">Write new comment </h5>
-                                <div class="card-body">
-                                    <form action="/admin/comment/add-comment" method="post">
-                                        <input hidden th:value="${item.id}" name="itemId">
-                                        <div class="col-12">
-                                            <textarea name="comment" class="form-control" id="textarea"
-                                                      rows="3" required></textarea>
+                    </div>
+
+                    <!-- EDIT ITEM -->
+                    <div class="modal fade" th:id="'editItem'" tabindex="-1"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                            <div class="modal-content p-3 p-md-5">
+                                <div class="modal-body">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                    </button>
+                                    <div class="text-center mb-4">
+                                        <h3>Edit Item</h3>
+                                    </div>
+                                    <form id="userForm" class="row g-3" method="post" enctype="multipart/form-data"
+                                          th:action="@{/admin/items/edit/__${item.id}__}">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <label class="form-label">Name</label>
+                                                <input type="text" name="name"
+                                                       class="form-control" placeholder="Collection name"
+                                                       th:value="${item.name}"/>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <label for="selectTag" class="form-label">Tags</label>
+                                                <div class="select2-warning">
+                                                    <select name="tagId" id="selectTag"
+                                                            class="select2 form-select"
+                                                            multiple required>
+                                                        <option th:each="tag : ${tags}" th:value="${tag.id}"
+                                                                th:text="${tag.name}">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12" th:each="field : ${item.customFields}">
+                                                <div th:if="${field.type} eq 'text' or ${field.type} eq 'number' or ${field.type} eq 'date'">
+                                                    <label class="form-label">[[${field.name}]]</label>
+                                                    <input th:type="${field.type}" th:name="${field.name}"
+                                                           class="form-control" placeholder=""
+                                                           th:value="${field.value}"/>
+                                                </div>
+                                                <div th:if="${field.type} eq 'file'">
+                                                    <label class="form-label">[[${field.name}]]</label>
+                                                    <input th:type="${field.type}" th:name="${field.name}"
+                                                           class="form-control" placeholder=""
+                                                           th:value="${field.value}"/>
+                                                    <label class="form-label">Current file</label>
+                                                    <br>
+                                                    <img th:src="${field.value}" width="100px">
+                                                </div>
+                                                <div th:if="${field.type} eq 'textarea'">
+                                                    <label class="form-label">[[${field.name}]]</label>
+                                                    <textarea th:name="${field.name}" class="form-control"
+                                                              rows="3" required>[[${field.value}]]</textarea>
+                                                </div>
+                                                <div th:if="${field.type} eq 'checkbox'">
+                                                    <div class="form-check mt-3">
+                                                        <input class="form-check-input" th:checked="${field.value} eq 'Yes'" type="checkbox"
+                                                               th:value="${field.name}"
+                                                               th:name="${field.name}" id="checkbox"/>
+                                                        <label class="form-check-label" for="checkbox">
+                                                            [[${field.name}]]
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+
                                         <div class="col-12 text-center mt-4">
-                                            <button type="submit" class="btn btn-primary me-sm-3 me-1">Add comment
+                                            <button type="submit"
+                                                    class="btn btn-primary me-sm-3 me-1">
+                                                Edit
                                             </button>
-                                            <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal"
-                                                    aria-label="Close">Clear
+                                            <button type="reset" class="btn btn-label-secondary"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close">Cancel
                                             </button>
                                         </div>
                                     </form>

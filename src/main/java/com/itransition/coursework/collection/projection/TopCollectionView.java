@@ -1,4 +1,4 @@
-package com.itransition.coursework.collection;
+package com.itransition.coursework.collection.projection;
 
 public interface TopCollectionView {
     Long getId();

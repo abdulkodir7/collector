@@ -1,5 +1,6 @@
 package com.itransition.coursework.user;
 
+import com.itransition.coursework.comment.Comment;
 import com.itransition.coursework.user.role.Role;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -46,6 +47,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<com.itransition.coursework.collection.Collection> collections;
+
+    @OneToMany(mappedBy = "commentedBy", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     @Column(updatable = false, nullable = false)
     private LocalDateTime joinedAt;

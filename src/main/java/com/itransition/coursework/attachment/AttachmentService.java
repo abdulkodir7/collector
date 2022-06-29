@@ -29,8 +29,8 @@ public class AttachmentService {
             return "https://efectocolibri.com/wp-content/uploads/2021/01/placeholder.png";
         File image = convert(file);
         Map uploadResult = cloudinary.uploader().upload(image, ObjectUtils.emptyMap());
+        image.delete();
         return (String) uploadResult.get("url");
-
     }
 
     private File convert(MultipartFile image) {

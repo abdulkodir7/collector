@@ -1,9 +1,8 @@
 package com.itransition.coursework.user;
 
-import com.itransition.coursework.collection.Collection;
-import com.itransition.coursework.collection.CollectionDto;
 import com.itransition.coursework.collection.CollectionService;
-import com.itransition.coursework.collection.SingleCollectionView;
+import com.itransition.coursework.collection.EditCollectionDto;
+import com.itransition.coursework.collection.projection.SingleCollectionView;
 import com.itransition.coursework.comment.CommentService;
 import com.itransition.coursework.custom_field.CustomFieldType;
 import com.itransition.coursework.item.ItemService;
@@ -63,6 +62,9 @@ public class AdminController {
     }
 
 
+    /**
+     * USER
+     */
     @GetMapping("/users")
     public String getUsersTable(@RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE) int size,
                                 @RequestParam(name = "page", defaultValue = "1") int page,
@@ -104,6 +106,9 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    /**
+     * TOPIC
+     */
     @GetMapping("topics")
     public String getAllTopics(@RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE) int size,
                                @RequestParam(name = "page", defaultValue = "1") int page,
@@ -141,6 +146,9 @@ public class AdminController {
         return "redirect:/admin/topics";
     }
 
+    /**
+     * COLLECTIONS
+     */
     @GetMapping("collections")
     public String getCollections(Model model) {
         model.addAttribute("topics",
@@ -169,6 +177,26 @@ public class AdminController {
         return "redirect:/admin/collections";
     }
 
+    @PostMapping("collections/edit/{id}")
+    public String editCollection(@PathVariable Long id,
+                                 EditCollectionDto dto,
+                                 RedirectAttributes attributes) {
+        ThymeleafResponse response = collectionService.editCollection(id, dto);
+        attributes.addFlashAttribute("attributes", response);
+        return "redirect:/admin/collections/get-collection-items/" + id;
+    }
+
+    /**
+     * ITEMS
+     */
+
+    @GetMapping("items")
+    public String getItems(Model model) {
+        List<ItemView> items = itemService.getAllItems();
+        model.addAttribute("items", items);
+        return "admin/items";
+    }
+
     @GetMapping("collections/get-collection-items/{id}")
     public String getItemsOfSingleCollection(@PathVariable Long id,
                                              RedirectAttributes attributes,
@@ -176,9 +204,12 @@ public class AdminController {
         List<ItemView> items = itemService.getItemsOfSingleCollection(id);
         SingleCollectionView collection = collectionService.getSingleCollection(id);
         List<Tag> tags = tagService.getAllTags();
+        List<Topic> topics = topicService.getAllEnabledTopics();
         model.addAttribute("collection", collection);
         model.addAttribute("items", items);
         model.addAttribute("tags", tags);
+        model.addAttribute("topics", topics);
+        model.addAttribute("editCollectionDto", new EditCollectionDto());
         attributes.addFlashAttribute("response", COLLECTION_NOT_FOUND);
         return collection != null ? "admin/single-collection-items" : "redirect:/admin/collections";
     }
@@ -193,13 +224,44 @@ public class AdminController {
         return "redirect:/admin/collections/get-collection-items/" + collectionId;
     }
 
+    @PostMapping("items/edit/{id}")
+    public String editItem(@PathVariable Long id,
+                           MultipartFile file,
+                           HttpServletRequest request,
+                           RedirectAttributes attributes) {
+        ThymeleafResponse response = itemService.editItem(id, request, file);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/items/get-single-item/" + id;
+    }
+
     @GetMapping("items/get-single-item/{id}")
     public String getSingleItem(@PathVariable Long id, Model model) {
         SingleItemView singleItem = itemService.getSingleItem(id);
         model.addAttribute("item", singleItem);
-        return singleItem != null ? "admin/single-item" : "redirect:/";
+        model.addAttribute("tags", tagService.getAllTags());
+        return "admin/single-item";
     }
 
+    @GetMapping("items/delete/{id}/{collectionId}")
+    public String deleteItem(@PathVariable Long id,
+                             @PathVariable String collectionId,
+                             RedirectAttributes attributes) {
+        ThymeleafResponse response = itemService.deleteItem(id);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/collections/get-collection-items/" + collectionId;
+    }
+
+    @GetMapping("items/delete-item/{id}")
+    public String deleteItem(@PathVariable Long id,
+                             RedirectAttributes attributes) {
+        ThymeleafResponse response = itemService.deleteItem(id);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/items";
+    }
+
+    /**
+     * COMMENT
+     */
     @PostMapping("comment/add-comment")
     public String addComment(@RequestParam(name = "comment") String comment,
                              @RequestParam(name = "itemId") Long id,
@@ -228,6 +290,5 @@ public class AdminController {
         attributes.addFlashAttribute("response", response);
         return "redirect:/admin/items/get-single-item/" + itemId;
     }
-
 
 }

@@ -1,5 +1,5 @@
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme"
-     id="layout-navbar" th:fragment="admin-navbar">
+     id="layout-navbar" th:fragment="admin-navbar" xmlns:sec="http://www.w3.org/1999/xhtml">
 
     <div class="container-fluid">
 
@@ -38,6 +38,12 @@
                                 <span class="align-middle">English</span>
                             </a>
                         </li>
+                        <li>
+                            <a class="dropdown-item" href="javascript:void(0);" data-language="en">
+                                <i class="fi fi-ru fis rounded-circle fs-4 me-1"></i>
+                                <span class="align-middle">Russian</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <!--/ Language -->
@@ -70,8 +76,8 @@
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <span class="fw-semibold d-block lh-1">John Doe</span>
-                                        <small>Admin</small>
+                                        <span class="fw-semibold d-block lh-1" th:text ="${#authentication.getPrincipal().getName()}"></span>
+                                        <small th:text ="${#authentication.getPrincipal().getRole().getName().name}"></small>
                                     </div>
                                 </div>
                             </a>
@@ -80,19 +86,13 @@
                             <div class="dropdown-divider"></div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="pages-profile-user.html">
+                            <a class="dropdown-item" href="/admin/me">
                                 <i class="bx bx-user me-2"></i>
                                 <span class="align-middle">My Profile</span>
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="pages-account-settings-account.html">
-                                <i class="bx bx-cog me-2"></i>
-                                <span class="align-middle">Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="auth-login-cover.html" target="_blank">
+                            <a class="dropdown-item" href="/logout" target="_blank">
                                 <i class="bx bx-power-off me-2"></i>
                                 <span class="align-middle">Log Out</span>
                             </a>

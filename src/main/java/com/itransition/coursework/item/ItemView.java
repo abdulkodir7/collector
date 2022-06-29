@@ -11,6 +11,8 @@ public interface ItemView {
 
     String getName();
 
+    String getCollectionName();
+
     @Value("#{@tagRepository.getItemTags({target.id})}")
     List<TagView> getTags();
 

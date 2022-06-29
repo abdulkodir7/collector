@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed"
+      dir="ltr" data-theme="theme-default" data-assets-path="admin-assets/"
+      data-template="vertical-menu-template" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="admin/layouts/header::admin-header">
+</head>
+
+<body>
+
+<div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-container">
+
+        <!-- SIDEBAR -->
+        <aside th:replace="admin/layouts/sidebar::admin-sidebar"></aside>
+        <!-- /SIDEBAR -->
+
+
+        <!-- CONTAINER -->
+        <div class="layout-page">
+
+            <!-- NAVBAR -->
+            <nav th:replace="admin/layouts/navbar::admin-navbar"></nav>
+            <!-- /NAVBAR -->
+
+            <div th:if="${response!=null}">
+
+                <div class="bs-toast toast fade show position-absolute top-0 end-0" role="alert"
+                     aria-live="assertive" aria-atomic="true" th:if="${response.status==true}">
+                    <div class="toast-header bg-success">
+                        <div class="me-auto fw-semibold">Success message</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        [[${response.message}]]
+                    </div>
+                </div>
+
+                <div class="bs-toast toast fade show position-absolute top-0 end-0" role="alert"
+                     aria-live="assertive" aria-atomic="true" th:if="${response.status==false}">
+                    <div class="toast-header bg-danger">
+                        <div class="me-auto fw-semibold">Error message</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        [[${response.message}]]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <div class="container-xxl flex-grow-1 container-p-y">
+
+                    <div class="card">
+                        <div class="row justify-content-around align-items-center p-4">
+                            <div class="col-md-6">
+                                <h5 style="float: left">Items</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary"
+                                        style="float: right"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addItem">
+                                    Add New Item
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Tags</th>
+                                    <th>Like count</th>
+                                    <th>Comment count</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                <tr th:each="item, loop : ${items}">
+
+                                    <td><strong th:text="${loop.index+1}"></strong></td>
+                                    <td th:text="${item.name}"></td>
+                                    <td>
+                                        <div th:each="tag : ${item.tags}">
+                                            <p th:text="${tag.name}"></p>
+                                        </div>
+                                    </td>
+                                    <td th:text="${item.likeCount}"></td>
+                                    <td th:text="${item.commentCount}"></td>
+                                    <td>
+                                        <a th:href="@{/admin/items/delete-item/__${item .id}__}">
+                                            <button onclick="return confirm('Are you sure to delete this item?')"
+                                                    type="button" class="btn btn-icon me-2 btn-label-warning">
+                                                <span class="tf-icons bx bx-trash"></span>
+                                            </button>
+                                        </a>
+                                        <a th:href="@{/admin/items/get-single-item/__${item.id}__}">
+                                            <button type="button" class="btn btn-icon me-2 btn-label-success">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </button>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Content wrapper -->
+
+        </div>
+        <!-- /CONTAINER -->
+    </div>
+
+</div>
+<script>
+
+</script>
+<div th:replace="admin/layouts/footer::admin-footer"></div>
+
+</body>
+
+</html>

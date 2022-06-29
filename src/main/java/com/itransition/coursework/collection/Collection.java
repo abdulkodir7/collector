@@ -1,6 +1,7 @@
 package com.itransition.coursework.collection;
 
 import com.itransition.coursework.custom_field.CustomField;
+import com.itransition.coursework.item.Item;
 import com.itransition.coursework.topic.Topic;
 import com.itransition.coursework.user.User;
 import lombok.*;
@@ -41,6 +42,9 @@ public class Collection {
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<CustomField> customFields;
+
+    @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
+    private List<Item> items;
 
     @Column(columnDefinition = "text")
     private String imgUrl;

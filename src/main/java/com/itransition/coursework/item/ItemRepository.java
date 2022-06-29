@@ -35,6 +35,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(nativeQuery = true,
             value = "select i.id, " +
                     "       i.name, " +
+                    "       c.id       collectionId, " +
                     "       c.name       collectionName, " +
                     "       t.name       topicName, " +
                     "       u.name       author, " +
@@ -46,4 +47,18 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                     "         join topic t on t.id = c.topic_id " +
                     "where i.id = :id")
     Optional<SingleItemView> getSingleItem(Long id);
+
+    @Query(nativeQuery = true,
+            value = "select i.id, " +
+                    "       i.name, " +
+                    "       c.name              collectionName, " +
+                    "       count(distinct il)  likeCount, " +
+                    "       count(distinct com) commentCount, " +
+                    "       i.created_at        createdAt " +
+                    "from item i " +
+                    "         left join item_like il on i.id = il.item_id " +
+                    "         left join comment com on i.id = com.item_id " +
+                    "         join collection c on c.id = i.collection_id " +
+                    "group by i.id, c.name")
+    List<ItemView> getAllItems();
 }

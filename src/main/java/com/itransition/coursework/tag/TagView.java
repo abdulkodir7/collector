@@ -1,7 +1,9 @@
 package com.itransition.coursework.tag;
 
+import lombok.Data;
+
 public interface TagView {
-    Integer getId();
+    Long getId();
 
     String getName();
 }

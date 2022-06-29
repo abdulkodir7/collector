@@ -1,7 +1,7 @@
 package com.itransition.coursework.item;
 
 public interface LikeView {
-    Long getLikedUserId();
+    Long getId();
 
-    String getLikedUserName();
+    String getName();
 }
