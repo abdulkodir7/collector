@@ -1,5 +1,7 @@
 package com.itransition.coursework.item;
 
+import com.itransition.coursework.item.projection.ItemView;
+import com.itransition.coursework.item.projection.LikeView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

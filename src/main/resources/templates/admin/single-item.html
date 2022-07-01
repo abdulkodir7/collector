@@ -2,7 +2,7 @@
 
 <html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed"
       dir="ltr" data-theme="theme-default" data-assets-path="admin-assets/"
-      data-template="vertical-menu-template" xmlns:sec="http://www.w3.org/1999/xhtml"
+      data-template="vertical-menu-template"
       xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="admin/layouts/header::admin-header">
@@ -22,7 +22,7 @@
         <div class="layout-page">
 
             <!-- NAVBAR -->
-            <nav th:replace="admin/layouts/navbar::admin-navbar"></nav>
+            <nav th:replace="admin/layouts/navbar::admin-navbar (${currentUser.imgUrl}, ${currentUser.name}, ${currentUser.role.name.name()})"></nav>
             <!-- /NAVBAR -->
 
             <div th:if="${response!=null}">
@@ -343,7 +343,7 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <label class="form-label">Name</label>
-                                                <input type="text" name="name"
+                                                <input type="text" name="itemName"
                                                        class="form-control" placeholder="Collection name"
                                                        th:value="${item.name}"/>
                                             </div>
@@ -353,8 +353,8 @@
                                                     <select name="tagId" id="selectTag"
                                                             class="select2 form-select"
                                                             multiple required>
-                                                        <option th:each="tag : ${tags}" th:value="${tag.id}"
-                                                                th:text="${tag.name}">
+                                                        <!--                                                        <option th:if="${item.tags}" th:each="tag : ${tags}" th:value="${tag.id}"-->
+                                                        <!--                                                                th:text="${tag.name}">-->
                                                     </select>
                                                 </div>
                                             </div>
@@ -381,7 +381,8 @@
                                                 </div>
                                                 <div th:if="${field.type} eq 'checkbox'">
                                                     <div class="form-check mt-3">
-                                                        <input class="form-check-input" th:checked="${field.value} eq 'Yes'" type="checkbox"
+                                                        <input class="form-check-input"
+                                                               th:checked="${field.value} eq 'Yes'" type="checkbox"
                                                                th:value="${field.name}"
                                                                th:name="${field.name}" id="checkbox"/>
                                                         <label class="form-check-label" for="checkbox">
@@ -419,7 +420,22 @@
     </div>
 
 </div>
-<script>
+<script th:inline="javascript">
+    const itemTags = [[${item.tags}]]
+    const allTags = [[${tags}]]
+
+    let select = document.getElementById('selectTag');
+
+    for (let i = 0; i < allTags.length; i++) {
+        let optionElement = document.createElement('option');
+        optionElement.value = allTags[i].id;
+        optionElement.text = allTags[i].name;
+
+        const predicate = (elem) => elem.name === allTags[i].name;
+        if (itemTags.some(predicate))
+            optionElement.selected = true;
+        select.appendChild(optionElement);
+    }
 
 </script>
 <div th:replace="admin/layouts/footer::admin-footer"></div>

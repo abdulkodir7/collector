@@ -1,5 +1,6 @@
-package com.itransition.coursework.custom_field;
+package com.itransition.coursework.custom_field.custom_field_value;
 
+import com.itransition.coursework.custom_field.CustomField;
 import com.itransition.coursework.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

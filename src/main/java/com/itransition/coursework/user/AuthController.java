@@ -6,6 +6,7 @@ import com.itransition.coursework.util.ThymeleafResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -40,16 +42,21 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String getRegisterPage() {
+    public String getRegisterPage(Model model) {
+        model.addAttribute("dto", new UserRegistrationDto());
         return "client/register";
     }
 
     @PostMapping("/register-user")
-    public String registerUser(UserRegistrationDto dto,
-                               RedirectAttributes attributes) {
+    public String registerUser(@Valid UserRegistrationDto dto,
+                               RedirectAttributes attributes,
+                               BindingResult result) {
+        if (result.hasErrors())
+            return "redirect:/register";
         ThymeleafResponse response = userService.registerUser(dto);
         attributes.addFlashAttribute("response", response);
         return response.getStatus() ? "redirect:/login" : "redirect:/register";
+
     }
 
     @PostMapping("/admin-login")

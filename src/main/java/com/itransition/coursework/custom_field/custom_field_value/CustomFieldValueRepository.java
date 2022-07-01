@@ -1,4 +1,4 @@
-package com.itransition.coursework.custom_field;
+package com.itransition.coursework.custom_field.custom_field_value;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

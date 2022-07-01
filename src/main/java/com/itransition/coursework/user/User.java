@@ -43,6 +43,8 @@ public class User implements UserDetails {
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Role role;
 
+    private String imgUrl;
+
     private Boolean isActive;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
@@ -57,11 +59,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private LocalDateTime editedAt;
 
-    public User(String name, String email,
+    public User(String name, String email, String imgUrl,
                 String password, Role role, Boolean isActive,
                 LocalDateTime joinedAt, LocalDateTime editedAt) {
         this.name = name;
         this.email = email;
+        this.imgUrl = imgUrl;
         this.password = password;
         this.role = role;
         this.isActive = isActive;

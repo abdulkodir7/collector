@@ -1,4 +1,4 @@
-package com.itransition.coursework.item;
+package com.itransition.coursework.item.projection;
 
 public interface LikeView {
     Long getId();

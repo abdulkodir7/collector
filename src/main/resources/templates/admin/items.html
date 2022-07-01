@@ -21,7 +21,7 @@
         <div class="layout-page">
 
             <!-- NAVBAR -->
-            <nav th:replace="admin/layouts/navbar::admin-navbar"></nav>
+            <nav th:replace="admin/layouts/navbar::admin-navbar (${currentUser.imgUrl}, ${currentUser.name}, ${currentUser.role.name.name()})"></nav>
             <!-- /NAVBAR -->
 
             <div th:if="${response!=null}">

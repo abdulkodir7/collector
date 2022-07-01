@@ -1,5 +1,6 @@
 package com.itransition.coursework.user;
 
+import com.itransition.coursework.attachment.AttachmentService;
 import com.itransition.coursework.user.role.Role;
 import com.itransition.coursework.user.role.RoleEnum;
 import com.itransition.coursework.user.role.RoleRepository;
@@ -21,6 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -43,14 +45,18 @@ public class UserService implements UserDetailsService {
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final AttachmentService attachmentService;
 
     @Lazy
     public UserService(UserRepository userRepository, RoleRepository roleRepository,
-                       AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+                       AuthenticationManager authenticationManager,
+                       PasswordEncoder passwordEncoder,
+                       AttachmentService attachmentService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
+        this.attachmentService = attachmentService;
     }
 
     @Override
@@ -106,6 +112,7 @@ public class UserService implements UserDetailsService {
                 .password(passwordEncoder.encode(password))
                 .role(role)
                 .isActive(true)
+                .imgUrl(DEFAULT_PROFILE_IMAGE)
                 .joinedAt(LocalDateTime.now())
                 .editedAt(LocalDateTime.now())
                 .build();
@@ -182,6 +189,7 @@ public class UserService implements UserDetailsService {
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .role(roleCreator)
+                .imgUrl(DEFAULT_PROFILE_IMAGE)
                 .isActive(true)
                 .joinedAt(LocalDateTime.now())
                 .editedAt(LocalDateTime.now())
@@ -224,5 +232,37 @@ public class UserService implements UserDetailsService {
         sc.setAuthentication(auth);
         HttpSession session = request.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+    }
+
+    public ThymeleafResponse editAdminProfile(MultipartFile profileImage,
+                                              Long id, String name,
+                                              String email) {
+        try {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new ResourceAccessException(USER_NOT_FOUND));
+            if (userRepository.existsByEmail(email) && !user.getEmail().equals(email))
+                return new ThymeleafResponse(false, EMAIL_EXISTS);
+
+            user.setEmail(email);
+            user.setName(name);
+            if (!profileImage.isEmpty()) {
+                String imageUrl = attachmentService.uploadImage(profileImage);
+                user.setImgUrl(imageUrl);
+            }
+            userRepository.save(user);
+            return new ThymeleafResponse(true, SUCCESS_CHANGE);
+        } catch (Exception e) {
+            return new ThymeleafResponse(false, e.getMessage());
+        }
+
+    }
+
+    public User getCurrentUser(User currentUser) {
+        try {
+            return userRepository.findById(currentUser.getId())
+                    .orElseThrow(() -> new ResourceAccessException(USER_NOT_FOUND));
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

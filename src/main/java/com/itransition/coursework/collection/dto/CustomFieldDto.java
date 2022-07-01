@@ -1,4 +1,4 @@
-package com.itransition.coursework.collection;
+package com.itransition.coursework.collection.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

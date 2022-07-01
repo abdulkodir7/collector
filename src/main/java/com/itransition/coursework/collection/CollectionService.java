@@ -1,6 +1,7 @@
 package com.itransition.coursework.collection;
 
 import com.itransition.coursework.attachment.AttachmentService;
+import com.itransition.coursework.collection.dto.EditCollectionDto;
 import com.itransition.coursework.collection.projection.CollectionView;
 import com.itransition.coursework.collection.projection.SingleCollectionView;
 import com.itransition.coursework.collection.projection.TopCollectionView;

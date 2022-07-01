@@ -21,7 +21,7 @@
         <div class="layout-page">
 
             <!-- NAVBAR -->
-            <nav th:replace="admin/layouts/navbar::admin-navbar"></nav>
+            <nav th:replace="admin/layouts/navbar::admin-navbar (${currentUser.imgUrl}, ${currentUser.name}, ${currentUser.role.name.name()})"></nav>
             <!-- /NAVBAR -->
 
             <div th:if="${response!=null}">
@@ -184,7 +184,7 @@
                                                     aria-label="Default select example" name="topicId">
                                                 <option th:each="topic : ${topics}"
                                                         th:value="${topic.id}"
-                                                        th:text="${topic.name}">
+                                                        th:text="${topic.name}" th:selected="${topic.id} eq ${collection.topicId}">
                                                 </option>
                                             </select>
                                         </div>

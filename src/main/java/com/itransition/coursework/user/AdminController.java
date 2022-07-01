@@ -1,12 +1,12 @@
 package com.itransition.coursework.user;
 
 import com.itransition.coursework.collection.CollectionService;
-import com.itransition.coursework.collection.EditCollectionDto;
+import com.itransition.coursework.collection.dto.EditCollectionDto;
 import com.itransition.coursework.collection.projection.SingleCollectionView;
 import com.itransition.coursework.comment.CommentService;
 import com.itransition.coursework.custom_field.CustomFieldType;
 import com.itransition.coursework.item.ItemService;
-import com.itransition.coursework.item.ItemView;
+import com.itransition.coursework.item.projection.ItemView;
 import com.itransition.coursework.item.SingleItemView;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.tag.TagService;
@@ -17,6 +17,7 @@ import com.itransition.coursework.user.role.RoleRepository;
 import com.itransition.coursework.util.ThymeleafResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,15 +50,18 @@ public class AdminController {
     private final CommentService commentService;
 
     @GetMapping
-    public String getAdminPage(@AuthenticationPrincipal User loggedInUser) {
+    public String getAdminPage(@AuthenticationPrincipal User loggedInUser,
+                               Model model) {
         if (loggedInUser == null)
             return "admin/login";
 
         if ((loggedInUser.getRole().getName().equals(RoleEnum.ROLE_SUPER_ADMIN)
                 || loggedInUser.getRole().getName().equals(RoleEnum.ROLE_ADMIN))
-                && loggedInUser.getIsActive())
+                && loggedInUser.getIsActive()) {
+            User user = userService.getCurrentUser(loggedInUser);
+            model.addAttribute("currentUser", user);
             return "admin/index";
-        else
+        } else
             return "admin/login";
     }
 
@@ -65,11 +69,32 @@ public class AdminController {
     /**
      * USER
      */
+    @GetMapping("profile")
+    public String getProfilePage(@AuthenticationPrincipal User currentUser,
+                                 Model model) {
+        User user = userService.getCurrentUser(currentUser);
+        model.addAttribute("currentUser", user);
+        return "admin/profile";
+    }
+
+    @PostMapping("edit-profile")
+    public String editProfile(MultipartFile profileImage,
+                              @RequestParam Long id,
+                              @RequestParam String name,
+                              @RequestParam String email,
+                              RedirectAttributes attributes) {
+        ThymeleafResponse response = userService.editAdminProfile(profileImage, id, name, email);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/profile";
+    }
+
     @GetMapping("/users")
     public String getUsersTable(@RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE) int size,
                                 @RequestParam(name = "page", defaultValue = "1") int page,
-                                Model model) {
+                                Model model, @AuthenticationPrincipal User loggedInUser) {
+        User user = userService.getCurrentUser(loggedInUser);
         Page<User> users = userService.getAllUsers(size, page);
+        model.addAttribute("currentUser", user);
         model.addAttribute("roles", roleRepository.findAll());
         model.addAttribute("users", users);
         return "admin/users";
@@ -112,9 +137,11 @@ public class AdminController {
     @GetMapping("topics")
     public String getAllTopics(@RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE) int size,
                                @RequestParam(name = "page", defaultValue = "1") int page,
-                               Model model) {
+                               Model model, @AuthenticationPrincipal User loggedInUser) {
 
         Page<Topic> topics = topicService.getAllTopics(size, page);
+        User user = userService.getCurrentUser(loggedInUser);
+        model.addAttribute("currentUser", user);
         model.addAttribute("topics", topics);
         return "admin/topics";
     }
@@ -150,7 +177,9 @@ public class AdminController {
      * COLLECTIONS
      */
     @GetMapping("collections")
-    public String getCollections(Model model) {
+    public String getCollections(Model model, @AuthenticationPrincipal User loggedInUser) {
+        model.addAttribute("currentUser",
+                userService.getCurrentUser(loggedInUser));
         model.addAttribute("topics",
                 topicService.getAllEnabledTopics());
         model.addAttribute("collections",
@@ -191,8 +220,10 @@ public class AdminController {
      */
 
     @GetMapping("items")
-    public String getItems(Model model) {
+    public String getItems(Model model, @AuthenticationPrincipal User loggedInUser) {
         List<ItemView> items = itemService.getAllItems();
+        User user = userService.getCurrentUser(loggedInUser);
+        model.addAttribute("currentUser", user);
         model.addAttribute("items", items);
         return "admin/items";
     }
@@ -200,11 +231,13 @@ public class AdminController {
     @GetMapping("collections/get-collection-items/{id}")
     public String getItemsOfSingleCollection(@PathVariable Long id,
                                              RedirectAttributes attributes,
-                                             Model model) {
+                                             Model model, @AuthenticationPrincipal User loggedInUser) {
         List<ItemView> items = itemService.getItemsOfSingleCollection(id);
         SingleCollectionView collection = collectionService.getSingleCollection(id);
         List<Tag> tags = tagService.getAllTags();
         List<Topic> topics = topicService.getAllEnabledTopics();
+        User user = userService.getCurrentUser(loggedInUser);
+        model.addAttribute("currentUser", user);
         model.addAttribute("collection", collection);
         model.addAttribute("items", items);
         model.addAttribute("tags", tags);
@@ -235,8 +268,11 @@ public class AdminController {
     }
 
     @GetMapping("items/get-single-item/{id}")
-    public String getSingleItem(@PathVariable Long id, Model model) {
+    public String getSingleItem(@PathVariable Long id, Model model,
+                                @AuthenticationPrincipal User loggedInUser) {
         SingleItemView singleItem = itemService.getSingleItem(id);
+        User user = userService.getCurrentUser(loggedInUser);
+        model.addAttribute("currentUser", user);
         model.addAttribute("item", singleItem);
         model.addAttribute("tags", tagService.getAllTags());
         return "admin/single-item";
@@ -289,6 +325,43 @@ public class AdminController {
         ThymeleafResponse response = commentService.deleteComment(commentId);
         attributes.addFlashAttribute("response", response);
         return "redirect:/admin/items/get-single-item/" + itemId;
+    }
+
+    /**
+     * TAG
+     */
+    @GetMapping("tags")
+    public String getAllTags(Model model, @AuthenticationPrincipal User loggedInUser) {
+        List<Tag> tags = tagService.getAllTags();
+        User user = userService.getCurrentUser(loggedInUser);
+        model.addAttribute("currentUser", user);
+        model.addAttribute("tags", tags);
+        return "admin/tags";
+    }
+
+    @PostMapping("tags/edit")
+    public String edit(@RequestParam Long id,
+                       @RequestParam String name,
+                       RedirectAttributes attributes) {
+        ThymeleafResponse response = tagService.edit(id, name);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/tags";
+    }
+
+    @PostMapping("tags/create")
+    public String create(@RequestParam String name,
+                         RedirectAttributes attributes) {
+        ThymeleafResponse response = tagService.create(name);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/tags";
+    }
+
+    @GetMapping("tags/delete/{id}")
+    public String delete(@PathVariable Long id,
+                         RedirectAttributes attributes) {
+        ThymeleafResponse response = tagService.delete(id);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/admin/tags";
     }
 
 }

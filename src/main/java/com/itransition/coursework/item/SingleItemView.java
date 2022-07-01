@@ -1,7 +1,8 @@
 package com.itransition.coursework.item;
 
 import com.itransition.coursework.comment.CommentView;
-import com.itransition.coursework.custom_field.CustomFieldValueView;
+import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValueView;
+import com.itransition.coursework.item.projection.LikeView;
 import com.itransition.coursework.tag.TagView;
 import org.springframework.beans.factory.annotation.Value;
 

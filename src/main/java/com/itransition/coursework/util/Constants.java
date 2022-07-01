@@ -17,9 +17,12 @@ public interface Constants {
     String TOPIC_NOT_FOUND = "Topic not found!";
     String COLLECTION_NOT_FOUND = "Collection not found!";
     String ITEM_NOT_FOUND = "Item not found!";
+    String TAG_NOT_FOUND = "Tag not found!";
+    String TAG_EXISTS = "Tag already exists!";
     String COMMENT_SAVED = "Comment saved";
     String COMMENT_DELETED = "Comment deleted successfully";
     String COMMENT_NOT_FOUND = "Comment not found";
     String DEFAULT_PAGE_SIZE = "20";
+    String DEFAULT_PROFILE_IMAGE = "https://cdns-images.dzcdn.net/images/artist/1000x1000-000000-80-0-0.jpg";
 
 }

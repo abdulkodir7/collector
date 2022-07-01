@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed"
+      dir="ltr" data-theme="theme-default" data-assets-path="admin-assets/"
+      data-template="vertical-menu-template" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="admin/layouts/header::admin-header"></head>
+
+<body>
+
+<div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-container">
+
+        <!-- SIDEBAR -->
+        <aside th:replace="admin/layouts/sidebar::admin-sidebar"></aside>
+        <!-- /SIDEBAR -->
+
+
+        <!-- CONTAINER -->
+        <div class="layout-page">
+
+            <!-- NAVBAR -->
+            <nav th:replace="admin/layouts/navbar::admin-navbar (${currentUser.imgUrl}, ${currentUser.name}, ${currentUser.role.name.name()})"></nav>
+            <!-- /NAVBAR -->
+
+            <div th:if="${response!=null}">
+
+
+                <div class="bs-toast toast fade show position-absolute top-0 end-0" role="alert"
+                     aria-live="assertive" aria-atomic="true" th:if="${response.status==true}">
+                    <div class="toast-header bg-success">
+                        <div class="me-auto fw-semibold">Success message</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        [[${response.message}]]
+                    </div>
+                </div>
+
+
+                <div class="bs-toast toast fade show position-absolute top-0 end-0" role="alert"
+                     aria-live="assertive" aria-atomic="true" th:if="${response.status==false}">
+                    <div class="toast-header bg-danger">
+                        <div class="me-auto fw-semibold">Error message</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        [[${response.message}]]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+
+                <!-- Content -->
+
+                <div class="container-xxl flex-grow-1 container-p-y">
+
+
+                    <h4 class="py-3 breadcrumb-wrapper mb-4">
+                        Profile
+                    </h4>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <h5 class="card-header">Profile Details</h5>
+                                <!-- Account -->
+                                <form id="formAccountSettings" method="POST" action="/admin/edit-profile"
+                                      enctype="multipart/form-data">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-start align-items-sm-center gap-4">
+                                            <img th:src="${currentUser.imgUrl}" alt="user-avatar"
+                                                 class="d-block rounded" height="100" width="100" id="uploadedAvatar"/>
+                                            <div class="button-wrapper">
+                                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                                    <span class="d-none d-sm-block">Upload new photo</span>
+                                                    <i class="bx bx-upload d-block d-sm-none"></i>
+                                                    <input type="file" id="upload" class="account-file-input" hidden
+                                                           name="profileImage" accept="image/png, image/jpeg"/>
+                                                </label>
+                                                <p>Recommended image size: 200x200 or higher</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="my-0">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <input hidden name="id" th:value="${currentUser.id}">
+                                            <div class="mb-3 col-md-12">
+                                                <label for="name" class="form-label">Name</label>
+                                                <input class="form-control" type="text" id="name" name="name"
+                                                       th:value="${currentUser.name}" autofocus/>
+                                            </div>
+                                            <div class="mb-3 col-md-12">
+                                                <label for="email" class="form-label">E-mail</label>
+                                                <input class="form-control" type="text" id="email" name="email"
+                                                       th:value="${currentUser.email}"
+                                                       placeholder="john.doe@example.com"/>
+                                            </div>
+                                            <div class="mb-3 col-md-12">
+                                                <label class="form-label" for="">Role</label>
+                                                <input class="form-control" type="text"
+                                                       th:value="${currentUser.role.name}" readonly/>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <button type="submit"
+                                                    onclick="return confirm('Are you sure to edit your account?')"
+                                                    class="btn btn-primary me-2">Save changes
+                                            </button>
+                                            <button type="reset" class="btn btn-label-secondary">Cancel</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- /Account -->
+                            </div>
+                            <div class="card">
+                                <h5 class="card-header">Delete Account</h5>
+                                <div class="card-body">
+                                    <div class="mb-3 col-12 mb-0">
+                                        <div class="alert alert-warning">
+                                            <h6 class="alert-heading mb-1">
+                                                Are you sure you want to delete your account?
+                                            </h6>
+                                            <p class="mb-0">
+                                                Once you delete your account, there is no going back. Please be certain.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <form id="formAccountDeactivation" onsubmit="return false">
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" name="accountActivation"
+                                                   id="accountActivation"/>
+                                            <label class="form-check-label" for="accountActivation">
+                                                I confirm my account deactivation
+                                            </label>
+                                        </div>
+                                        <button type="submit"
+                                                onclick="return confirm('Are you sure to delete your account?')"
+                                                class="btn btn-danger deactivate-account">
+                                            Delete Account
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Change Password -->
+                            <div class="card mb-4">
+                                <h5 class="card-header">Change Password</h5>
+                                <div class="card-body">
+                                    <form id="" method="POST" onsubmit="return false">
+                                        <div class="row">
+                                            <div class="mb-3 col-md-12 form-password-toggle">
+                                                <label class="form-label" for="currentPassword">Current Password</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input class="form-control" type="password" name="currentPassword"
+                                                           id="currentPassword"
+                                                           placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"/>
+                                                    <span class="input-group-text cursor-pointer"><i
+                                                            class="bx bx-hide"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="mb-3 col-md-12 form-password-toggle">
+                                                <label class="form-label" for="newPassword">New Password</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input class="form-control" type="password" id="newPassword"
+                                                           name="newPassword"
+                                                           placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"/>
+                                                    <span class="input-group-text cursor-pointer"><i
+                                                            class="bx bx-hide"></i></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3 col-md-12 form-password-toggle">
+                                                <label class="form-label" for="confirmPassword">Confirm New
+                                                    Password</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input class="form-control" type="password" name="confirmPassword"
+                                                           id="confirmPassword"
+                                                           placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"/>
+                                                    <span class="input-group-text cursor-pointer"><i
+                                                            class="bx bx-hide"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mb-4">
+                                                <p class="fw-semibold mt-2">Password Requirements:</p>
+                                                <ul class="ps-3 mb-0">
+                                                    <li class="mb-1">
+                                                        Minimum 6 characters long - the more, the better
+                                                    </li>
+                                                    <li class="mb-1">At least one lowercase character</li>
+                                                    <li>At least one number, symbol, or whitespace character</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-12 mt-1">
+                                                <button type="submit"
+                                                        onclick="return confirm('Are you sure to edit your account?')"
+                                                        class="btn btn-primary me-2">Save changes
+                                                </button>
+                                                <button type="reset" class="btn btn-label-secondary">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!--/ Change Password -->
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- / Content -->
+            </div>
+            <!-- Content wrapper -->
+
+        </div>
+        <!-- /CONTAINER -->
+    </div>
+
+</div>
+<script>
+    const img = document.querySelector('#uploadedAvatar');
+    const file = document.querySelector('#upload');
+
+    file.addEventListener('change', function () {
+        // this refers to the file
+        const choosedFile = this.files[0];
+
+        if (choosedFile) {
+            const reader = new FileReader();
+
+            reader.addEventListener('load', function () {
+                img.setAttribute('src', reader.result);
+            });
+
+            reader.readAsDataURL(choosedFile);
+        }
+
+    });
+</script>
+<div th:replace="admin/layouts/footer::admin-footer"></div>
+
+</body>
+
+</html>

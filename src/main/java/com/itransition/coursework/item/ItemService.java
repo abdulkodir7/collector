@@ -4,6 +4,9 @@ import com.itransition.coursework.attachment.AttachmentService;
 import com.itransition.coursework.collection.Collection;
 import com.itransition.coursework.collection.CollectionRepository;
 import com.itransition.coursework.custom_field.*;
+import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValue;
+import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValueRepository;
+import com.itransition.coursework.item.projection.ItemView;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.tag.TagRepository;
 import com.itransition.coursework.util.ThymeleafResponse;
@@ -14,7 +17,6 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -140,7 +142,7 @@ public class ItemService {
                     .orElseThrow(() -> new ResourceAccessException(ITEM_NOT_FOUND));
 
             Map<String, String[]> parameterMap = request.getParameterMap();
-            String name = request.getParameter("name");
+            String name = request.getParameter("itemName");
             String[] strTagIds = parameterMap.get("tagId");
             List<Long> tagIds = Arrays.stream(strTagIds)
                     .map(Long::parseLong)

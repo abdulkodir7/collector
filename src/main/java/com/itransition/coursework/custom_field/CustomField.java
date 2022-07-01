@@ -1,6 +1,6 @@
 package com.itransition.coursework.custom_field;
 
-import com.itransition.coursework.collection.Collection;
+import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValue;
 import lombok.*;
 
 import javax.persistence.*;

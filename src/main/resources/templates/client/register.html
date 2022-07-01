@@ -34,8 +34,17 @@
                                 </div>
                             </div>
 
-                            <form action="/register-user" method="post" id="login__form">
+
+                            <form action="/register-user" method="post" id="login__form" th:object="${dto}">
                                 <div class="custom_input_style__two">
+<!--                                    <div>-->
+<!--                                        <ul>-->
+<!--                                            <li th:each="err : ${#fields.errors('fullName')}" th:text="${err}" class="error" />-->
+<!--                                            <li th:each="err : ${#fields.errors('email')}" th:text="${err}" class="error" />-->
+<!--                                            <li th:each="err : ${#fields.errors('password')}" th:text="${err}" class="error" />-->
+<!--                                            <li th:each="err : ${#fields.errors('confirmPassword')}" th:text="${err}" class="error" />-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
                                     <input type="text" th:placeholder="#{input.fullName}" id="name" name="fullName">
                                     <label for="name">
                                         <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
@@ -53,7 +62,7 @@
 
                                 </div>
                                 <div class="custom_input_style__two mt-3">
-                                    <input type="email" th:placeholder="#{enter.email}" id="email" name="email">
+                                    <input type="email" th:field="*{email}" th:placeholder="#{enter.email}" id="email" name="email">
 
                                     <label for="email">
                                         <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
@@ -70,7 +79,7 @@
 
                                 </div>
                                 <div class="custom_input_style__two mt-3">
-                                    <input type="password" th:placeholder="#{enter.password}" id="password"
+                                    <input type="password" th:field="*{password}" th:placeholder="#{enter.password}" id="password"
                                            name="password">
 
                                     <label for="password">
@@ -93,7 +102,7 @@
                                 </div>
 
                                 <div class="custom_input_style__two mt-3">
-                                    <input type="password" th:placeholder="#{enter.confirmPassword}"
+                                    <input type="password" th:field="*{confirmPassword}" th:placeholder="#{enter.confirmPassword}"
                                            id="confirmPassword" name="confirmPassword">
 
                                     <label for="confirmPassword">

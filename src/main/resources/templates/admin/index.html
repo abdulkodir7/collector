@@ -20,12 +20,12 @@
         <div class="layout-page">
 
             <!-- NAVBAR -->
-            <nav th:replace="admin/layouts/navbar::admin-navbar"></nav>
+            <nav th:replace="admin/layouts/navbar::admin-navbar (${currentUser.imgUrl}, ${currentUser.name}, ${currentUser.role.name.name()})"></nav>
             <!-- /NAVBAR -->
 
             <!-- Content wrapper -->
             <div class="content-wrapper">
-                <h1 sec:authentication="name"></h1>
+
             </div>
             <!-- Content wrapper -->
 

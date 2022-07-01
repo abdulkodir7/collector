@@ -1,10 +1,8 @@
 package com.itransition.coursework.util;
 
-import com.itransition.coursework.collection.Collection;
 import com.itransition.coursework.collection.CollectionRepository;
 import com.itransition.coursework.custom_field.CustomFieldRepository;
-import com.itransition.coursework.custom_field.CustomFieldValueRepository;
-import com.itransition.coursework.item.Item;
+import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValueRepository;
 import com.itransition.coursework.item.ItemRepository;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.tag.TagRepository;
@@ -23,7 +21,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+
+import static com.itransition.coursework.util.Constants.DEFAULT_PROFILE_IMAGE;
 
 /**
  * Abdulqodir Ganiev 6/16/2022 7:05 PM
@@ -53,6 +52,7 @@ public class DataLoader implements CommandLineRunner {
             User super_admin = new User(
                     "Super Admin",
                     "sa@gmail.com",
+                    DEFAULT_PROFILE_IMAGE,
                     passwordEncoder.encode("1234"),
                     new Role(RoleEnum.ROLE_SUPER_ADMIN),
                     true,
@@ -64,6 +64,7 @@ public class DataLoader implements CommandLineRunner {
             User abdulqodir = new User(
                     "Abdulkodir",
                     "a@gmail.com",
+                    DEFAULT_PROFILE_IMAGE,
                     passwordEncoder.encode("1234"),
                     new Role(RoleEnum.ROLE_ADMIN),
                     true,
@@ -75,6 +76,7 @@ public class DataLoader implements CommandLineRunner {
             User john = new User(
                     "John",
                     "j@gmail.com",
+                    DEFAULT_PROFILE_IMAGE,
                     passwordEncoder.encode("1234"),
                     new Role(RoleEnum.ROLE_CREATOR),
                     false,

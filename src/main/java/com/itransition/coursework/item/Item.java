@@ -2,7 +2,7 @@ package com.itransition.coursework.item;
 
 import com.itransition.coursework.collection.Collection;
 import com.itransition.coursework.comment.Comment;
-import com.itransition.coursework.custom_field.CustomFieldValue;
+import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValue;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.user.User;
 import lombok.*;

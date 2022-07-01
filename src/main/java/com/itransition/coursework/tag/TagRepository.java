@@ -14,4 +14,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
                     "         join item i on i.id = it.item_id " +
                     "where i.id = :id")
     List<TagView> getItemTags(Long id);
+
+    boolean existsByName(String name);
 }

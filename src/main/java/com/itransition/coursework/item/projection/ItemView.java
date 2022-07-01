@@ -1,4 +1,4 @@
-package com.itransition.coursework.item;
+package com.itransition.coursework.item.projection;
 
 import com.itransition.coursework.tag.TagView;
 import org.springframework.beans.factory.annotation.Value;
