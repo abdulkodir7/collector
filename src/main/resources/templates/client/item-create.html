@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="client/layouts/header::header"></head>
+
+<body class="theme-light-active" id="activeTheme">
+
+<div th:replace="client/layouts/navbar::navbar"></div>
+
+
+<!-- ===============  breadcrumb style start =============== -->
+<div class="breadcrumb_style__two bg-body-2">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <a href="index.html" class="back__btn">
+                <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 6.5H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                    <path d="M6 11.5L1 6.5L6 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                </svg>
+                <span>Back to profile</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- ===============  breadcrumb style end =============== -->
+
+<!-- ===============  create style start =============== -->
+<div class="item_create__wrapper bg-body-2 section_gap_y_top__3 section_gap_y_bottom__1">
+    <div class="container">
+        <div class="row justify-content-between gy-4">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <div class="item_create__details">
+                    <div class="create__header">
+                        <h2>Create New Item</h2>
+                    </div>
+                    <form class="row g-3" method="post" th:action="@{/items/create}"
+                          enctype="multipart/form-data">
+                        <input hidden th:value="${collectionId}" name="collectionId">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label">Name</label>
+                            <input type="text" name="itemName" class="form-control"
+                                   placeholder="Enter item name"
+                                   required/>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="selectTag" class="form-label">Tags</label>
+                            <div class="select2-warning">
+                                <select name="tagId" id="selectTag" class="select2 form-select" multiple
+                                        required>
+                                    <div th:each="tag : ${tags}">
+                                        <option th:value="${tag.id}">[[${tag.name}]]</option>
+                                    </div>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div th:if="${customFields!=null}">
+                            <div th:each="field : ${customFields}">
+                                <div th:if="${field.type} eq 'number' or ${field.type} eq 'text' or ${field.type} eq 'date'">
+                                    <div class="col-12">
+                                        <label class="form-label" th:text="${field.name}"></label>
+                                        <input th:type="${field.type}" th:name="${field.name}"
+                                               class="form-control" required/>
+                                    </div>
+                                </div>
+                                <div th:if="${field.type} eq 'file'">
+                                    <div class="col-12">
+                                        <label class="form-label" th:text="${field.name}"></label>
+                                        <input th:type="${field.type}" th:name="${field.type}"
+                                               class="form-control" required/>
+                                    </div>
+                                </div>
+                                <div th:if="${field.type} eq 'checkbox'">
+                                    <div class="col-12">
+                                        <div class="form-check mt-3">
+                                            <input class="form-check-input" type="checkbox"
+                                                   th:value="${field.name}"
+                                                   th:name="${field.name}" id="checkbox"/>
+                                            <label class="form-check-label" for="checkbox">
+                                                [[${field.name}]]
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div th:if="${field.type} eq 'textarea'">
+                                    <div class="col-12">
+                                        <label for="textarea" class="form-label">[[${field.name}]]</label>
+                                        <textarea th:name="${field.name}" class="form-control" id="textarea"
+                                                  rows="3" required></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mt-4">
+                            <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit
+                            </button>
+                            <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal"
+                                    aria-label="Close">Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</div>
+<!-- ===============  create style end =============== -->
+
+<!--<script>-->
+<!--    function addNewField() {-->
+<!--        const div = document.createElement('div');-->
+<!--        div.className = 'row pt-20 pb-20'-->
+
+<!--        const nameDiv = document.createElement('div');-->
+<!--        nameDiv.className = 'col-md-5'-->
+
+<!--        const input = document.createElement(`input`);-->
+<!--        input.className = 'form-control'-->
+<!--        input.type = 'text'-->
+<!--        input.placeholder = 'e.g. Age'-->
+
+<!--        nameDiv.appendChild(input);-->
+
+<!--        div.appendChild(nameDiv)-->
+
+<!--        const optDiv = document.createElement('div');-->
+<!--        optDiv.className = 'col-md-5'-->
+
+<!--        const select = document.createElement('select');-->
+<!--        select.className = 'form-control'-->
+
+<!--        const opt1 = document.createElement('option');-->
+<!--        opt1.className = 'data-display'-->
+<!--        opt1.value = 'number'-->
+<!--        opt1.text = 'Number'-->
+<!--        const opt2 = document.createElement('option');-->
+<!--        opt2.value = 'text'-->
+<!--        opt2.text = 'Text'-->
+<!--        const opt3 = document.createElement('option');-->
+<!--        opt3.value = 'textarea'-->
+<!--        opt3.text = 'Long text'-->
+<!--        const opt4 = document.createElement('option');-->
+<!--        opt4.value = 'date'-->
+<!--        opt4.text = 'Date'-->
+<!--        const opt5 = document.createElement('option');-->
+<!--        opt5.value = 'checkbox'-->
+<!--        opt5.text = 'Checkbox'-->
+<!--        const opt6 = document.createElement('option');-->
+<!--        opt6.value = 'file'-->
+<!--        opt6.text = 'Image'-->
+
+<!--        select.appendChild(opt1)-->
+<!--        select.appendChild(opt2)-->
+<!--        select.appendChild(opt3)-->
+<!--        select.appendChild(opt4)-->
+<!--        select.appendChild(opt5)-->
+<!--        select.appendChild(opt6)-->
+
+<!--        optDiv.appendChild(select)-->
+<!--        div.appendChild(optDiv)-->
+
+<!--        const btnDiv = document.createElement('div');-->
+<!--        btnDiv.className = 'col-md-2'-->
+
+<!--        const deleteBtn = document.createElement(`a`);-->
+<!--        deleteBtn.className = 'btn btn-outline-danger'-->
+<!--        deleteBtn.type = 'button'-->
+<!--        deleteBtn.text = 'Delete'-->
+<!--        deleteBtn.id = 'btnDelete'-->
+
+<!--        btnDiv.appendChild(deleteBtn)-->
+<!--        div.appendChild(btnDiv)-->
+
+<!--        document.getElementById('custom-fields').appendChild(div);-->
+<!--    }-->
+
+<!--</script>-->
+
+<div th:replace="client/layouts/footer::footer"></div>
+</body>
+</html>

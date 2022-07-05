@@ -22,6 +22,8 @@ public interface SingleCollectionView {
 
     Long getAuthorId();
 
+    String getAuthorImgUrl();
+
     String getAuthorName();
 
     Long getItemsCount();

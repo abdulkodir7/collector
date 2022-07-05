@@ -161,7 +161,7 @@
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <label class="form-label">Image</label>
-                                                <input th:filed="*{image}" type="file" name="image"
+                                                <input id="upload" th:filed="*{image}" type="file" name="image"
                                                        class="form-control"/>
                                             </div>
                                         </div>
@@ -175,7 +175,7 @@
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <label class="form-label">Current Image</label>
-                                                <img th:src="${collection.imgUrl}" width="200px">
+                                                <img id="uploadedImage" th:src="${collection.imgUrl}" width="200px">
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
@@ -358,9 +358,6 @@
     </div>
 
 </div>
-<script>
-
-</script>
 <div th:replace="admin/layouts/footer::admin-footer"></div>
 
 </body>

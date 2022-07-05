@@ -1,4 +1,4 @@
-package com.itransition.coursework.item;
+package com.itransition.coursework.item.projection;
 
 import com.itransition.coursework.comment.CommentView;
 import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValueView;

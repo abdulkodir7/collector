@@ -15,6 +15,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
                     "       c.body, " +
                     "       c.commented_at commentedAt, " +
                     "       u.name commentedBy, " +
+                    "       u.img_url commentedByImgUrl, " +
                     "       u.id commentedById " +
                     "from comment c " +
                     "         join item i on i.id = c.item_id " +

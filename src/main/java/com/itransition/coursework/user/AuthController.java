@@ -2,6 +2,9 @@ package com.itransition.coursework.user;
 
 import com.itransition.coursework.collection.CollectionService;
 import com.itransition.coursework.collection.projection.TopCollectionView;
+import com.itransition.coursework.item.ItemService;
+import com.itransition.coursework.tag.TagService;
+import com.itransition.coursework.topic.TopicService;
 import com.itransition.coursework.util.ThymeleafResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -28,10 +31,14 @@ public class AuthController {
 
     private final UserService userService;
     private final CollectionService collectionService;
+    private final ItemService itemService;
+    private final TagService tagService;
 
     @GetMapping
     public String getHomePage(Model model) {
         List<TopCollectionView> top5 = collectionService.getTop5BiggestCollections();
+        model.addAttribute("items", itemService.getLatestItems());
+        model.addAttribute("tags", tagService.getAllTags());
         model.addAttribute("top5", top5);
         return "client/index";
     }

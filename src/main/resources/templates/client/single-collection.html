@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="client/layouts/header::header"></head>
+
+<body class="theme-light-active" id="activeTheme">
+
+<div th:replace="client/layouts/navbar::navbar"></div>
+
+
+<!-- ===============  breadcrumb style start =============== -->
+<div class="breadcrumb_style__two bg-body-2">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <a href="index.html" class="back__btn">
+                <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 6.5H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                    <path d="M6 11.5L1 6.5L6 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                </svg>
+                <span>Back to home</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- ===============  breadcrumb style end =============== -->
+
+<div class="nft_details__style pt-60 bg-body-2 section_gap_y_bottom__1">
+    <div class="container">
+        <div class="row gx-7 gy-4 position-relative justify-content-between">
+            <div class="col-lg-4 col-sm-10 col-12">
+                <div class="nft_details__img">
+                    <img th:src="${collection.imgUrl}" alt="">
+                </div>
+            </div>
+            <div class="col-lg-8">
+
+                <div th:if="${response}!=null">
+                    <div th:if="${response.status}">
+                        <div class="alert alert-success" role="alert">
+                            [[${response.message}]]
+                        </div>
+                    </div>
+                    <div th:if="${!response.status}">
+                        <div class="alert alert-danger" role="alert">
+                            [[${response.message}]]
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nft__details">
+                    <div class="nd__header">
+                        <div class="nd__title">
+                            <h3 class="nft__title">[[${collection.name}]] <span>[[${collection.topicName}]]</span></h3>
+                        </div>
+                    </div>
+
+                    <div>
+                        <ul class="collections">
+                            <li class="creator">
+                                <div class="thumb">
+                                    <img class="rounded" th:src="${collection.authorImgUrl}" alt="">
+                                </div>
+                                <div class="disc">
+                                    <span>Author</span>
+                                    <h5>[[${collection.authorName}]]</h5>
+                                </div>
+                            </li>
+                            <li class="creator px-1">
+                                <div class="disc">
+                                    <span>Created At</span>
+                                    <h5>[[${#temporals.format(collection.createdAt, 'yyyy-MM-dd HH:mm')}]]</h5>
+                                </div>
+                            </li>
+                            <li class="creator px-3">
+                                <div class="disc">
+                                    <span>Updated At</span>
+                                    <h5>[[${#temporals.format(collection.updatedAt, 'yyyy-MM-dd HH:mm')}]]</h5>
+                                </div>
+                            </li>
+                            <li class="creator px-2">
+                                <div class="disc">
+                                    <span>Items</span>
+                                    <h5>[[${collection.itemsCount}]]</h5>
+                                </div>
+                            </li>
+                            <li class="creator px-2 pt-3" sec:authorize="isAuthenticated()">
+                                <div class="disc"
+                                     th:if="${#authentication.getPrincipal().getId()}==${collection.authorId}">
+                                    <a th:href="@{/collections/delete/__${collection.id}__}"
+                                       class="btn btn-outline-danger btn-sm">Delete</a>
+                                </div>
+                            </li>
+                            <li class="creator px-2 pt-3" sec:authorize="isAuthenticated()">
+                                <div class="disc"
+                                     th:if="${#authentication.getPrincipal().getId()}==${collection.authorId}">
+                                    <a th:href="@{/collections/edit/__${collection.id}__}"
+                                       class="btn btn-outline-warning btn-sm">Edit</a>
+                                </div>
+                            </li>
+                            <li class="creator px-2 pt-3" sec:authorize="isAuthenticated()">
+                                <div class="disc"
+                                     th:if="${#authentication.getPrincipal().getId()}==${collection.authorId}">
+                                    <a th:href="@{/items/add-item/__${collection.id}__}"
+                                       class="btn btn-outline-primary btn-sm">Add New Item</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nd_disc__text">
+                        <p>[[${collection.description}]]</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container col-md-12">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="nft_tab_1" role="tabpanel" aria-labelledby="nft_pill_1">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-6 mt-30" th:each="item : ${items}">
+                                <div class="nft_card_style__one">
+                                    <div class="nft_card__bottom">
+                                        <div class="current__bid row" sec:authorize="isAuthenticated()">
+                                            <div class="col-md-12"
+                                                 th:if="${item.authorId} == ${#authentication.principal.id}">
+                                                <a th:href="@{/items/delete/__${item.id}__}"
+                                                   class="btn btn-outline-danger btn-sm">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                                <a th:href="@{/items/edit/__${item.id}__}"
+                                                   class="btn btn-outline-warning btn-sm">
+                                                    <i class="fa-solid fa-edit"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nft__info">
+                                        <div class="collection_body">
+                                            <div class="collection">
+                                                <a href="javascript:void(0)" class="col_name"
+                                                   th:text="${item.collectionName}"></a>
+                                            </div>
+                                        </div>
+                                        <h5 class="nft-title pb-2"><a href="#" th:text="${item.name}"></a></h5>
+                                        <div class="collection_body" th:each="tag : ${item.tags}">
+                                            <div class="collection">
+                                                <a th:href="@{/tags/__${tag.id}__}" class="col_name"
+                                                   th:text="${tag.name}"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nft_card__bottom">
+                                        <div class="current__bid row">
+                                            <div class="col-md-6">
+                                                <span>Likes</span>
+                                                <h6>
+                                                    <ins>[[${item.likeCount}]]</ins>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span>Comments</span>
+                                                <h6>
+                                                    <ins>[[${item.commentCount}]]</ins>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <a th:href="@{/items/__${item.id}__}" class="bid_btn">Detail</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="client/layouts/footer::footer"></div>
+</body>
+</html>

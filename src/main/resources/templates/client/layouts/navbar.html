@@ -54,13 +54,14 @@
                             </div>
                             <ul>
                                 <li><a href="/" th:text="#{home}"></a></li>
-                                <li><a href="/" th:text="#{categories}"></a></li>
-                                <li><a href="/" th:text="#{collections}"></a></li>
-                                <li><a href="/" th:text="#{items}"></a></li>
+                                <li><a href="/topics" th:text="#{topic}"></a></li>
+                                <li><a href="/collections" th:text="#{collections}"></a></li>
+                                <li><a href="/items" th:text="#{items}"></a></li>
+                                <li sec:authorize="isAuthenticated()"><a href="/profile" th:text="#{profile}"></a></li>
                                 <li class="has-child-menu">
                                     <a href="javascript:void(0)" th:text="#{language}"></a>
                                     <i class="fl flaticon-plus">+</i>
-                                    <ul class="sub-menu">
+                                    <ul id="locales" class="sub-menu">
                                         <li><a href="/?lang=en" th:text="#{lang.en}"></a></li>
                                         <li><a href="/?lang=ru" th:text="#{lang.ru}"></a></li>
                                     </ul>
@@ -80,16 +81,6 @@
                             <div sec:authorize="!isAuthenticated()">
                                 <div class="d-none d-md-block mr-2">
                                     <a href="/login" class="btn-pill-v1"><span th:text="#{button.login}"></span></a>
-                                </div>
-                            </div>
-                            <div sec:authorize="isAuthenticated()">
-                                <div class="profile-switch-one mr-2">
-                                    <div class="profile-switch-avater">
-                                        <a href="/profile">
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                                                 alt="" style="border-radius: 100%">
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="nav_search__icon mr-2 d-block d-xl-none mr-2 style__two"

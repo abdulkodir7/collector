@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="client/layouts/header::header"></head>
+
+<body class="theme-light-active" id="activeTheme">
+
+<div th:replace="client/layouts/navbar::navbar"></div>
+
+
+<!-- ===============  breadcrumb style start =============== -->
+<div class="breadcrumb_style__two bg-body-2">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <a href="index.html" class="back__btn">
+                <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 6.5H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                    <path d="M6 11.5L1 6.5L6 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                </svg>
+                <span>Back to profile</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- ===============  breadcrumb style end =============== -->
+
+<!-- ===============  create style start =============== -->
+<div class="item_create__wrapper bg-body-2 section_gap_y_top__3 section_gap_y_bottom__1">
+    <div class="container">
+        <div class="row justify-content-between gy-4">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <div class="item_create__details">
+                    <div class="create__header">
+                        <h2>Create New Collection</h2>
+                    </div>
+                    <form action="/collections/create" method="post" id="create_item_form" class="pt-5" enctype="multipart/form-data">
+                        <div class="custom_input__style pt-4">
+                            <label for="product__name">Name</label>
+                            <input name="name" type="text" id="product__name" placeholder="Collection name">
+                        </div>
+                        <div class="custom_input__style pt-4">
+                            <label for="product__file">Image</label>
+                            <input name="image" type="file" id="product__file">
+                        </div>
+                        <div class="custom_input__style pt-20">
+                            <label for="product__disc">Description</label>
+                            <textarea name="description" id="product__disc" rows="3"></textarea>
+                        </div>
+                        <div class="custom_input__style pt-20 pb-60">
+                            <div class="select_style__one varient-2">
+                                <label>Topics</label>
+                                <select name="topicId" class="select__nice">
+                                    <option data-display="Select topic">Select topic</option>
+                                    <option th:each="topic : ${topics}" th:value="${topic.id}">[[${topic.name}]]
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <h5 class="create_sub align-items-center">You can add custom fields to items of this
+                            collection</h5>
+
+                        <div class="col-12 form-repeater">
+                            <div class="mb-0 pt-30">
+                                <button type="button" id="customBtn" class="btn btn-primary"
+                                        data-repeater-create>
+                                    <i class="bx bx-plus"></i>
+                                    <span class="align-middle">Add</span>
+                                </button>
+                            </div>
+
+                            <div data-repeater-list="customFields">
+                                <div data-repeater-item>
+                                    <div class="row">
+                                        <div class="col-12 col-md-5">
+                                            <label class="form-label"
+                                                   for="form-repeater-1-1">Name</label>
+                                            <input name="name" type="text" id="form-repeater-1-1"
+                                                   class="form-control" placeholder="ex. Age"/>
+                                        </div>
+                                        <div class="col-12 col-md-5">
+                                            <label class="form-label"
+                                                   for="form-repeater-1-4">Type</label>
+                                            <select name="type" id="form-repeater-1-4"
+                                                    class="form-select">
+                                                <option selected>Select field type</option>
+                                                <div th:each="type : ${types}">
+                                                    <option th:value="${type.name()}"
+                                                            th:text="${type.name()}">
+                                                    </option>
+                                                </div>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-md-2 pt-30">
+                                            <button type="button" class="btn btn-outline-danger" data-repeater-delete>Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form_bottom mt-40">
+                            <button type="submit" class="submit-v2">Save Collection</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</div>
+<!-- ===============  create style end =============== -->
+
+<!--<script>-->
+<!--    function addNewField() {-->
+<!--        const div = document.createElement('div');-->
+<!--        div.className = 'row pt-20 pb-20'-->
+
+<!--        const nameDiv = document.createElement('div');-->
+<!--        nameDiv.className = 'col-md-5'-->
+
+<!--        const input = document.createElement(`input`);-->
+<!--        input.className = 'form-control'-->
+<!--        input.type = 'text'-->
+<!--        input.placeholder = 'e.g. Age'-->
+
+<!--        nameDiv.appendChild(input);-->
+
+<!--        div.appendChild(nameDiv)-->
+
+<!--        const optDiv = document.createElement('div');-->
+<!--        optDiv.className = 'col-md-5'-->
+
+<!--        const select = document.createElement('select');-->
+<!--        select.className = 'form-control'-->
+
+<!--        const opt1 = document.createElement('option');-->
+<!--        opt1.className = 'data-display'-->
+<!--        opt1.value = 'number'-->
+<!--        opt1.text = 'Number'-->
+<!--        const opt2 = document.createElement('option');-->
+<!--        opt2.value = 'text'-->
+<!--        opt2.text = 'Text'-->
+<!--        const opt3 = document.createElement('option');-->
+<!--        opt3.value = 'textarea'-->
+<!--        opt3.text = 'Long text'-->
+<!--        const opt4 = document.createElement('option');-->
+<!--        opt4.value = 'date'-->
+<!--        opt4.text = 'Date'-->
+<!--        const opt5 = document.createElement('option');-->
+<!--        opt5.value = 'checkbox'-->
+<!--        opt5.text = 'Checkbox'-->
+<!--        const opt6 = document.createElement('option');-->
+<!--        opt6.value = 'file'-->
+<!--        opt6.text = 'Image'-->
+
+<!--        select.appendChild(opt1)-->
+<!--        select.appendChild(opt2)-->
+<!--        select.appendChild(opt3)-->
+<!--        select.appendChild(opt4)-->
+<!--        select.appendChild(opt5)-->
+<!--        select.appendChild(opt6)-->
+
+<!--        optDiv.appendChild(select)-->
+<!--        div.appendChild(optDiv)-->
+
+<!--        const btnDiv = document.createElement('div');-->
+<!--        btnDiv.className = 'col-md-2'-->
+
+<!--        const deleteBtn = document.createElement(`a`);-->
+<!--        deleteBtn.className = 'btn btn-outline-danger'-->
+<!--        deleteBtn.type = 'button'-->
+<!--        deleteBtn.text = 'Delete'-->
+<!--        deleteBtn.id = 'btnDelete'-->
+
+<!--        btnDiv.appendChild(deleteBtn)-->
+<!--        div.appendChild(btnDiv)-->
+
+<!--        document.getElementById('custom-fields').appendChild(div);-->
+<!--    }-->
+
+<!--</script>-->
+
+<div th:replace="client/layouts/footer::footer"></div>
+</body>
+</html>

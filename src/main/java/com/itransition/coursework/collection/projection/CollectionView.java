@@ -10,12 +10,16 @@ public interface CollectionView {
 
     String getName();
 
+    String getImgUrl();
+
     // TODO: 6/25/2022 Collectionlar ni kurganda topic, avtor utiga bosganda single page utsin
     Long getTopicId();
 
     String getTopicName();
 
     Long getAuthorId();
+
+    String getAuthorImgUrl();
 
     String getAuthorName();
 

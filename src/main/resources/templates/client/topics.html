@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="client/layouts/header::header"></head>
+
+<body class="theme-light-active" id="activeTheme">
+
+<div th:replace="client/layouts/navbar::navbar"></div>
+
+
+<!-- ===============  seller style start =============== -->
+<div class="seller_style__three bg-body section_gap_y_bottom__1">
+    <div class="container">
+        <div class="row justify-content-center pb-5">
+            <div class="col-lg-6 text-center">
+                <h2 class="section_title__2">Topics</h2>
+                <p class="disc-text pt-2">Choose topic you like and explore collections</p>
+            </div>
+        </div>
+        <div class="row section_gap_y_top__1 nft_process__wrap justify-content-center gy-4">
+            <div class="col-lg-3 col-sm-6" th:each="topic : ${topics}">
+                <div class="nft_process__card">
+                    <h5 th:text="${topic.name}"></h5>
+                    <div th:if="${topic.collections.size}==0">
+                        <p>No collection yet</p>
+                    </div>
+                    <div th:if="${topic.collections.size}==1">
+                        <p>1 Collection </p>
+                    </div>
+                    <div th:if="${topic.collections.size}>1">
+                        <p>[[${topic.collections.size}]] Collections</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===============  seller style start =============== -->
+
+
+<div th:replace="client/layouts/footer::footer"></div>
+</body>
+</html>

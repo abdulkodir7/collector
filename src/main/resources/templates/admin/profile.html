@@ -72,7 +72,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-start align-items-sm-center gap-4">
                                             <img th:src="${currentUser.imgUrl}" alt="user-avatar"
-                                                 class="d-block rounded" height="100" width="100" id="uploadedAvatar"/>
+                                                 class="d-block rounded" height="100" width="100" id="uploadedImage"/>
                                             <div class="button-wrapper">
                                                 <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                                     <span class="d-none d-sm-block">Upload new photo</span>
@@ -223,26 +223,6 @@
     </div>
 
 </div>
-<script>
-    const img = document.querySelector('#uploadedAvatar');
-    const file = document.querySelector('#upload');
-
-    file.addEventListener('change', function () {
-        // this refers to the file
-        const choosedFile = this.files[0];
-
-        if (choosedFile) {
-            const reader = new FileReader();
-
-            reader.addEventListener('load', function () {
-                img.setAttribute('src', reader.result);
-            });
-
-            reader.readAsDataURL(choosedFile);
-        }
-
-    });
-</script>
 <div th:replace="admin/layouts/footer::admin-footer"></div>
 
 </body>

@@ -13,6 +13,12 @@ public interface ItemView {
 
     String getCollectionName();
 
+    String getAuthorId();
+
+    String getAuthorName();
+
+    String getAuthorImgUrl();
+
     @Value("#{@tagRepository.getItemTags({target.id})}")
     List<TagView> getTags();
 

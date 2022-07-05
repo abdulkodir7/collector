@@ -63,5 +63,26 @@
     <script th:src="@{/admin-assets/js/forms-editors.js}"></script>
     <script th:src="@{/admin-assets/js/forms-selects.js}"></script>
 
+    <script>
+        const img = document.querySelector('#uploadedImage');
+        const file = document.querySelector('#upload');
+
+        file.addEventListener('change', function () {
+            // this refers to the file
+            const choosedFile = this.files[0];
+
+            if (choosedFile) {
+                const reader = new FileReader();
+
+                reader.addEventListener('load', function () {
+                    img.setAttribute('src', reader.result);
+                });
+
+                reader.readAsDataURL(choosedFile);
+            }
+
+        });
+    </script>
+
 
 </div>

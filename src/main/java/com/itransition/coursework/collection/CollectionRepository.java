@@ -34,6 +34,7 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
                     "       t.id         topicId, " +
                     "       t.name       topicName, " +
                     "       u.id         authorId, " +
+                    "       u.img_url    authorImgUrl, " +
                     "       u.name       authorName, " +
                     "       count(i)     itemsCount, " +
                     "       c.created_at createdAt, " +
@@ -61,4 +62,22 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
                     "order by itemsCount desc " +
                     "limit 5")
     List<TopCollectionView> getTop5();
+
+    @Query(nativeQuery = true,
+            value = "select c.id, " +
+                    "       c.name, " +
+                    "       c.img_url imgUrl, " +
+                    "       t.id topicId, " +
+                    "       t.name topicName, " +
+                    "       u.id authorId, " +
+                    "       u.img_url authorImgUrl, " +
+                    "       u.name authorName, " +
+                    "       count(i) itemsCount " +
+                    "from collection c " +
+                    "         left join item i on c.id = i.collection_id " +
+                    "         left join topic t on t.id = c.topic_id " +
+                    "         left join users u on u.id = c.author_id " +
+                    "where u.id = :id " +
+                    "group by c.id, t.id, u.id")
+    List<CollectionView> getAuthorCollections(Long id);
 }

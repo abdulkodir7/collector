@@ -7,6 +7,8 @@ import com.itransition.coursework.custom_field.*;
 import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValue;
 import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValueRepository;
 import com.itransition.coursework.item.projection.ItemView;
+import com.itransition.coursework.item.projection.LatestItemView;
+import com.itransition.coursework.item.projection.SingleItemView;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.tag.TagRepository;
 import com.itransition.coursework.util.ThymeleafResponse;
@@ -163,5 +165,10 @@ public class ItemService {
 
     public List<ItemView> getAllItems() {
         return itemRepository.getAllItems();
+    }
+
+
+    public List<LatestItemView> getLatestItems() {
+        return itemRepository.getLatestItems();
     }
 }

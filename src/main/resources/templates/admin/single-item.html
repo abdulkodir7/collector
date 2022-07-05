@@ -98,14 +98,17 @@
                                                             <div class="card-header align-items-center">
                                                                 <h5 class="card-action-title mb-0">Liked Users</h5>
                                                             </div>
-                                                            <div class="card-body col-md-6">
+                                                            <div class=" card-body text-center" th:if="${item.likedUsers.size()}==0">
+                                                                <h5>No likes yet...</h5>
+                                                            </div>
+                                                            <div class="card-body col-md-6" th:if="${item.likedUsers}!=null">
                                                                 <ul class="list-unstyled mb-0"
                                                                     th:each="user : ${item.likedUsers}">
                                                                     <li class="mb-3">
                                                                         <div class="d-flex align-items-start">
                                                                             <div class="d-flex align-items-start">
                                                                                 <div class="avatar me-3">
-                                                                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                                                                                    <img th:src="${user.imgUrl}"
                                                                                          alt="Avatar"
                                                                                          class="rounded-circle"/>
                                                                                 </div>
@@ -208,7 +211,7 @@
                                                  th:each="comment : ${item.comments}">
                                                 <div class="flex-shrink-0">
                                                     <div class="avatar me-3">
-                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                                                        <img th:src="${comment.commentedByImgUrl}"
                                                              alt="Avatar"
                                                              class="rounded-circle"/>
                                                     </div>
@@ -353,8 +356,6 @@
                                                     <select name="tagId" id="selectTag"
                                                             class="select2 form-select"
                                                             multiple required>
-                                                        <!--                                                        <option th:if="${item.tags}" th:each="tag : ${tags}" th:value="${tag.id}"-->
-                                                        <!--                                                                th:text="${tag.name}">-->
                                                     </select>
                                                 </div>
                                             </div>
@@ -367,12 +368,12 @@
                                                 </div>
                                                 <div th:if="${field.type} eq 'file'">
                                                     <label class="form-label">[[${field.name}]]</label>
-                                                    <input th:type="${field.type}" th:name="${field.name}"
+                                                    <input id="upload" th:type="${field.type}" th:name="${field.name}"
                                                            class="form-control" placeholder=""
                                                            th:value="${field.value}"/>
                                                     <label class="form-label">Current file</label>
                                                     <br>
-                                                    <img th:src="${field.value}" width="100px">
+                                                    <img id="uploadedImage" th:src="${field.value}" width="100px">
                                                 </div>
                                                 <div th:if="${field.type} eq 'textarea'">
                                                     <label class="form-label">[[${field.name}]]</label>

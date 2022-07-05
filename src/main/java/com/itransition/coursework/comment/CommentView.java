@@ -9,6 +9,8 @@ public interface CommentView {
 
     String getCommentedBy();
 
+    String getCommentedByImgUrl();
+
     Long getCommentedById();
 
     LocalDateTime getCommentedAt();

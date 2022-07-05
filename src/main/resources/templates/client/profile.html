@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="client/layouts/header::header"></head>
+
+<body class="theme-light-active" id="activeTheme">
+
+<div th:replace="client/layouts/navbar::navbar"></div>
+
+<div class="author_profiler__wrapper bg-body-2 section_gap_y_bottom__1">
+    <div class="container">
+
+
+        <div class="row pt-40 gy-4">
+            <div class="col-lg-3">
+                <div class="author_detail__info">
+                    <div class="copy__bord">
+                        <div class="author_image">
+                            <img class="rounded" width="200" th:src="${currentUser.imgUrl}" alt="">
+                        </div>
+                    </div>
+                    <h3 class="author__name" th:text="${currentUser.name}"></h3>
+                    <h6 class="author__username" th:text="${currentUser.email}"></h6>
+
+                    <div class="join__date">
+                        <strong>Joined</strong>
+                        <span th:text="${#temporals.format(currentUser.joinedAt,'dd-MMM yyyy')}"></span>
+                    </div>
+                    <div class="pt-3">
+                        <a href="/logout" class="btn btn-primary btn-sm">Logout</a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+
+                <div th:if="${response}!=null">
+                    <div th:if="${response.status}">
+                        <div class="alert alert-success" role="alert">
+                            Collection Added Successfully!
+                        </div>
+                    </div>
+                    <div th:if="${!response.status}">
+                        <div class="alert alert-danger" role="alert">
+                            Failed to save collection!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nft_grid__header row mb-40">
+                    <div class="col-lg-12">
+                        <ul class="nav nav-pills pills-default" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-tab-one" data-bs-toggle="pill"
+                                        data-bs-target="#pills-one" type="button" role="tab" aria-controls="pills-one"
+                                        aria-selected="true">My Collections ([[${collections.size}]])
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-one" role="tabpanel"
+                         aria-labelledby="pills-tab-one">
+                        <div class="row gy-4">
+                            <div class="col-lg-4 d-flex justify-content-lg-start">
+                                <div class="select_style__one varient-5">
+                                    <select class="select__nice">
+                                        <option data-display="Sort by Topic">All</option>
+                                        <option th:each="topic : ${topics}" th:value="${topic.id}">[[${topic.name}]]
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 d-flex justify-content-lg-end">
+                                <a th:href="@{/collections/create}">
+                                    <button class="btn btn-outline-primary btn-sm">Add New Collection</button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row row-cols-lg-4 row-cols-sm-2 row-cols-1 pt-40">
+                            <div class="col pt-lg-0 pt-3" th:each="collection : ${collections}">
+                                <div class="auction_card_style__two">
+                                    <div class="auction_card__thumb">
+                                        <a th:href="@{/collections/__${collection.id}__}">
+                                            <img th:src="${collection.imgUrl}" alt="">
+                                        </a>
+                                        <a th:href="@{/collections/__${collection.id}__}" class="bid__btn">
+                                            [[#{detail}]]
+                                        </a>
+                                    </div>
+                                    <div class="nft__disc">
+                                        <div class="nft__title">
+                                            <h5>
+                                                <a th:href="@{/collections/__${collection.id}__}">[[${collection.name}]]</a>
+                                            </h5>
+                                            <ins class="current-price">
+                                                <span>[[${collection.itemsCount}]] ITEMS</span>
+                                            </ins>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="more-load-wrap text-center mt-50">
+                    <a href="#" class="load-more-btn varient-2">
+                        <svg width="18" height="19" fill="none" viewBox="0 0 18 19"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.775 3.61794C11.0224 3.39694 10.192 3.25244 9.27502 3.25244C5.13143 3.25244 1.77502 6.55046 1.77502 10.622C1.77502 14.702 5.13143 18 9.27502 18C13.4186 18 16.775 14.702 16.775 10.6305C16.775 9.11747 16.3079 7.70646 15.512 6.53346"
+                                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M12.848 3.82201L10.348 1" stroke-width="1.8" stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                            <path d="M12.8478 3.82202L9.93256 5.91303" stroke-width="1.8" stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                        </svg>
+                        View all items</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="client/layouts/footer::footer"></div>
+</body>
+</html>
