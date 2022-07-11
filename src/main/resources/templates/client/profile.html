@@ -26,6 +26,12 @@
                         <strong>Joined</strong>
                         <span th:text="${#temporals.format(currentUser.joinedAt,'dd-MMM yyyy')}"></span>
                     </div>
+                    <div class="pt-3" th:if="${#authentication.principal.role.name.name() eq 'ROLE_SUPER_ADMIN'
+                    or #authentication.principal.role.name.name() eq 'ROLE_ADMIN'}">
+                        <a href="/admin" class="btn btn-outline-success btn-sm">
+                            Open Admin Panel
+                        </a>
+                    </div>
                     <div class="pt-3">
                         <a href="/logout" class="btn btn-primary btn-sm">Logout</a>
                     </div>

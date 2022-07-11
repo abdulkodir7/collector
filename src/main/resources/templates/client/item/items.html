@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="client/layouts/header::header"></head>
+
+<body class="theme-light-active" id="activeTheme">
+
+<div th:replace="client/layouts/navbar::navbar"></div>
+
+
+<!-- ===============  breadcrumb style start =============== -->
+<div class="breadcrumb_style__one bg-body-2">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12 text-center">
+                <h2 class="page__title">Items</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===============  breadcrumb style end =============== -->
+
+<!-- ===============  nft gird style one start =============== -->
+<div class="nft_grid_style__one bg-body section_gap_y_top__3 overflow-hidden">
+    <div class="container">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="nft_tab_1" role="tabpanel" aria-labelledby="nft_pill_1">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6 mt-30" th:each="item : ${items}">
+                        <div class="nft_card_style__one">
+                            <div class="nft_card__header">
+                                <div class="creator">
+                                    <div class="avatar">
+                                        <img class="rounded" th:src="${item.authorImgUrl}" alt="">
+                                    </div>
+                                    <span th:text="${item.authorName}"></span>
+                                </div>
+                            </div>
+                            <div class="nft__info">
+                                <div class="collection_body">
+                                    <div class="collection">
+                                        <a href="javascript:void(0)" class="col_name" th:text="${item.collectionName}"></a>
+                                    </div>
+                                </div>
+                                <h5 class="nft-title pb-2">
+                                    <a th:href="@{/items/__${item.id}__}" th:text="${item.name}"></a>
+                                </h5>
+                                <div class="collection_body" th:each="tag : ${item.tags}">
+                                    <div class="collection">
+                                        <a th:href="@{/tags/__${tag.id}__}" class="col_name" th:text="${tag.name}"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="nft_card__bottom">
+                                <div class="current__bid row">
+                                    <div class="col-md-6">
+                                        <span>Likes</span>
+                                        <h6>
+                                            <ins>[[${item.likeCount}]]</ins>
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span>Comments</span>
+                                        <h6>
+                                            <ins>[[${item.commentCount}]]</ins>
+                                        </h6>
+                                    </div>
+                                </div>
+                                <a th:href="@{/items/__${item.id}__}" class="bid_btn">Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===============  nft gird style one end =============== -->
+
+
+<div th:replace="client/layouts/footer::footer"></div>
+</body>
+</html>

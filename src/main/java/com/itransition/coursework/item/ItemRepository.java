@@ -42,10 +42,11 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(nativeQuery = true,
             value = "select i.id, " +
                     "       i.name, " +
-                    "       c.id       collectionId, " +
+                    "       c.id         collectionId, " +
                     "       c.name       collectionName, " +
                     "       t.name       topicName, " +
                     "       u.name       author, " +
+                    "       u.id         authorId, " +
                     "       i.updated_at updatedAt, " +
                     "       i.created_at createdAt " +
                     "from item i " +
@@ -79,4 +80,24 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                     "from item " +
                     "limit 6")
     List<LatestItemView> getLatestItems();
+
+    @Query(nativeQuery = true,
+            value = "select i.id, " +
+                    "       i.name, " +
+                    "       c.name              collectionName, " +
+                    "       u.name              authorName, " +
+                    "       u.img_url           authorImgUrl, " +
+                    "       count(distinct il)  likeCount, " +
+                    "       count(distinct com) commentCount, " +
+                    "       i.created_at        createdAt " +
+                    "from item i " +
+                    "         left join item_like il on i.id = il.item_id " +
+                    "         left join comment com on i.id = com.item_id " +
+                    "         join collection c on c.id = i.collection_id " +
+                    "         join users u on c.author_id = u.id " +
+                    "         join item_tags it on i.id = it.item_id " +
+                    "         join tag t on t.id = it.tags_id " +
+                    "where t.id = :tagId " +
+                    "group by i.id, c.name, u.name, u.img_url")
+    List<ItemView> getSingleTagItems(Long tagId);
 }

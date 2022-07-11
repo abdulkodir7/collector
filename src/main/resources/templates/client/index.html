@@ -20,10 +20,10 @@
                                     <img th:src="${collection.imgUrl}" alt="">
                                 </div>
                                 <div class="featured_slide__content">
-                                    <a href="#" class="author">[[#{by}]] [[${collection.author}]]</a>
-                                    <h1><a href="nft-details.html">[[${collection.name}]]</a></h1>
+                                    <a href="javascript:void(0)" class="author">[[#{by}]] [[${collection.author}]]</a>
+                                    <h1><a th:href="@{/collections/__${collection.id}__}">[[${collection.name}]]</a></h1>
                                     <div class="featured_slide__bottom">
-                                        <a href="nft-details.html" class="btn-pill-v1">
+                                        <a th:href="@{/collections/__${collection.id}__}" class="btn-pill-v1">
                                             <span th:text="#{detail}"></span>
                                         </a>
                                         <div class="feat_nft__price">

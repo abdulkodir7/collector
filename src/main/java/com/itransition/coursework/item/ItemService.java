@@ -11,6 +11,7 @@ import com.itransition.coursework.item.projection.LatestItemView;
 import com.itransition.coursework.item.projection.SingleItemView;
 import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.tag.TagRepository;
+import com.itransition.coursework.user.User;
 import com.itransition.coursework.util.ThymeleafResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -170,5 +171,29 @@ public class ItemService {
 
     public List<LatestItemView> getLatestItems() {
         return itemRepository.getLatestItems();
+    }
+
+    public List<ItemView> getSingleTagItems(Long tagId) {
+        return itemRepository.getSingleTagItems(tagId);
+    }
+
+    public ThymeleafResponse likeItem(Long itemId, User user) {
+        if (user == null)
+            return new ThymeleafResponse(false, LOGIN_TO_LIKE);
+
+        Item item = itemRepository
+                .findById(itemId)
+                .orElseThrow(() -> new ResourceAccessException(ITEM_NOT_FOUND));
+
+        boolean alreadyLiked = item.getLikedBy()
+                .stream()
+                .anyMatch(likedUser -> likedUser.getId().equals(user.getId()));
+
+        if (alreadyLiked)
+            item.getLikedBy().remove(user);
+        else
+            item.getLikedBy().add(user);
+        itemRepository.save(item);
+        return new ThymeleafResponse(true, alreadyLiked ? UNLIKED : LIKED);
     }
 }

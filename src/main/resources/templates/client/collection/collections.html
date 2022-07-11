@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="client/layouts/header::header"></head>
+
+<body class="theme-light-active" id="activeTheme">
+
+<div th:replace="client/layouts/navbar::navbar"></div>
+
+
+<!-- ===============  breadcrumb style start =============== -->
+<div class="breadcrumb_style__one bg-body-2">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12 text-center">
+                <h2 class="page__title" th:text="#{collections}"></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===============  breadcrumb style end =============== -->
+
+<!-- ===============  marketplace style start =============== -->
+<div class="marketplace_style_one bg-body-2 section_gap_y_bottom__1 overflow-hidden">
+    <div class="container">
+        <div class="row row-cols-lg-4 row-cols-sm-2 row-cols-1 pt-40">
+            <div class="col pt-lg-0 pt-3" th:each="collection : ${collections}">
+                <div class="auction_card_style__two">
+                    <div class="auction_card__thumb">
+                        <a th:href="@{/collections/__${collection.id}__}">
+                            <img th:src="${collection.imgUrl}" alt="">
+                        </a>
+                        <a th:href="@{/collections/__${collection.id}__}" class="bid__btn">
+                            [[#{detail}]]
+                        </a>
+                    </div>
+                    <div class="nft__disc">
+                        <a href="javascript:void(0)" class="nft__creator">[[${collection.authorName}]]
+                            <img class="rounded" th:src="${collection.authorImgUrl}" alt="">
+                        </a>
+                        <div class="nft__title">
+                            <h5><a th:href="@{/collections/__${collection.id}__}">[[${collection.name}]]</a></h5>
+                            <ins class="current-price">
+                                <span>[[${collection.itemsCount}]] [[#{items}]]</span>
+                            </ins>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===============  marketplace style end =============== -->
+
+
+<div th:replace="client/layouts/footer::footer"></div>
+</body>
+</html>

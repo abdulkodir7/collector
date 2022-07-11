@@ -24,5 +24,7 @@ public interface Constants {
     String COMMENT_NOT_FOUND = "Comment not found";
     String DEFAULT_PAGE_SIZE = "20";
     String DEFAULT_PROFILE_IMAGE = "https://cdns-images.dzcdn.net/images/artist/1000x1000-000000-80-0-0.jpg";
-
+    String LOGIN_TO_LIKE = "Please login to like this item";
+    String LIKED = "Liked 💗";
+    String UNLIKED = "Like removed 😔";
 }

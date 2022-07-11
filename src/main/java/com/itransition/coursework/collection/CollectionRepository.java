@@ -14,6 +14,7 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
     @Query(nativeQuery = true,
             value = "select c.id, " +
                     "       c.name, " +
+                    "       c.img_url imgUrl, " +
                     "       t.id topicId, " +
                     "       t.name topicName, " +
                     "       u.id authorId, " +
@@ -24,7 +25,7 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
                     "         left join topic t on t.id = c.topic_id " +
                     "         left join users u on u.id = c.author_id " +
                     "group by c.id, t.id, u.id")
-    List<CollectionView> getAllCollectionsForAdmin();
+    List<CollectionView> getAllCollections();
 
     @Query(nativeQuery = true,
             value = "select c.id, " +

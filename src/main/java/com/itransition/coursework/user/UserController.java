@@ -38,4 +38,12 @@ public class UserController {
         model.addAttribute("currentUser", user);
         return "client/profile";
     }
+
+    @GetMapping({
+            "/nullvendor/css/rtl/theme-default.css",
+            "/nullvendor/css/rtl/core.css"
+    })
+    public String getIndexPage() {
+        return "redirect:/";
+    }
 }

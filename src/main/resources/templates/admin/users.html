@@ -171,126 +171,127 @@
                                             </div>
                                         </div>
                                         <!-- END SINGLE USER -->
+                                    </div>
 
-                                        <!-- EDIT MODAL -->
-                                        <div class="modal fade" th:id="'saveUser'+${user.id}" tabindex="-1"
-                                             aria-hidden="true">
-                                            <div class="modal-dialog modal-lg modal-simple modal-edit-user">
-                                                <div class="modal-content p-3 p-md-5">
-                                                    <div class="modal-body">
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close">
-                                                        </button>
-                                                        <div class="text-center mb-4">
-                                                            <h3>Edit User</h3>
-                                                        </div>
-                                                        <form id="userForm" class="row g-3" method="post"
-                                                              th:action="@{/admin/users/save-user}">
+                                    <!-- EDIT MODAL -->
+                                    <div class="modal fade" th:id="'saveUser'+${user.id}" tabindex="-1"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                                            <div class="modal-content p-3 p-md-5">
+                                                <div class="modal-body">
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close">
+                                                    </button>
+                                                    <div class="text-center mb-4">
+                                                        <h3>Edit User</h3>
+                                                    </div>
+                                                    <form id="userForm" class="row g-3" method="post"
+                                                          th:action="@{/admin/users/save-user}">
 
-                                                            <input hidden th:value="${user.id}" name="id">
-                                                            <div class="row">
-                                                                <div class="col-12 col-md-6">
-                                                                    <label class="form-label">Name</label>
-                                                                    <input type="text" name="name"
-                                                                           class="form-control" placeholder="John"
-                                                                           th:value="${user.name}" required/>
-                                                                </div>
-                                                                <div class="col-12 col-md-6">
-                                                                    <label class="form-label">Email</label>
-                                                                    <input type="email" name="email"
-                                                                           class="form-control"
-                                                                           placeholder="example@domain.com"
-                                                                           th:value="${user.email}" required/>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-12 col-md-6">
-                                                                    <label class="form-label">Password</label>
-                                                                    <input type="password" name="password"
-                                                                           class="form-control" required/>
-                                                                </div>
-                                                                <div class="col-12 col-md-6">
-                                                                    <label class="form-label">Confirm Password</label>
-                                                                    <input type="password" name="confirmPassword"
-                                                                           class="form-control" required/>
-                                                                </div>
+                                                        <input hidden th:value="${user.id}" name="id">
+                                                        <div class="row">
+                                                            <div class="col-12 col-md-6">
+                                                                <label class="form-label">Name</label>
+                                                                <input type="text" name="name"
+                                                                       class="form-control" placeholder="John"
+                                                                       th:value="${user.name}" required/>
                                                             </div>
                                                             <div class="col-12 col-md-6">
-                                                                <label class="form-label">Role</label>
-                                                                <select class="form-select" required
-                                                                        aria-label="Default select example" name="role">
-                                                                    <option selected>Select user role</option>
-                                                                    <option th:each="role : ${roles}"
-                                                                            th:value="${role.id}"
-                                                                            th:text="${role.name}">
-                                                                    </option>
-                                                                </select>
+                                                                <label class="form-label">Email</label>
+                                                                <input type="email" name="email"
+                                                                       class="form-control"
+                                                                       placeholder="example@domain.com"
+                                                                       th:value="${user.email}" required/>
                                                             </div>
-                                                            <div class="col-12 text-center mt-4">
-                                                                <button type="submit"
-                                                                        class="btn btn-primary me-sm-3 me-1">
-                                                                    Submit
-                                                                </button>
-                                                                <button type="reset" class="btn btn-label-secondary"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close">Cancel
-                                                                </button>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12 col-md-6">
+                                                                <label class="form-label">Password</label>
+                                                                <input type="password" name="password"
+                                                                       class="form-control" required/>
                                                             </div>
-                                                        </form>
-                                                    </div>
+                                                            <div class="col-12 col-md-6">
+                                                                <label class="form-label">Confirm Password</label>
+                                                                <input type="password" name="confirmPassword"
+                                                                       class="form-control" required/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 col-md-6">
+                                                            <label class="form-label">Role</label>
+                                                            <select class="form-select" required
+                                                                    aria-label="Default select example" name="role">
+                                                                <option selected>Select user role</option>
+                                                                <option th:each="role : ${roles}"
+                                                                        th:value="${role.id}"
+                                                                        th:text="${role.name}">
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-12 text-center mt-4">
+                                                            <button type="submit"
+                                                                    class="btn btn-primary me-sm-3 me-1">
+                                                                Submit
+                                                            </button>
+                                                            <button type="reset" class="btn btn-label-secondary"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Close">Cancel
+                                                            </button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- END EDIT MODAL -->
+                                    </div>
+                                    <!-- END EDIT MODAL -->
 
-                                        <td><strong th:text="${loop.index+1}"></strong></td>
-                                        <td>
-                                            <a data-bs-toggle="modal"
-                                               th:attr="data-bs-target='#singleUserInfo'+${user.id}"
-                                               th:text="${user.name}"></a>
-                                        </td>
-                                        <td>
-                                            <div class="avatar">
-                                                <img th:src="${user.imgUrl}" alt class="rounded-circle">
-                                            </div>
-                                        </td>
-                                        <td th:text="${user.role.name}"></td>
-                                        <td th:text="${user.email}"></td>
-                                        <td>
+                                    <td><strong th:text="${loop.index+1}"></strong></td>
+                                    <td>
+                                        <a data-bs-toggle="modal"
+                                           th:attr="data-bs-target='#singleUserInfo'+${user.id}"
+                                           th:text="${user.name}"></a>
+                                    </td>
+                                    <td>
+                                        <div class="avatar">
+                                            <img th:src="${user.imgUrl}" alt class="rounded-circle">
+                                        </div>
+                                    </td>
+                                    <td th:text="${user.role.name}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td>
                                             <span class="badge bg-label-success me-1"
                                                   th:if="${user.isActive}">Active</span>
-                                            <span class="badge bg-label-danger me-1"
-                                                  th:if="${!user.isActive}">Blocked</span>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-icon me-2 btn-label-primary"
-                                                    data-bs-toggle="modal"
-                                                    th:attr="data-bs-target='#saveUser'+${user.id}">
-                                                <span class="tf-icons bx bx-edit"></span>
+                                        <span class="badge bg-label-danger me-1"
+                                              th:if="${!user.isActive}">Blocked</span>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-icon me-2 btn-label-primary"
+                                                data-bs-toggle="modal"
+                                                th:attr="data-bs-target='#saveUser'+${user.id}">
+                                            <span class="tf-icons bx bx-edit"></span>
+                                        </button>
+
+                                        <a th:href="@{/admin/users/delete-user/__${user.id}__}">
+                                            <button onclick="return confirm('Are you sure to delete this user?')"
+                                                    type="button" class="btn btn-icon me-2 btn-label-warning">
+                                                <span class="tf-icons bx bx-trash"></span>
                                             </button>
+                                        </a>
 
-                                            <a th:href="@{/admin/users/delete-user/__${user.id}__}">
-                                                <button onclick="return confirm('Are you sure to delete this user?')"
-                                                        type="button" class="btn btn-icon me-2 btn-label-warning">
-                                                    <span class="tf-icons bx bx-trash"></span>
-                                                </button>
-                                            </a>
+                                        <a th:href="@{/admin/users/block-user/__${user.id}__}">
+                                            <button type="button" class="btn btn-icon me-2 btn-label-danger"
+                                                    th:if="${user.isActive}">
+                                                <span class="tf-icons bx bx-lock"></span>
+                                            </button>
+                                        </a>
 
-                                            <a th:href="@{/admin/users/block-user/__${user.id}__}">
-                                                <button type="button" class="btn btn-icon me-2 btn-label-danger"
-                                                        th:if="${user.isActive}">
-                                                    <span class="tf-icons bx bx-lock"></span>
-                                                </button>
-                                            </a>
+                                        <a th:href="@{/admin/users/unblock-user/__${user.id}__}">
+                                            <button type="button" class="btn btn-icon me-2 btn-label-success"
+                                                    th:if="${!user.isActive}">
+                                                <span class="tf-icons bx bx-lock-open"></span>
+                                            </button>
+                                        </a>
+                                    </td>
 
-                                            <a th:href="@{/admin/users/unblock-user/__${user.id}__}">
-                                                <button type="button" class="btn btn-icon me-2 btn-label-success"
-                                                        th:if="${!user.isActive}">
-                                                    <span class="tf-icons bx bx-lock-open"></span>
-                                                </button>
-                                            </a>
-                                        </td>
-                                    </div>
                                 </tr>
                                 </tbody>
                             </table>

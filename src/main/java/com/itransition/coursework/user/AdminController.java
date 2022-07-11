@@ -182,7 +182,7 @@ public class AdminController {
         model.addAttribute("topics",
                 topicService.getAllEnabledTopics());
         model.addAttribute("collections",
-                collectionService.getAllCollectionsForAdmin());
+                collectionService.getAllCollections());
         model.addAttribute("customFieldTypes", CustomFieldType.values());
         return "admin/collections";
     }

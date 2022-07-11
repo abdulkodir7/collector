@@ -1,10 +1,9 @@
 package com.itransition.coursework.collection;
 
+import com.itransition.coursework.collection.dto.EditCollectionDto;
 import com.itransition.coursework.custom_field.CustomFieldType;
 import com.itransition.coursework.item.ItemService;
 import com.itransition.coursework.item.projection.ItemView;
-import com.itransition.coursework.tag.Tag;
-import com.itransition.coursework.tag.TagService;
 import com.itransition.coursework.topic.Topic;
 import com.itransition.coursework.topic.TopicService;
 import com.itransition.coursework.user.User;
@@ -32,7 +31,6 @@ import java.util.List;
 @RequestMapping("collections")
 public class CollectionController {
 
-    private final CollectionRepository collectionRepository;
     private final CollectionService collectionService;
     private final ItemService itemService;
     private final TopicService topicService;
@@ -41,8 +39,8 @@ public class CollectionController {
     public String getAllCollections(Model model) {
 
         model.addAttribute("collections",
-                collectionRepository.findAll());
-        return "client/collections";
+                collectionService.getAllCollections());
+        return "client/collection/collections";
     }
 
     @GetMapping("{id}")
@@ -52,7 +50,7 @@ public class CollectionController {
         model.addAttribute("collection",
                 collectionService.getSingleCollection(id));
         model.addAttribute("items", items);
-        return "client/single-collection";
+        return "client/collection/single-collection";
     }
 
     @GetMapping("/create")
@@ -60,7 +58,7 @@ public class CollectionController {
         List<Topic> topics = topicService.getAllEnabledTopics();
         model.addAttribute("topics", topics);
         model.addAttribute("types", CustomFieldType.values());
-        return "client/collection-create";
+        return "client/collection/collection-create";
     }
 
     @PostMapping("/create")
@@ -72,4 +70,34 @@ public class CollectionController {
         attributes.addFlashAttribute("response", response);
         return "redirect:/profile";
     }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id,
+                       Model model) {
+        model.addAttribute("editCollectionDto",
+                new EditCollectionDto());
+        model.addAttribute("collection",
+                collectionService.getSingleCollection(id));
+        model.addAttribute("topics",
+                topicService.getAllEnabledTopics());
+        return "client/collection/collection-edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editCollection(@PathVariable Long id,
+                                 EditCollectionDto dto,
+                                 RedirectAttributes attributes) {
+        ThymeleafResponse response = collectionService.editCollection(id, dto);
+        attributes.addFlashAttribute("attributes", response);
+        return "redirect:/collections/" + id;
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteCollection(@PathVariable Long id,
+                                   RedirectAttributes attributes) {
+        ThymeleafResponse response = collectionService.deleteCollection(id);
+        attributes.addFlashAttribute("response", response);
+        return "redirect:/collections";
+    }
+
 }

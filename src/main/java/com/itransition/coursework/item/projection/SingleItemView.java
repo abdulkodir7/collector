@@ -22,6 +22,8 @@ public interface SingleItemView {
 
     String getAuthor();
 
+    Long getAuthorId();
+
     @Value("#{@tagRepository.getItemTags({target.id})}")
     List<TagView> getTags();
 

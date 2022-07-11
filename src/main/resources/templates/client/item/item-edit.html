@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head th:replace="client/layouts/header::header"></head>
+
+<body class="theme-light-active" id="activeTheme">
+
+<div th:replace="client/layouts/navbar::navbar"></div>
+
+
+<!-- ===============  breadcrumb style start =============== -->
+<div class="breadcrumb_style__two bg-body-2">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <a href="../index.html" class="back__btn">
+                <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 6.5H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                    <path d="M6 11.5L1 6.5L6 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                </svg>
+                <span>Back to profile</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- ===============  breadcrumb style end =============== -->
+
+<!-- ===============  create style start =============== -->
+<div class="item_create__wrapper bg-body-2 section_gap_y_top__3 section_gap_y_bottom__1">
+    <div class="container">
+        <div class="row justify-content-between gy-4">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <div class="item_create__details">
+                    <div class="create__header">
+                        <h2>Edit Item</h2>
+                    </div>
+                    <form class="row g-3" method="post" th:action="@{/items/edit/__${item.id}__}"
+                          enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Name</label>
+                                <input type="text" name="itemName"
+                                       class="form-control" placeholder="Item name"
+                                       th:value="${item.name}"/>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="selectTag" class="form-label">Tags</label>
+                                <div class="select2-warning">
+                                    <select name="tagId" id="selectTag"
+                                            class="select2 form-select"
+                                            multiple required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12" th:each="field : ${item.customFields}">
+                                <div th:if="${field.type} eq 'text' or ${field.type} eq 'number' or ${field.type} eq 'date'">
+                                    <label class="form-label">[[${field.name}]]</label>
+                                    <input th:type="${field.type}" th:name="${field.name}"
+                                           class="form-control" placeholder=""
+                                           th:value="${field.value}"/>
+                                </div>
+                                <div th:if="${field.type} eq 'file'">
+                                    <label class="form-label">[[${field.name}]]</label>
+                                    <input id="upload" th:type="${field.type}" th:name="${field.name}"
+                                           class="form-control" placeholder=""
+                                           th:value="${field.value}"/>
+                                    <label class="form-label">Current file</label>
+                                    <br>
+                                    <img id="uploadedImage" th:src="${field.value}" width="100px">
+                                </div>
+                                <div th:if="${field.type} eq 'textarea'">
+                                    <label class="form-label">[[${field.name}]]</label>
+                                    <textarea th:name="${field.name}" class="form-control"
+                                              rows="3" required>[[${field.value}]]</textarea>
+                                </div>
+                                <div th:if="${field.type} eq 'checkbox'">
+                                    <div class="form-check mt-3">
+                                        <input class="form-check-input"
+                                               th:checked="${field.value} eq 'Yes'" type="checkbox"
+                                               th:value="${field.name}"
+                                               th:name="${field.name}" id="checkbox"/>
+                                        <label class="form-check-label" for="checkbox">
+                                            [[${field.name}]]
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mt-4">
+                            <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</div>
+<!-- ===============  create style end =============== -->
+
+<script th:inline="javascript">
+    const itemTags = [[${item.tags}]]
+    const allTags = [[${tags}]]
+
+    let select = document.getElementById('selectTag');
+
+    for (let i = 0; i < allTags.length; i++) {
+        let optionElement = document.createElement('option');
+        optionElement.value = allTags[i].id;
+        optionElement.text = allTags[i].name;
+
+        const predicate = (elem) => elem.name === allTags[i].name;
+        if (itemTags.some(predicate))
+            optionElement.selected = true;
+        select.appendChild(optionElement);
+    }
+
+</script>
+
+<div th:replace="client/layouts/footer::footer"></div>
+</body>
+</html>

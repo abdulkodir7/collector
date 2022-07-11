@@ -44,10 +44,9 @@ public class CollectionService {
     private final CustomFieldRepository customFieldRepository;
     private final AttachmentService attachmentService;
     private final ItemRepository itemRepository;
-    private final CommentRepository commentRepository;
 
-    public List<CollectionView> getAllCollectionsForAdmin() {
-        return collectionRepository.getAllCollectionsForAdmin();
+    public List<CollectionView> getAllCollections() {
+        return collectionRepository.getAllCollections();
     }
 
     public ThymeleafResponse saveCollection(MultipartFile file, HttpServletRequest request, User currentUser) {

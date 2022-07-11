@@ -15,7 +15,6 @@ public interface SingleCollectionView {
 
     String getImgUrl();
 
-    // TODO: 6/25/2022 Collectionlar ni kurganda topic, avtor utiga bosganda single page utsin
     Long getTopicId();
 
     String getTopicName();
