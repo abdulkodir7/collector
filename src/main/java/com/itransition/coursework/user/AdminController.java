@@ -59,6 +59,10 @@ public class AdminController {
                 && loggedInUser.getIsActive()) {
             User user = userService.getCurrentUser(loggedInUser);
             model.addAttribute("currentUser", user);
+            model.addAttribute("items", userService.getUsersSize());
+            model.addAttribute("collections", collectionService.getAllCollections().size());
+            model.addAttribute("tags", tagService.getAllTags().size());
+            model.addAttribute("topics", topicService.getTopicsSize());
             return "admin/index";
         } else
             return "admin/login";
@@ -113,8 +117,10 @@ public class AdminController {
     }
 
     @GetMapping("users/delete-user/{id}")
-    public String deleteUser(@PathVariable Long id, RedirectAttributes attributes) {
-        attributes.addFlashAttribute("response", userService.deleteUser(id));
+    public String deleteUser(@PathVariable Long id,
+                             RedirectAttributes attributes,
+                             @AuthenticationPrincipal User currentUser) {
+        attributes.addFlashAttribute("response", userService.deleteUser(id, currentUser));
         return "redirect:/admin/users";
     }
 

@@ -1,5 +1,6 @@
 package com.itransition.coursework.comment;
 
+import com.itransition.coursework.search.SearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * Abdulqodir Ganiev 6/27/2022 2:07 PM
  */
 
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends SearchRepository<Comment, Long> {
     @Query(nativeQuery = true,
             value = "select c.id, " +
                     "       c.body, " +

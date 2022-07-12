@@ -1,11 +1,15 @@
 package com.itransition.coursework.collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.itransition.coursework.custom_field.CustomField;
 import com.itransition.coursework.item.Item;
 import com.itransition.coursework.topic.Topic;
 import com.itransition.coursework.user.User;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,22 +32,35 @@ public class Collection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @FullTextField
     @Column(nullable = false)
     private String name;
 
+    @FullTextField
     @Column(nullable = false, columnDefinition = "text")
     private String description;
 
-    @ManyToOne(optional = false)
+    @IndexedEmbedded
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Topic topic;
 
+    @IndexedEmbedded
     @ManyToOne(optional = false)
+    @JsonIgnore
     private User author;
 
+    @IndexedEmbedded
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "collection_custom_fields",
+            joinColumns = @JoinColumn(name = "collection_id"),
+            inverseJoinColumns = @JoinColumn(name = "custom_fields_id"))
+    @JsonIgnore
     private List<CustomField> customFields;
 
     @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Item> items;
 
     @Column(columnDefinition = "text")

@@ -1,12 +1,13 @@
 package com.itransition.coursework.custom_field;
 
+import com.itransition.coursework.search.SearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CustomFieldRepository extends JpaRepository<CustomField, Long> {
+public interface CustomFieldRepository extends SearchRepository<CustomField, Long> {
 
     @Query(nativeQuery = true,
             value = "select cf.id, " +

@@ -4,13 +4,14 @@ import com.itransition.coursework.item.projection.ItemView;
 import com.itransition.coursework.item.projection.LatestItemView;
 import com.itransition.coursework.item.projection.LikeView;
 import com.itransition.coursework.item.projection.SingleItemView;
+import com.itransition.coursework.search.SearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends SearchRepository<Item, Long> {
 
     @Query(nativeQuery = true,
             value = "select i.id, " +
@@ -76,8 +77,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(nativeQuery = true,
             value = "select id, " +
                     "       name, " +
-                    "       cast(extract(epoch from (item.created_at - now() at time zone 'utc' at time zone 'asia/tashkent') / 60) as varchar) minutes " +
+                    "       created_at createdAt " +
                     "from item " +
+                    "order by created_at desc " +
                     "limit 6")
     List<LatestItemView> getLatestItems();
 

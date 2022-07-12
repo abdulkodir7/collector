@@ -1,9 +1,13 @@
 package com.itransition.coursework.tag;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.itransition.coursework.item.Item;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,7 +19,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 public class Tag {
 
@@ -23,8 +26,13 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @FullTextField
     @Column(nullable = false)
     private String name;
+
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Item> items;
 
     public Tag(String name) {
         this.name = name;

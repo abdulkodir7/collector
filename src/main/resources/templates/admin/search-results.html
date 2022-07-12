@@ -56,7 +56,7 @@
                     <div class="card">
                         <div class="row justify-content-around align-items-center p-4">
                             <div class="col-md-6">
-                                <h5 style="float: left">Items</h5>
+                                <h5>Search results</h5>
                             </div>
                         </div>
 
@@ -82,8 +82,8 @@
                                             <p th:text="${tag.name}"></p>
                                         </div>
                                     </td>
-                                    <td th:text="${item.likeCount}"></td>
-                                    <td th:text="${item.commentCount}"></td>
+                                    <td th:text="${item.likedBy.size()}"></td>
+                                    <td th:text="${item.comments.size()}"></td>
                                     <td>
                                         <a th:href="@{/admin/items/delete-item/__${item .id}__}">
                                             <button onclick="return confirm('Are you sure to delete this item?')"

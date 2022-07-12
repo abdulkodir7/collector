@@ -21,7 +21,8 @@
                                 </div>
                                 <div class="featured_slide__content">
                                     <a href="javascript:void(0)" class="author">[[#{by}]] [[${collection.author}]]</a>
-                                    <h1><a th:href="@{/collections/__${collection.id}__}">[[${collection.name}]]</a></h1>
+                                    <h1><a th:href="@{/collections/__${collection.id}__}">[[${collection.name}]]</a>
+                                    </h1>
                                     <div class="featured_slide__bottom">
                                         <a th:href="@{/collections/__${collection.id}__}" class="btn-pill-v1">
                                             <span th:text="#{detail}"></span>
@@ -75,7 +76,7 @@
                     <span class="text-nowrap" th:text="#{latest.items}"></span>
                 </h3>
                 <div class="section__actions d-flex gap-4">
-                    <a href="creators.html" class="btn-rounded-v1 varient-2">
+                    <a href="/items" class="btn-rounded-v1 varient-2">
                         <span class="text-nowrap" th:text="#{view.all}"></span>
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
                              xmlns="http://www.w3.org/2000/svg">
@@ -96,8 +97,8 @@
                             <div class="seller__info">
                                 <h6 class="seller__name"><a th:href="@{/items/__${item.id}__}"
                                                             th:text="${item.name}"></a></h6>
-                                <p th:text="${item.minutes}"></p>
-                                <a href="#" class="seller__follow" th:text="#{detail}"></a>
+                                <p th:text="${#temporals.format(item.createdAt,'dd-MMM-yyyy hh:mm')}"></p>
+                                <a th:href="@{/items/__${item.id}__}" class="seller__follow" th:text="#{detail}"></a>
                             </div>
                         </div>
                     </div>

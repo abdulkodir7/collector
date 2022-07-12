@@ -1,9 +1,11 @@
 package com.itransition.coursework.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itransition.coursework.comment.Comment;
 import com.itransition.coursework.user.role.Role;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,9 +33,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @FullTextField
     @Column(nullable = false)
     private String name;
 
+    @FullTextField
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -48,9 +52,11 @@ public class User implements UserDetails {
     private Boolean isActive;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<com.itransition.coursework.collection.Collection> collections;
 
     @OneToMany(mappedBy = "commentedBy", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Comment> comments;
 
     @Column(updatable = false, nullable = false)

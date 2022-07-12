@@ -79,8 +79,11 @@ public class UserService implements UserDetailsService {
                 page - 1,
                 size
         );
-
         return userRepository.findAll(pageable);
+    }
+
+    public Integer getUsersSize(){
+        return userRepository.findAll().size();
     }
 
     public ThymeleafResponse saveUser(Long id, String name, String email,
@@ -140,10 +143,12 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public ThymeleafResponse deleteUser(Long id) {
+    public ThymeleafResponse deleteUser(Long id, User currentUser) {
         try {
             User user = userRepository.findById(id)
                     .orElseThrow(() -> new ResourceAccessException(USER_NOT_FOUND));
+            if (currentUser.getId().equals(user.getId()))
+
             userRepository.delete(user);
             return new ThymeleafResponse(true, SUCCESS_DELETE);
         } catch (Exception e) {

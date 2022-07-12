@@ -1,7 +1,10 @@
 package com.itransition.coursework.custom_field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.itransition.coursework.collection.Collection;
 import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValue;
 import lombok.*;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,6 +24,7 @@ public class CustomField {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @FullTextField
     @Column(nullable = false)
     private String name;
 
@@ -28,7 +32,12 @@ public class CustomField {
     @Enumerated(EnumType.STRING)
     private CustomFieldType type;
 
-    @OneToMany(mappedBy = "customField", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customField", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<CustomFieldValue> customFieldValues;
+
+    @ManyToMany(mappedBy = "customFields", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Collection> collections;
 
 }

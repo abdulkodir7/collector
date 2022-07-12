@@ -1,5 +1,6 @@
 package com.itransition.coursework.user;
 
+import com.itransition.coursework.search.SearchRepository;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +14,7 @@ import java.util.Optional;
  * Abdulqodir Ganiev 6/16/2022 7:07 PM
  */
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends SearchRepository<User, Long> {
 
     @NonNull
     Page<User> findAll(@NonNull Pageable pageable);

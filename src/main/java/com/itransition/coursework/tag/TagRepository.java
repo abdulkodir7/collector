@@ -1,11 +1,12 @@
 package com.itransition.coursework.tag;
 
+import com.itransition.coursework.search.SearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface TagRepository extends JpaRepository<Tag, Long> {
+public interface TagRepository extends SearchRepository<Tag, Long> {
 
     @Query(nativeQuery = true,
             value = "select t.id, t.name " +

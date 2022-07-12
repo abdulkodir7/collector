@@ -32,6 +32,10 @@ public class TopicService {
         return topicRepository.findAll(pageable);
     }
 
+    public Integer getTopicsSize(){
+        return topicRepository.findAll().size();
+    }
+
     public ThymeleafResponse saveTopic(Long id, String name) {
         if (id != null)
             return editTopic(id, name);

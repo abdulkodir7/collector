@@ -27,4 +27,18 @@ public interface Constants {
     String LOGIN_TO_LIKE = "Please login to like this item";
     String LIKED = "Liked 💗";
     String UNLIKED = "Like removed 😔";
+    Integer THREAD_NUMBER = 4;
+    Integer MAX_SEARCH_LIMIT = 10;
+    String[] SEARCHABLE_FIELDS = {
+            "name",
+            "collection.name",
+            "collection.description",
+            "collection.topic.name",
+            "collection.author.name",
+            "collection.customFields.name",
+            "tags.name",
+            "comments.body",
+            "comments.commentedBy.name",
+            "customFieldValues.value"
+    };
 }

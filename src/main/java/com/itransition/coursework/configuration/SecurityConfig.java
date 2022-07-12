@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/tags/**",
                         "/collections/**",
                         "/items/**",
+                        "/client-search/**",
                         "/admin-login",
                         "/admin-assets/**",
                         "/css/**",

@@ -3,13 +3,14 @@ package com.itransition.coursework.collection;
 import com.itransition.coursework.collection.projection.CollectionView;
 import com.itransition.coursework.collection.projection.SingleCollectionView;
 import com.itransition.coursework.collection.projection.TopCollectionView;
+import com.itransition.coursework.search.SearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CollectionRepository extends JpaRepository<Collection, Long> {
+public interface CollectionRepository extends SearchRepository<Collection, Long> {
 
     @Query(nativeQuery = true,
             value = "select c.id, " +

@@ -1,5 +1,6 @@
 package com.itransition.coursework.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itransition.coursework.collection.Collection;
 import com.itransition.coursework.comment.Comment;
 import com.itransition.coursework.custom_field.custom_field_value.CustomFieldValue;
@@ -7,9 +8,13 @@ import com.itransition.coursework.tag.Tag;
 import com.itransition.coursework.user.User;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,25 +28,39 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
+@Indexed
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @FullTextField
     @Column(nullable = false)
     private String name;
 
+    @IndexedEmbedded
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Collection collection;
 
-    @ManyToMany
+    @IndexedEmbedded
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "item_tags",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "tags_id"))
+    @JsonIgnore
     private List<Tag> tags;
 
+    @IndexedEmbedded
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @IndexedEmbedded
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<CustomFieldValue> customFieldValues;
 
     @ManyToMany
@@ -49,6 +68,7 @@ public class Item {
             name = "item_like",
             joinColumns = @JoinColumn(name = "item_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonIgnore
     private List<User> likedBy;
 
     @Column(updatable = false)
