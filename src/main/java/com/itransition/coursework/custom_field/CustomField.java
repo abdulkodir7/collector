@@ -36,7 +36,7 @@ public class CustomField {
     @JsonIgnore
     private List<CustomFieldValue> customFieldValues;
 
-    @ManyToMany(mappedBy = "customFields", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "customFields")
     @JsonIgnore
     private List<Collection> collections;
 

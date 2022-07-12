@@ -127,12 +127,13 @@ public class CollectionService {
         }
     }
 
-    @Transactional
     public ThymeleafResponse deleteCollection(Long id) {
         try {
             Collection collection = collectionRepository.findById(id)
                     .orElseThrow(() -> new ResourceAccessException(COLLECTION_NOT_FOUND));
-            itemRepository.deleteAllByCollectionId(id);
+            collection.getItems().clear();
+            collection.getCustomFields().clear();
+            collectionRepository.save(collection);
             collectionRepository.delete(collection);
             return new ThymeleafResponse(true, SUCCESS_DELETE);
         } catch (Exception e) {
