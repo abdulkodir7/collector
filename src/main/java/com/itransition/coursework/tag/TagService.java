@@ -24,21 +24,13 @@ public class TagService {
         return tagRepository.findAll();
     }
 
-    public List<Tag> getTagNonSelectedTags(List<TagView> tags) {
-        List<Tag> tagList = new ArrayList<>();
-        for (Tag allTag : getAllTags())
-            for (TagView tag : tags)
-                if (!Objects.equals(allTag.getId(), tag.getId()))
-                    tagList.add(allTag);
-        System.out.println(tagList);
-        return tagList;
-
-    }
 
     public ThymeleafResponse delete(Long id) {
         try {
             Tag tag = tagRepository.findById(id)
                     .orElseThrow(() -> new ResourceAccessException(TAG_NOT_FOUND));
+            tag.getItems().clear();
+            tagRepository.save(tag);
             tagRepository.delete(tag);
             return new ThymeleafResponse(true, SUCCESS_DELETE);
         } catch (Exception e) {

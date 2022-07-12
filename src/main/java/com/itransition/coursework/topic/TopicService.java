@@ -68,6 +68,8 @@ public class TopicService {
         try {
             Topic topic = topicRepository.findById(id)
                     .orElseThrow(() -> new ResourceAccessException(TOPIC_NOT_FOUND));
+            topic.getCollections().clear();
+            topicRepository.save(topic);
             topicRepository.delete(topic);
             log.info("topic {} deleted", topic);
             return new ThymeleafResponse(true, SUCCESS_DELETE);
