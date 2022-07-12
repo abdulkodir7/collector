@@ -147,7 +147,6 @@ public class UserService implements UserDetailsService {
         try {
             User user = userRepository.findById(id)
                     .orElseThrow(() -> new ResourceAccessException(USER_NOT_FOUND));
-
             user.getCollections().clear();
             user.getComments().clear();
             userRepository.delete(user);

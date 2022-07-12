@@ -127,10 +127,12 @@ public class CollectionService {
         }
     }
 
+    @Transactional
     public ThymeleafResponse deleteCollection(Long id) {
         try {
             Collection collection = collectionRepository.findById(id)
                     .orElseThrow(() -> new ResourceAccessException(COLLECTION_NOT_FOUND));
+            itemRepository.deleteAllByCollectionId(collection.getId());
             collection.getItems().clear();
             collection.getCustomFields().clear();
             collectionRepository.save(collection);
@@ -171,5 +173,9 @@ public class CollectionService {
 
     public List<CollectionView> getAuthorCollections(Long id) {
         return collectionRepository.getAuthorCollections(id);
+    }
+
+    public void deleteCollectionsByTopic(Long id) {
+        collectionRepository.deleteCollectionByTopicId(id);
     }
 }

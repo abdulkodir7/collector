@@ -59,7 +59,7 @@ public class AdminController {
                 && loggedInUser.getIsActive()) {
             User user = userService.getCurrentUser(loggedInUser);
             model.addAttribute("currentUser", user);
-            model.addAttribute("items", userService.getUsersSize());
+            model.addAttribute("items", itemService.getAllItems().size());
             model.addAttribute("collections", collectionService.getAllCollections().size());
             model.addAttribute("tags", tagService.getAllTags().size());
             model.addAttribute("topics", topicService.getTopicsSize());

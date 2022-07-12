@@ -1,9 +1,10 @@
 spring:
   datasource:
-    password: af927b58bc0607ff2caff00707028ec79f0e3e1a80ca0a56fc84dd413bce5d03
-    username: umbimunmfyrpvg
+    password: 3255b59dc30449a07dbddd79189c5b03a82413eaa5465c544c933898d42c0d6f
+    username: fwaakntgfjczvy
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgres://umbimunmfyrpvg:af927b58bc0607ff2caff00707028ec79f0e3e1a80ca0a56fc84dd413bce5d03@ec2-54-157-16-196.compute-1.amazonaws.com:5432/d798q16sp9s600
+    url: jdbc:postgresql://ec2-3-223-169-166.compute-1.amazonaws.com:5432/d2vn6849n2i5g9
+
   jpa:
     show-sql: true
     hibernate:
@@ -18,6 +19,7 @@ spring:
           backend:
             type: lucene
             directory.root: ./data/index
+
   sql:
     init:
 #      mode: never
@@ -40,3 +42,4 @@ cloudinary:
   name: itransitionuz
   apiKey: 786711345455842
   apiSecret: OMq2W5RSMZzJgYzMtk01c8h57ho
+

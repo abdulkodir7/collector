@@ -7,6 +7,8 @@ import com.itransition.coursework.topic.Topic;
 import com.itransition.coursework.user.User;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
@@ -59,6 +61,7 @@ public class Collection {
     private List<CustomField> customFields;
 
     @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private List<Item> items;
 

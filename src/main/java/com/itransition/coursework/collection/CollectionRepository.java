@@ -4,6 +4,7 @@ import com.itransition.coursework.collection.projection.CollectionView;
 import com.itransition.coursework.collection.projection.SingleCollectionView;
 import com.itransition.coursework.collection.projection.TopCollectionView;
 import com.itransition.coursework.search.SearchRepository;
+import com.itransition.coursework.topic.Topic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -82,4 +83,6 @@ public interface CollectionRepository extends SearchRepository<Collection, Long>
                     "where u.id = :id " +
                     "group by c.id, t.id, u.id")
     List<CollectionView> getAuthorCollections(Long id);
+
+    void deleteCollectionByTopicId(Long topicId);
 }

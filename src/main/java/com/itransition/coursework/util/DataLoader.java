@@ -12,6 +12,7 @@ import com.itransition.coursework.user.User;
 import com.itransition.coursework.user.UserRepository;
 import com.itransition.coursework.user.role.Role;
 import com.itransition.coursework.user.role.RoleEnum;
+import com.itransition.coursework.user.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -36,10 +37,7 @@ public class DataLoader implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final TopicRepository topicRepository;
     private final TagRepository tagRepository;
-    private final CollectionRepository collectionRepository;
-    private final CustomFieldRepository customFieldRepository;
-    private final CustomFieldValueRepository customFieldValueRepository;
-    private final ItemRepository itemRepository;
+    private final RoleRepository roleRepository;
 
     @Value("${spring.sql.init.mode}")
     String initMode;
@@ -48,13 +46,17 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) {
         if (initMode.equals("always")) {
 
+            Role superAdmin = roleRepository.save(new Role(RoleEnum.ROLE_SUPER_ADMIN));
+            Role admin = roleRepository.save(new Role(RoleEnum.ROLE_ADMIN));
+            Role creator = roleRepository.save(new Role(RoleEnum.ROLE_CREATOR));
+
             /* SAVING USER */
             User super_admin = new User(
                     "Super Admin",
                     "sa@gmail.com",
                     DEFAULT_PROFILE_IMAGE,
                     passwordEncoder.encode("1234"),
-                    new Role(RoleEnum.ROLE_SUPER_ADMIN),
+                    superAdmin,
                     true,
                     LocalDateTime.now(),
                     LocalDateTime.now()
@@ -66,7 +68,7 @@ public class DataLoader implements CommandLineRunner {
                     "a@gmail.com",
                     DEFAULT_PROFILE_IMAGE,
                     passwordEncoder.encode("1234"),
-                    new Role(RoleEnum.ROLE_ADMIN),
+                    admin,
                     true,
                     LocalDateTime.now(),
                     LocalDateTime.now()
@@ -78,7 +80,7 @@ public class DataLoader implements CommandLineRunner {
                     "j@gmail.com",
                     DEFAULT_PROFILE_IMAGE,
                     passwordEncoder.encode("1234"),
-                    new Role(RoleEnum.ROLE_CREATOR),
+                    creator,
                     false,
                     LocalDateTime.now(),
                     LocalDateTime.now()
@@ -86,7 +88,7 @@ public class DataLoader implements CommandLineRunner {
             userRepository.save(john);
 
             /* CATEGORIES */
-            ArrayList<Topic> categories = new ArrayList<>(
+            ArrayList<Topic> topics = new ArrayList<>(
                     Arrays.asList(
                             new Topic("Sport", true),
                             new Topic("Art", true),
@@ -100,7 +102,7 @@ public class DataLoader implements CommandLineRunner {
                             new Topic("Technology", true)
                     )
             );
-            topicRepository.saveAll(categories);
+            topicRepository.saveAll(topics);
 
             /* TAGS */
             ArrayList<Tag> tags = new ArrayList<>(

@@ -1,5 +1,6 @@
 package com.itransition.coursework.topic;
 
+import com.itransition.coursework.collection.CollectionService;
 import com.itransition.coursework.util.ThymeleafResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import static com.itransition.coursework.util.Constants.*;
 public class TopicService {
 
     private final TopicRepository topicRepository;
+    private final CollectionService collectionService;
 
     public Page<Topic> getAllTopics(int size, int page) {
         Pageable pageable = PageRequest.of(
@@ -32,7 +35,7 @@ public class TopicService {
         return topicRepository.findAll(pageable);
     }
 
-    public Integer getTopicsSize(){
+    public Integer getTopicsSize() {
         return topicRepository.findAll().size();
     }
 
@@ -64,10 +67,12 @@ public class TopicService {
         }
     }
 
+    @Transactional
     public ThymeleafResponse deleteTopic(Long id) {
         try {
             Topic topic = topicRepository.findById(id)
                     .orElseThrow(() -> new ResourceAccessException(TOPIC_NOT_FOUND));
+            collectionService.deleteCollectionsByTopic(id);
             topic.getCollections().clear();
             topicRepository.save(topic);
             topicRepository.delete(topic);
