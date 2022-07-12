@@ -1,7 +1,6 @@
 package com.itransition.coursework.collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.itransition.coursework.custom_field.CustomField;
 import com.itransition.coursework.item.Item;
 import com.itransition.coursework.topic.Topic;
